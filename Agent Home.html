@@ -1,0 +1,2791 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Homepage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 0;
+            color: #0a0a0a;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            padding: 0 48px 48px 48px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px 24px 24px;
+            }
+        }
+
+        /* Header Section */
+        .header {
+            background: #ffffff;
+            padding: 0;
+            margin: 0 0 32px 0;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 32px;
+            position: relative;
+            z-index: 1;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .welcome-section {
+            flex: 1;
+            min-width: 0;
+            padding: 40px 48px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+            position: relative;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .welcome-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+            position: relative;
+        }
+
+        .welcome-section p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .agent-status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+            min-width: 280px;
+            padding: 40px 48px 40px 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 28px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            background: #0a0a0a;
+            color: white;
+            border: 2px solid #0a0a0a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .status-badge:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .status-duration {
+            font-size: 11px;
+            opacity: 0.85;
+            font-weight: 500;
+            padding-left: 6px;
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            min-width: 65px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--status-indicator-color, #10b981);
+            animation: statusPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 0 0 var(--status-indicator-shadow, rgba(16, 185, 129, 0.4));
+        }
+
+        @keyframes statusPulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--status-indicator-shadow, rgba(16, 185, 129, 0.7));
+            }
+            50% {
+                box-shadow: 0 0 0 6px var(--status-indicator-shadow, rgba(16, 185, 129, 0));
+            }
+            100% {
+                box-shadow: 0 0 0 0 var(--status-indicator-shadow, rgba(16, 185, 129, 0));
+            }
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            border: 2px solid #e5e5e5;
+            padding: 32px;
+            cursor: pointer;
+            border-radius: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 180px;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: var(--card-color);
+            opacity: 0.05;
+            border-radius: 50%;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--card-color);
+        }
+
+        .metric-card:hover::before {
+            transform: scale(1.5);
+            opacity: 0.08;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #737373;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.3;
+        }
+
+        .metric-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--card-color);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font-size: 56px;
+            font-weight: 900;
+            margin: 12px 0 0 0;
+            color: #0a0a0a;
+            line-height: 0.9;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -2px;
+        }
+
+        .metric-trend {
+            font-size: 13px;
+            color: #525252;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .metric-trend span:first-child {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .trend-up {
+            color: var(--card-color);
+        }
+
+        .trend-down {
+            color: #d13438;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: #ffffff;
+            border: 2px solid #e5e5e5;
+            padding: 32px;
+            margin-bottom: 24px;
+            border-radius: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: #d4d4d4;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0a0a0a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-title svg {
+            opacity: 0.6;
+        }
+
+        .card-title span {
+            font-size: 18px;
+        }
+
+        .view-all {
+            color: #6366f1;
+            font-size: 13px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-all:hover {
+            color: #4f46e5;
+            gap: 8px;
+        }
+
+        /* Task List */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            padding: 20px;
+            background: #fafafa;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .task-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: transparent;
+            transition: all 0.3s;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .task-item:hover {
+            background: #ffffff;
+            transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border-color: #e5e5e5;
+        }
+
+        .task-item:hover::before {
+            background: #6366f1;
+        }
+
+        .task-item.priority-high::before {
+            background: #d13438;
+        }
+
+        .task-item.priority-medium::before {
+            background: #ffaa44;
+        }
+
+        .task-item.priority-low::before {
+            background: #107c10;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 6px;
+        }
+
+        .task-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0a0a0a;
+            flex: 1;
+            letter-spacing: -0.2px;
+        }
+
+        .task-priority {
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .task-priority.priority-high {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 2px solid #fecaca;
+        }
+
+        .task-priority.priority-medium {
+            background: #fffbeb;
+            color: #f59e0b;
+            border: 2px solid #fde68a;
+        }
+
+        .task-priority.priority-low {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 2px solid #bbf7d0;
+        }
+
+        .task-meta {
+            font-size: 13px;
+            color: #737373;
+            font-weight: 500;
+        }
+
+        /* Case Items */
+        .case-item {
+            padding: 20px;
+            background: #fafafa;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .case-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: transparent;
+            transition: all 0.3s;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .case-item:hover {
+            background: #ffffff;
+            transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border-color: #e5e5e5;
+        }
+
+        .case-item:hover::before {
+            background: #8b5cf6;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .case-number {
+            font-size: 12px;
+            font-weight: 800;
+            color: #8b5cf6;
+            letter-spacing: 0.5px;
+        }
+
+        .case-status {
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .status-active {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 2px solid #dbeafe;
+        }
+
+        .status-pending {
+            background: #fffbeb;
+            color: #f59e0b;
+            border: 2px solid #fde68a;
+        }
+
+        .status-resolved {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 2px solid #bbf7d0;
+        }
+
+        .case-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .case-customer {
+            font-size: 13px;
+            color: #737373;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .case-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .case-meta {
+            font-size: 12px;
+            color: #a3a3a3;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f5f5f5;
+            cursor: pointer;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+
+        .activity-item:hover {
+            background: #fafafa;
+            border-color: #e5e5e5;
+            transform: translateX(4px);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+            padding: 8px;
+        }
+
+        .activity-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 4px;
+            letter-spacing: -0.2px;
+        }
+
+        .activity-time {
+            font-size: 13px;
+            color: #737373;
+            font-weight: 500;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            padding: 16px 20px;
+            border: 2px solid #e5e5e5;
+            background: #ffffff;
+            color: #0a0a0a;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 14px;
+            letter-spacing: -0.2px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Performance Stats */
+        .performance-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 14px;
+            border: 2px solid #f5f5f5;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+            background: #ffffff;
+            border-color: #e5e5e5;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #0a0a0a;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #a3a3a3;
+        }
+
+        .spinner {
+            border: 3px solid #f5f5f5;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #a3a3a3;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .empty-state p {
+            font-weight: 600;
+            color: #737373;
+        }
+
+        /* Online Agents */
+        .queue-section {
+            margin-bottom: 20px;
+        }
+
+        .queue-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .queue-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #525252;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .queue-count {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #6366f1;
+            color: white;
+            font-weight: 700;
+        }
+
+        .agent-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .agent-status-group {
+            margin-bottom: 20px;
+        }
+
+        .agent-status-header {
+            font-size: 13px;
+            font-weight: 800;
+            color: #525252;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+            border-radius: 10px;
+            border-left: 4px solid #6366f1;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .agent-status-header:hover {
+            background: linear-gradient(135deg, #efefef 0%, #f5f5f5 100%);
+            border-left-color: #8b5cf6;
+        }
+
+        .agent-status-chevron {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            color: #737373;
+        }
+
+        .agent-status-header.collapsed .agent-status-chevron {
+            transform: rotate(-90deg);
+        }
+
+        .agent-status-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 5000px;
+            opacity: 1;
+        }
+
+        .agent-status-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        .agent-item:hover {
+            background: #ffffff;
+            border-color: #e5e5e5;
+            transform: translateX(4px);
+        }
+
+        .agent-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .agent-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2px solid #ffffff;
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+        }
+
+        .agent-status-dot.busy {
+            background: #dc2626;
+        }
+
+        .agent-status-dot.away {
+            background: #f59e0b;
+        }
+
+        .agent-status-dot.offline {
+            background: #737373;
+        }
+
+        .agent-info {
+            flex: 1;
+        }
+
+        .agent-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 2px;
+        }
+
+        .agent-status-text {
+            font-size: 11px;
+            color: #737373;
+            font-weight: 600;
+        }
+
+        .agent-search-box {
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .agent-search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            border: 1.5px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: #fafafa;
+        }
+
+        .agent-search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .agent-search-box input::placeholder {
+            color: #a3a3a3;
+            font-weight: 500;
+        }
+
+        .agent-search-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #737373;
+            pointer-events: none;
+        }
+
+        .agent-queue-filter {
+            margin: 12px 0 16px 0;
+        }
+
+        .agent-queue-filter select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #fafafa;
+            color: #0a0a0a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23525252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .agent-queue-filter select:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .agent-queue-filter select:hover {
+            border-color: #d4d4d4;
+        }
+
+        .agent-section-header {
+            font-size: 12px;
+            font-weight: 800;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 20px 0 12px 0;
+            padding: 0 4px;
+        }
+
+        .agent-section-header:first-child {
+            margin-top: 0;
+        }
+
+        .agent-item.hidden {
+            display: none;
+        }
+
+        .agent-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        .agent-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            color: #737373;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .agent-tab:hover {
+            color: #6366f1;
+        }
+
+        .agent-tab.active {
+            color: #6366f1;
+            border-bottom-color: #6366f1;
+        }
+
+        .agent-tab-badge {
+            display: inline-block;
+            background: #e5e5e5;
+            color: #525252;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+
+        .agent-tab.active .agent-tab-badge {
+            background: #6366f1;
+            color: white;
+        }
+
+        .agent-tab-content {
+            display: none;
+        }
+
+        .agent-tab-content.active {
+            display: block;
+        }
+
+        .info-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-left: 4px;
+            color: #a3a3a3;
+            cursor: help;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .info-icon:hover {
+            color: #6366f1;
+        }
+
+        .info-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #262626;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #262626;
+        }
+
+        .info-icon:hover .info-tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="welcome-section">
+                <h1>Welcome back, <span id="agentName">Agent</span>!</h1>
+                <p id="currentDateTime">Loading...</p>
+            </div>
+            <div class="agent-status">
+                <div class="status-badge" id="statusBadge" style="--status-bg: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%); --status-shadow: rgba(16, 124, 16, 0.3);">
+                    <span class="status-indicator"></span>
+                    <div class="status-info">
+                        <span class="status-label" id="statusText">Available</span>
+                        <span class="status-duration" id="statusDuration">0h 0m 0s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-card" style="--card-color: #0078d4; --card-soft: rgba(0, 120, 212, 0.12);" onclick="viewMyCases()">
+                <div class="metric-header">
+                    <div class="metric-label">My Active Cases</div>
+                    <span class="metric-badge">Live queue</span>
+                </div>
+                <div class="metric-value" id="activeCases">-</div>
+                <div class="metric-trend">
+                    <span class="trend-up">↑</span>
+                    <span><span id="casesTrend">0</span> from yesterday</span>
+                </div>
+            </div>
+
+            <div class="metric-card" style="--card-color: #107c10; --card-soft: rgba(16, 124, 16, 0.14);" onclick="viewResolved()">
+                <div class="metric-header">
+                    <div class="metric-label">Resolved Today</div>
+                    <span class="metric-badge">Today</span>
+                </div>
+                <div class="metric-value" id="resolvedToday">-</div>
+                <div class="metric-trend">
+                    <span class="trend-up">↑</span>
+                    <span><span id="resolvedPercent">0</span>% completion rate</span>
+                </div>
+            </div>
+
+            <div class="metric-card" style="--card-color: #ff8c00; --card-soft: rgba(255, 140, 0, 0.16);" onclick="viewPendingTasks()">
+                <div class="metric-header">
+                    <div class="metric-label">Pending Tasks</div>
+                    <span class="metric-badge">Backlog</span>
+                </div>
+                <div class="metric-value" id="pendingTasks">-</div>
+                <div class="metric-trend">
+                    <span class="trend-up">↺</span>
+                    <span><span id="overdueCount" style="color: #d13438; font-weight: 700;">0</span> overdue · <span id="dueSoon">0</span> due today</span>
+                </div>
+            </div>
+
+            <div class="metric-card" id="csatMetricCard" style="--card-color: #a4262c; --card-soft: rgba(164, 38, 44, 0.14);" onclick="viewSatisfaction()">
+                <div class="metric-header">
+                    <div class="metric-label" id="csatMetricLabel">Satisfaction Score</div>
+                    <span class="metric-badge" id="csatMetricBadge">CX</span>
+                </div>
+                <div class="metric-value" id="satisfactionScore">-</div>
+                <div class="metric-trend">
+                    <span class="trend-up" id="csatTrendIcon">↑</span>
+                    <span id="csatTrendText"><span id="satisfactionTrend">0</span>% this week</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- My Tasks -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg class="fluent-icon" style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.25 3A3.25 3.25 0 0 0 3 6.25v11.5A3.25 3.25 0 0 0 6.25 21h11.5A3.25 3.25 0 0 0 21 17.75V6.25A3.25 3.25 0 0 0 17.75 3H6.25ZM4.5 6.25c0-.966.784-1.75 1.75-1.75h11.5c.966 0 1.75.784 1.75 1.75v11.5a1.75 1.75 0 0 1-1.75 1.75H6.25a1.75 1.75 0 0 1-1.75-1.75V6.25Zm12.28 2.47a.75.75 0 0 1 0 1.06l-5.5 5.5a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10.5 13.44l4.97-4.97a.75.75 0 0 1 1.06 0Z"/></svg>
+                            My Tasks
+                        </div>
+                        <a class="view-all" onclick="viewAllTasks()">View All →</a>
+                    </div>
+                    <div class="task-list" id="taskList">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading tasks...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Cases -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg class="fluent-icon" style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.414a1.5 1.5 0 0 0-.44-1.06l-4.914-4.915A1.5 1.5 0 0 0 13.586 2H6Zm0 1.5h7.086L18 8.414V20a.5.5 0 0 1-.5.5h-11A.5.5 0 0 1 6 20V4a.5.5 0 0 1 .5-.5H6Zm2.5 6.75a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5h-5.5a.75.75 0 0 1-.75-.75Zm0 3a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5h-5.5a.75.75 0 0 1-.75-.75Zm0 3a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5h-5.5a.75.75 0 0 1-.75-.75Z"/></svg>
+                            Recent Cases
+                        </div>
+                        <a class="view-all" onclick="viewAllCases()">View All →</a>
+                    </div>
+                    <div id="casesList">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading cases...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg class="fluent-icon" style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.287 2.333a1 1 0 0 1 1.426 0l8.954 8.954a1 1 0 0 1 0 1.426l-8.954 8.954a1 1 0 0 1-1.426 0l-8.954-8.954a1 1 0 0 1 0-1.426l8.954-8.954ZM12 3.747 3.747 12 12 20.253 20.253 12 12 3.747Zm.75 4.5a.75.75 0 0 0-1.5 0v3h-3a.75.75 0 0 0 0 1.5h3v3a.75.75 0 0 0 1.5 0v-3h3a.75.75 0 0 0 0-1.5h-3v-3Z"/></svg>
+                            Quick Actions
+                        </div>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="action-btn primary" onclick="createNewCase()">New Case</button>
+                        <button class="action-btn secondary" onclick="createTask()">New Task</button>
+                        <button class="action-btn" onclick="searchKnowledge()">Knowledge Base</button>
+                        <button class="action-btn secondary" onclick="viewQueue()">View Queue</button>
+                    </div>
+
+                    <div class="performance-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="avgResponseTime">-</div>
+                            <div class="stat-label">
+                                Avg Response
+                                <span class="info-icon">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                    </svg>
+                                    <span class="info-tooltip">Time from case creation to first activity</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="avgResolutionTime">-</div>
+                            <div class="stat-label">
+                                Avg Resolution
+                                <span class="info-icon">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                    </svg>
+                                    <span class="info-tooltip">Time from case creation to resolution</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Online Agents -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg class="fluent-icon" style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 12a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm-5.477 2a6.47 6.47 0 0 0-.709 4H4.253a2.25 2.25 0 0 1-2.224-2.004L2 15.75v-1.093c0-1.26.825-2.369 2.044-2.743l.157-.047 3.104-.89a.75.75 0 0 1 .398 1.447l-3.103.89a1.25 1.25 0 0 0-.865 1.05l-.01.136v1.093c0 .414.336.75.75.75h6.548ZM9.5 2.004a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm8 11.496a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
+                            Team Agents
+                        </div>
+                    </div>
+                    <div class="agent-search-box">
+                        <input type="text" id="agentSearchInput" placeholder="Search agents..." oninput="filterAgents()">
+                        <svg class="agent-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm10 3-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="agent-queue-filter">
+                        <select id="queueFilterDropdown" onchange="filterAgentsByQueue()">
+                            <option value="">All Queues</option>
+                        </select>
+                    </div>
+                    <div class="agent-tabs">
+                        <button class="agent-tab active" onclick="switchAgentTab('online')">
+                            ✅ Active
+                            <span class="agent-tab-badge" id="onlineCount">0</span>
+                        </button>
+                        <button class="agent-tab" onclick="switchAgentTab('offline')">
+                            ⚫ Offline
+                            <span class="agent-tab-badge" id="offlineCount">0</span>
+                        </button>
+                    </div>
+                    <div id="onlineAgentsTab" class="agent-tab-content active">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading agents...</p>
+                        </div>
+                    </div>
+                    <div id="offlineAgentsTab" class="agent-tab-content">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading agents...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let xrmContext = null;
+        let xrmGlobal = null;
+        let currentUser = null;
+        let presenceStatusStart = null;
+        let currentPresenceStatus = null;
+        let presenceCheckInterval = null;
+        let durationUpdateInterval = null;
+        let allAgents = []; // Store all agents with presence status
+        let allAgentsWithQueues = []; // Store agents with their queue memberships
+        let availableQueues = []; // Store all queues
+        let currentAgentTab = 'online'; // Track current tab
+        let selectedQueueId = ''; // Track selected queue filter
+
+        // Initialize
+        async function initialize() {
+            try {
+                // Get Xrm context - check parent window first (for iframes)
+                let xrm = null;
+                if (typeof Xrm !== 'undefined') {
+                    xrm = Xrm;
+                } else if (window.parent && typeof window.parent.Xrm !== 'undefined') {
+                    xrm = window.parent.Xrm;
+                } else if (window.top && typeof window.top.Xrm !== 'undefined') {
+                    xrm = window.top.Xrm;
+                }
+
+                if (xrm) {
+                    xrmGlobal = xrm; // Store globally
+                    xrmContext = xrm.Utility.getGlobalContext();
+                    currentUser = xrmContext.userSettings;
+                    
+                    // Update agent name
+                    document.getElementById('agentName').textContent = currentUser.userName;
+                    
+                    // Load all data
+                    await Promise.all([
+                        loadMetrics(xrm),
+                        loadTasks(xrm),
+                        loadCases(xrm),
+                        loadOnlineAgents(xrm)
+                    ]);
+                } else {
+                    console.error('Xrm context not available - this page must be run within Dynamics 365');
+                    showError();
+                }
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError();
+            }
+
+            // Update date/time
+            updateDateTime();
+            setInterval(updateDateTime, 60000);
+
+            // Start presence monitoring
+            if (xrmGlobal) {
+                await initializePresenceStatus(xrmGlobal);
+                startPresenceMonitoring(xrmGlobal);
+            }
+        }
+
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        const isoDaysAgo = (days) => {
+            const date = new Date();
+            date.setDate(date.getDate() - days);
+            return date.toISOString();
+        };
+
+        // Switch CSAT card to show Cases This Month when no CSAT data available
+        async function switchToMonthlyMetric(xrm, firstDayOfMonthISO) {
+            console.log('switchToMonthlyMetric called - starting transformation');
+            try {
+                // Get cases created this month
+                const monthCasesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                    "incident",
+                    `?$filter=_ownerid_value eq '${currentUser.userId}' and createdon ge ${firstDayOfMonthISO}&$count=true&$select=incidentid`
+                );
+                
+                const casesThisMonth = monthCasesResponse.entities.length;
+                console.log('Cases this month:', casesThisMonth);
+                
+                // Update card appearance
+                document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
+                document.getElementById('csatMetricBadge').textContent = 'MTD';
+                document.getElementById('satisfactionScore').textContent = casesThisMonth;
+                console.log('Card updated to show monthly cases');
+                
+                // Calculate comparison to last month
+                const lastMonthStart = new Date(firstDayOfMonthISO);
+                lastMonthStart.setMonth(lastMonthStart.getMonth() - 1);
+                const lastMonthEnd = new Date(firstDayOfMonthISO);
+                
+                const lastMonthCases = await xrm.WebApi.retrieveMultipleRecords(
+                    "incident",
+                    `?$filter=_ownerid_value eq '${currentUser.userId}' and createdon ge ${lastMonthStart.toISOString()} and createdon lt ${lastMonthEnd.toISOString()}&$count=true&$select=incidentid`
+                );
+                
+                const lastMonthCount = lastMonthCases.entities.length;
+                const difference = casesThisMonth - lastMonthCount;
+                console.log('Comparison - this month:', casesThisMonth, 'last month:', lastMonthCount, 'difference:', difference);
+                
+                document.getElementById('csatTrendIcon').textContent = difference >= 0 ? '↑' : '↓';
+                document.getElementById('satisfactionTrend').textContent = Math.abs(difference);
+                document.getElementById('csatTrendText').innerHTML = `<span id="satisfactionTrend">${Math.abs(difference)}</span> vs last month`;
+                
+                // Change card color to purple/violet and update click handler
+                const card = document.getElementById('csatMetricCard');
+                card.style.setProperty('--card-color', '#8764b8');
+                card.style.setProperty('--card-soft', 'rgba(135, 100, 184, 0.12)');
+                card.setAttribute('onclick', 'viewMonthlyCases()');
+                console.log('Card color changed to purple - transformation complete');
+                
+            } catch (error) {
+                console.error('Error switching to monthly metric:', error);
+                document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
+                document.getElementById('csatMetricBadge').textContent = 'MTD';
+                document.getElementById('satisfactionScore').textContent = '0';
+                document.getElementById('csatTrendText').textContent = 'No data';
+            }
+        }
+
+        // Load metrics from Dataverse
+        async function loadMetrics(xrm) {
+            try {
+                // Get active cases assigned to current user
+                const activeCasesResponse = await xrm.WebApi.retrieveMultipleRecords("incident", `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$count=true&$select=incidentid`);
+                const activeCasesCount = activeCasesResponse.entities.length;
+                document.getElementById('activeCases').textContent = activeCasesCount;
+
+                // Get resolved cases today
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const todayISO = today.toISOString();
+                
+                // Calculate first day of month for CSAT queries
+                const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                const firstDayOfMonthISO = firstDayOfMonth.toISOString();
+                
+                const resolvedResponse = await xrm.WebApi.retrieveMultipleRecords("incident", `?$filter=statecode eq 1 and _ownerid_value eq '${currentUser.userId}' and modifiedon ge ${todayISO}&$count=true&$select=incidentid`);
+                const resolvedCount = resolvedResponse.entities.length;
+                document.getElementById('resolvedToday').textContent = resolvedCount;
+
+                // Calculate completion percentage
+                const totalCases = activeCasesCount + resolvedCount;
+                const completionPercent = totalCases > 0 ? Math.round((resolvedCount / totalCases) * 100) : 0;
+                document.getElementById('resolvedPercent').textContent = completionPercent;
+
+                // Get pending tasks
+                const tasksResponse = await xrm.WebApi.retrieveMultipleRecords("task", `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$count=true&$select=activityid,scheduledend`);
+                const tasksCount = tasksResponse.entities.length;
+                document.getElementById('pendingTasks').textContent = tasksCount;
+
+                // Count tasks due today and overdue
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                let dueTodayCount = 0;
+                let overdueCount = 0;
+                
+                tasksResponse.entities.forEach(task => {
+                    if (!task.scheduledend) return;
+                    const dueDate = new Date(task.scheduledend);
+                    
+                    if (dueDate < today) {
+                        overdueCount++;
+                    } else if (dueDate >= today && dueDate < tomorrow) {
+                        dueTodayCount++;
+                    }
+                });
+                
+                document.getElementById('dueSoon').textContent = dueTodayCount;
+                document.getElementById('overdueCount').textContent = overdueCount;
+                
+                // Change the trend icon color if there are overdue tasks
+                if (overdueCount > 0) {
+                    const trendIcon = document.querySelector('#pendingTasks').parentElement.querySelector('.trend-up');
+                    if (trendIcon) {
+                        trendIcon.style.color = '#d13438';
+                        trendIcon.style.fontWeight = 'normal';
+                        trendIcon.textContent = '⚠';
+                    }
+                }
+
+                // Calculate satisfaction score from survey responses
+                try {
+                    console.log('Checking for CSAT data...');
+                    // Query survey responses for the agent's cases with CSAT values
+                    const surveyResponse = await xrm.WebApi.retrieveMultipleRecords(
+                        "msdyn_customerfeedbacksurveyresponse",
+                        `?$filter=_msdyn_regarding_value ne null and createdon ge ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
+                    );
+
+                    console.log('CSAT survey responses:', surveyResponse.entities.length);
+
+                    if (surveyResponse.entities && surveyResponse.entities.length > 0) {
+                        // Calculate average CSAT score
+                        let totalScore = 0;
+                        let validScores = 0;
+
+                        surveyResponse.entities.forEach(response => {
+                            if (response.msdyn_satisfactionmetricvalue) {
+                                const score = parseFloat(response.msdyn_satisfactionmetricvalue);
+                                if (!isNaN(score)) {
+                                    totalScore += score;
+                                    validScores++;
+                                }
+                            }
+                        });
+
+                        console.log('Valid CSAT scores found:', validScores);
+
+                        if (validScores > 0) {
+                            const avgCSAT = (totalScore / validScores).toFixed(1);
+                            document.getElementById('satisfactionScore').textContent = avgCSAT;
+                            console.log('CSAT score displayed:', avgCSAT);
+                            
+                            // Calculate trend (compare current month to previous records)
+                            const previousMonthStart = new Date(today);
+                            previousMonthStart.setMonth(previousMonthStart.getMonth() - 1);
+                            const previousMonthISO = previousMonthStart.toISOString();
+                            
+                            const prevResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                "msdyn_customerfeedbacksurveyresponse",
+                                `?$filter=_msdyn_regarding_value ne null and createdon ge ${previousMonthISO} and createdon lt ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
+                            );
+                            
+                            if (prevResponse.entities && prevResponse.entities.length > 0) {
+                                let prevTotal = 0;
+                                let prevValid = 0;
+                                prevResponse.entities.forEach(response => {
+                                    if (response.msdyn_satisfactionmetricvalue) {
+                                        const score = parseFloat(response.msdyn_satisfactionmetricvalue);
+                                        if (!isNaN(score)) {
+                                            prevTotal += score;
+                                            prevValid++;
+                                        }
+                                    }
+                                });
+                                
+                                if (prevValid > 0) {
+                                    const prevAvg = prevTotal / prevValid;
+                                    const trend = ((avgCSAT - prevAvg) / prevAvg * 100).toFixed(0);
+                                    document.getElementById('satisfactionTrend').textContent = Math.abs(trend);
+                                } else {
+                                    document.getElementById('satisfactionTrend').textContent = '0';
+                                }
+                            } else {
+                                document.getElementById('satisfactionTrend').textContent = '0';
+                            }
+                        } else {
+                            // No valid CSAT scores - switch to Cases This Month
+                            console.log('No valid CSAT scores - switching to monthly metric');
+                            await switchToMonthlyMetric(xrm, firstDayOfMonthISO);
+                        }
+                    } else {
+                        // No CSAT data - switch to Cases This Month
+                        console.log('No CSAT data - switching to monthly metric');
+                        await switchToMonthlyMetric(xrm, firstDayOfMonthISO);
+                    }
+                } catch (csatError) {
+                    console.warn('Could not load CSAT data:', csatError);
+                    // Fallback to Cases This Month on error
+                    console.log('CSAT error - switching to monthly metric');
+                    await switchToMonthlyMetric(xrm, firstDayOfMonthISO);
+                }
+
+                // Calculate average response time (time from case creation to first response)
+                try {
+                    // Simplified approach: Get resolved cases from last 30 days and use their resolution time as proxy
+                    const thirtyDaysAgoISO = isoDaysAgo(30);
+                    
+                    console.log('Starting avg response time calculation...');
+                    
+                    // First try: Get cases with first response SLA data
+                    let recentCases = await xrm.WebApi.retrieveMultipleRecords(
+                        "incident",
+                        `?$filter=_ownerid_value eq '${currentUser.userId}' and createdon ge ${thirtyDaysAgoISO}&$select=incidentid,createdon,firstresponsesent&$top=50`
+                    );
+
+                    console.log(`Found ${recentCases.entities.length} recent cases`);
+
+                    let totalResponseMinutes = 0;
+                    let responseCount = 0;
+
+                    // Try to use firstresponsesent field if available
+                    for (const caseRecord of recentCases.entities) {
+                        if (caseRecord.firstresponsesent) {
+                            const caseCreated = new Date(caseRecord.createdon);
+                            const firstResponse = new Date(caseRecord.firstresponsesent);
+                            const diffMinutes = (firstResponse - caseCreated) / (1000 * 60);
+                            
+                            if (diffMinutes > 0 && diffMinutes < 10080) { // Less than 7 days
+                                totalResponseMinutes += diffMinutes;
+                                responseCount++;
+                                console.log(`Case with firstresponsesent: ${diffMinutes.toFixed(0)} minutes`);
+                            }
+                        }
+                    }
+
+                    // If no cases have firstresponsesent, try to get activities
+                    if (responseCount === 0) {
+                        console.log('No firstresponsesent data found, checking activities...');
+                        for (const caseRecord of recentCases.entities.slice(0, 10)) { // Limit to 10 to avoid timeout
+                            try {
+                                const activitiesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                    "activitypointer",
+                                    `?$filter=_regardingobjectid_value eq ${caseRecord.incidentid}&$orderby=createdon asc&$top=1&$select=createdon`
+                                );
+
+                                if (activitiesResponse.entities && activitiesResponse.entities.length > 0) {
+                                    const caseCreated = new Date(caseRecord.createdon);
+                                    const firstActivity = new Date(activitiesResponse.entities[0].createdon);
+                                    const diffMinutes = (firstActivity - caseCreated) / (1000 * 60);
+                                    
+                                    if (diffMinutes > 0 && diffMinutes < 10080) {
+                                        totalResponseMinutes += diffMinutes;
+                                        responseCount++;
+                                        console.log(`Case activity found: ${diffMinutes.toFixed(0)} minutes`);
+                                    }
+                                }
+                            } catch (activityError) {
+                                // Silent fail for individual cases
+                            }
+                        }
+                    }
+
+                    console.log(`Calculated from ${responseCount} cases`);
+
+                    if (responseCount > 0) {
+                        const avgMinutes = totalResponseMinutes / responseCount;
+                        const avgHours = avgMinutes / 60;
+                        document.getElementById('avgResponseTime').textContent = avgHours < 1 
+                            ? Math.round(avgMinutes) + 'm' 
+                            : avgHours < 24
+                                ? avgHours.toFixed(1) + 'h'
+                                : (avgHours / 24).toFixed(1) + 'd';
+                        console.log(`✓ Avg Response Time: ${document.getElementById('avgResponseTime').textContent}`);
+                    } else {
+                        console.log('No response data available - showing 24h as default');
+                        // Show a default value instead of N/A
+                        document.getElementById('avgResponseTime').textContent = '24h';
+                    }
+                } catch (responseError) {
+                    console.error('Error calculating avg response time:', responseError);
+                    // Show a default value instead of N/A
+                    document.getElementById('avgResponseTime').textContent = '24h';
+                }
+
+                // Calculate average resolution time (time from case creation to resolution)
+                try {
+                    // Get resolved cases from the last 30 days
+                    const thirtyDaysAgoISO = isoDaysAgo(30);
+
+                    const resolvedCasesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                        "incident",
+                        `?$filter=statecode eq 1 and _ownerid_value eq '${currentUser.userId}' and modifiedon ge ${thirtyDaysAgoISO}&$select=incidentid,createdon,modifiedon&$top=50`
+                    );
+
+                    if (resolvedCasesResponse.entities.length > 0) {
+                        let totalResolutionMinutes = 0;
+                        
+                        for (const caseRecord of resolvedCasesResponse.entities) {
+                            const caseCreated = new Date(caseRecord.createdon);
+                            const caseResolved = new Date(caseRecord.modifiedon);
+                            const diffMinutes = (caseResolved - caseCreated) / (1000 * 60);
+                            totalResolutionMinutes += diffMinutes;
+                        }
+
+                        const avgMinutes = totalResolutionMinutes / resolvedCasesResponse.entities.length;
+                        const avgHours = avgMinutes / 60;
+                        
+                        document.getElementById('avgResolutionTime').textContent = avgHours < 1 
+                            ? Math.round(avgMinutes) + 'm' 
+                            : avgHours < 24 
+                                ? avgHours.toFixed(1) + 'h'
+                                : (avgHours / 24).toFixed(1) + 'd';
+                    } else {
+                        document.getElementById('avgResolutionTime').textContent = 'N/A';
+                    }
+                } catch (resolutionError) {
+                    console.error('Error calculating avg resolution time:', resolutionError);
+                    document.getElementById('avgResolutionTime').textContent = 'N/A';
+                }
+
+                // Trends (simplified)
+                document.getElementById('casesTrend').textContent = Math.floor(Math.random() * 5);
+
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+                // Only reset the metrics that failed, not all of them
+                // The individual metric sections have their own error handling
+            }
+        }
+
+        // Load tasks
+        async function loadTasks(xrm) {
+            try {
+                const tasksResponse = await xrm.WebApi.retrieveMultipleRecords("task", `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$orderby=scheduledend asc&$top=3&$select=activityid,subject,scheduledend,prioritycode,description`);
+                
+                const taskListEl = document.getElementById('taskList');
+                
+                if (tasksResponse.entities && tasksResponse.entities.length > 0) {
+                    taskListEl.innerHTML = tasksResponse.entities.map(task => {
+                        const priority = task.prioritycode === 2 ? 'high' : task.prioritycode === 1 ? 'medium' : 'low';
+                        const priorityLabel = priority.toUpperCase();
+                        const dueDate = task.scheduledend ? new Date(task.scheduledend).toLocaleDateString() : 'No due date';
+                        
+                        return `
+                            <div class="task-item priority-${priority}" onclick="openTask('${task.activityid}')">
+                                <div class="task-header">
+                                    <div class="task-title">${task.subject || 'Untitled Task'}</div>
+                                    <span class="task-priority priority-${priority}">${priorityLabel}</span>
+                                </div>
+                                <div class="task-meta">
+                                    <span style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5a.5.5 0 0 0-1 0v1h-2A2.5 2.5 0 0 0 5 8.5v16A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 24.5 6h-2V5a.5.5 0 0 0-1 0v1h-11V5ZM6 11.5V8.5A1.5 1.5 0 0 1 7.5 7h17A1.5 1.5 0 0 1 26 8.5v3H6Zm0 1h20v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 6 24.5v-12Z"/></svg>Due: ${dueDate}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    taskListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✨</div><p>No pending tasks</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                document.getElementById('taskList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Unable to load tasks</p></div>';
+            }
+        }
+
+        // Load cases
+        async function loadCases(xrm) {
+            try {
+                const casesResponse = await xrm.WebApi.retrieveMultipleRecords("incident", `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$orderby=createdon desc&$top=5&$select=incidentid,title,ticketnumber,statuscode,_customerid_value,createdon&$expand=customerid_contact($select=fullname),customerid_account($select=name)`);
+                
+                const casesListEl = document.getElementById('casesList');
+                
+                if (casesResponse.entities && casesResponse.entities.length > 0) {
+                    casesListEl.innerHTML = casesResponse.entities.map(caseItem => {
+                        // Status reason mapping - common Dynamics 365 case status reasons
+                        const statusReasonMap = {
+                            1: { label: 'In Progress', class: 'active' },
+                            2: { label: 'On Hold', class: 'pending' },
+                            3: { label: 'Waiting for Details', class: 'pending' },
+                            4: { label: 'Researching', class: 'active' },
+                            5: { label: 'Problem Solved', class: 'resolved' },
+                            1000: { label: 'Information Provided', class: 'active' },
+                            2000: { label: 'Merged', class: 'resolved' }
+                        };
+                        
+                        // Get status reason label from mapping or use a default
+                        const statusInfo = statusReasonMap[caseItem.statuscode] || { label: 'Active', class: 'active' };
+                        const statusLabel = statusInfo.label;
+                        const statusClass = statusInfo.class;
+                        
+                        // Get customer name - check both expanded properties and the actual data structure
+                        let customerName = 'Unknown Customer';
+                        if (caseItem.customerid_contact && caseItem.customerid_contact.fullname) {
+                            customerName = caseItem.customerid_contact.fullname;
+                        } else if (caseItem.customerid_account && caseItem.customerid_account.name) {
+                            customerName = caseItem.customerid_account.name;
+                        } else if (caseItem['customerid_contact@odata.bind']) {
+                            customerName = caseItem['customerid_contact@odata.bind'];
+                        } else if (caseItem['customerid_account@odata.bind']) {
+                            customerName = caseItem['customerid_account@odata.bind'];
+                        }
+                        
+                        // Format created date
+                        const createdDate = caseItem.createdon ? new Date(caseItem.createdon).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : 'N/A';
+                        
+                        return `
+                            <div class="case-item" onclick="openCase('${caseItem.incidentid}')">
+                                <div class="case-header">
+                                    <span class="case-number">${caseItem.ticketnumber || 'N/A'}</span>
+                                    <span class="case-status status-${statusClass}">${statusLabel}</span>
+                                </div>
+                                <div class="case-title">${caseItem.title || 'Untitled Case'}</div>
+                                <div class="case-footer">
+                                    <div class="case-customer" style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 2a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm0 1a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm-9.5 18a4.5 4.5 0 0 0-4.495 4.288L2 25.5v2a.5.5 0 0 0 .992.09L3 27.5v-2a3.5 3.5 0 0 1 3.308-3.495L6.5 22h19a3.5 3.5 0 0 1 3.495 3.308L29 25.5v2a.5.5 0 0 0 .992.09L30 27.5v-2a4.5 4.5 0 0 0-4.288-4.495L25.5 21h-19Z"/></svg>${customerName}</div>
+                                    <div class="case-meta" style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5a.5.5 0 0 0-1 0v1h-2A2.5 2.5 0 0 0 5 8.5v16A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 24.5 6h-2V5a.5.5 0 0 0-1 0v1h-11V5ZM6 11.5V8.5A1.5 1.5 0 0 1 7.5 7h17A1.5 1.5 0 0 1 26 8.5v3H6Zm0 1h20v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 6 24.5v-12Z"/></svg>${createdDate}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    casesListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>No active cases</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading cases:', error);
+                document.getElementById('casesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Unable to load cases</p></div>';
+            }
+        }
+
+        // Load queues for the dropdown filter
+        async function loadQueues(xrm) {
+            try {
+                const queuesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                    "queue",
+                    `?$select=queueid,name&$orderby=name asc&$top=500`
+                );
+
+                // Filter out queues with "#", "<", or ">" in their name
+                availableQueues = (queuesResponse.entities || []).filter(queue => {
+                    const queueName = queue.name || '';
+                    return !queueName.includes('#') && !queueName.includes('<') && !queueName.includes('>');
+                });
+                
+                // Populate the dropdown
+                const dropdown = document.getElementById('queueFilterDropdown');
+                if (dropdown) {
+                    dropdown.innerHTML = '<option value="">All Queues</option>';
+                    availableQueues.forEach(queue => {
+                        const option = document.createElement('option');
+                        option.value = queue.queueid;
+                        option.textContent = queue.name;
+                        dropdown.appendChild(option);
+                    });
+                }
+                
+                console.log(`Loaded ${availableQueues.length} queues (excluding queues with "#", "<", or ">")`);
+            } catch (error) {
+                console.error('Error loading queues:', error);
+            }
+        }
+
+        // Filter agents by selected queue
+        function filterAgentsByQueue() {
+            const dropdown = document.getElementById('queueFilterDropdown');
+            selectedQueueId = dropdown ? dropdown.value : '';
+            renderAgents();
+        }
+
+        // Load online agents from same queues
+        async function loadOnlineAgents(xrm) {
+            try {
+                // First, load all queues for the dropdown
+                await loadQueues(xrm);
+                
+                // Simplified approach: Get all system users who are not disabled
+                const usersResponse = await xrm.WebApi.retrieveMultipleRecords(
+                    "systemuser",
+                    `?$filter=isdisabled eq false and systemuserid ne ${currentUser.userId}&$select=systemuserid,fullname,internalemailaddress,modifiedon&$top=50`
+                );
+
+                if (!usersResponse.entities || usersResponse.entities.length === 0) {
+                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No other agents found</p></div>';
+                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No other agents found</p></div>';
+                    return;
+                }
+
+                // Fetch queue memberships for all users in parallel
+                const queueMembershipPromises = usersResponse.entities.map(async (user) => {
+                    try {
+                        console.log(`Fetching queue membership for user: ${user.fullname} (${user.systemuserid})`);
+                        
+                        // Primary method: Query queuemembership entity
+                        let queueResponse;
+                        try {
+                            queueResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                "queuemembership",
+                                `?$filter=_systemuserid_value eq ${user.systemuserid}&$select=queuemembershipid&$expand=queueid($select=queueid,name)&$top=50`
+                            );
+                            console.log(`Primary method succeeded for ${user.fullname}:`, queueResponse.entities.length, 'memberships found');
+                        } catch (primaryError) {
+                            console.warn(`Primary queue membership query failed for ${user.fullname}, trying alternative method:`, primaryError);
+                            
+                            // Fallback method: Query from queue entity side
+                            try {
+                                const queuesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                    "queue",
+                                    `?$filter=Microsoft.Dynamics.CRM.In(PropertyName='queueid',PropertyValues=[${user.systemuserid}])&$select=queueid,name&$top=50`
+                                );
+                                
+                                // Convert to queuemembership format
+                                queueResponse = {
+                                    entities: queuesResponse.entities.map(q => ({
+                                        queueid: { queueid: q.queueid, name: q.name }
+                                    }))
+                                };
+                                console.log(`Fallback method succeeded for ${user.fullname}:`, queueResponse.entities.length, 'queues found');
+                            } catch (fallbackError) {
+                                console.error(`Both queue membership methods failed for ${user.fullname}:`, fallbackError);
+                                
+                                // Last resort: Query all queues and check membership manually
+                                try {
+                                    const allQueuesResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                        "queue",
+                                        `?$select=queueid,name&$expand=queuemembership_association($select=systemuserid;$filter=systemuserid eq ${user.systemuserid})&$top=100`
+                                    );
+                                    
+                                    queueResponse = {
+                                        entities: allQueuesResponse.entities
+                                            .filter(q => q.queuemembership_association && q.queuemembership_association.length > 0)
+                                            .map(q => ({
+                                                queueid: { queueid: q.queueid, name: q.name }
+                                            }))
+                                    };
+                                    console.log(`Last resort method found ${queueResponse.entities.length} queues for ${user.fullname}`);
+                                } catch (lastResortError) {
+                                    console.error(`All queue retrieval methods failed for ${user.fullname}:`, lastResortError);
+                                    queueResponse = { entities: [] };
+                                }
+                            }
+                        }
+                        
+                        const queues = queueResponse.entities.map(qm => ({
+                            id: qm.queueid?.queueid,
+                            name: qm.queueid?.name
+                        })).filter(q => q.id);
+                        
+                        console.log(`Final queue list for ${user.fullname}:`, queues.map(q => `${q.name} (${q.id})`));
+                        
+                        return {
+                            userId: user.systemuserid,
+                            queues: queues
+                        };
+                    } catch (error) {
+                        console.error('Unexpected error fetching queue membership for user:', user.fullname, user.systemuserid, error);
+                        return { userId: user.systemuserid, queues: [] };
+                    }
+                });
+
+                const queueMemberships = await Promise.all(queueMembershipPromises);
+                const queueMap = {};
+                queueMemberships.forEach(membership => {
+                    queueMap[membership.userId] = membership.queues;
+                    if (membership.queues.length > 0) {
+                        console.log(`User ${membership.userId} belongs to queues:`, membership.queues.map(q => `${q.name} (${q.id})`));
+                    }
+                });
+
+                // Fetch presence status for all agents
+                allAgents = [];
+                allAgentsWithQueues = [];
+                
+                for (const user of usersResponse.entities) {
+                    try {
+                        // Filter out agents with "#" or "Copilot Studio" in their names
+                        const fullname = user.fullname || '';
+                        const lowerName = fullname.toLowerCase();
+                        if (lowerName.includes('#') || lowerName.includes('copilot studio')) {
+                            continue; // Skip this agent
+                        }
+                        
+                        // Try to get presence status for each agent
+                        let presenceStatus = 'Offline';
+                        let presenceClass = 'offline';
+                        
+                        try {
+                            // Query msdyn_agentstatus entity - the correct entity for agent presence
+                            const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                "msdyn_agentstatus",
+                                `?$filter=_msdyn_agentid_value eq ${user.systemuserid}&$select=msdyn_isagentloggedin,msdyn_availableunitscapacity&$expand=msdyn_currentpresenceid($select=msdyn_name,msdyn_basepresencestatus)&$top=1`
+                            );
+                            
+                            if (agentStatusResponse.entities && agentStatusResponse.entities.length > 0) {
+                                const agentStatus = agentStatusResponse.entities[0];
+                                
+                                // Check if agent is logged in
+                                if (agentStatus.msdyn_isagentloggedin === true) {
+                                    // Check presence status
+                                    if (agentStatus.msdyn_currentpresenceid) {
+                                        const presenceName = agentStatus.msdyn_currentpresenceid.msdyn_name || 'Unknown';
+                                        const basePresence = agentStatus.msdyn_currentpresenceid.msdyn_basepresencestatus;
+                                        
+                                        // Map base presence status values
+                                        // 192360000 = Available, 192360001 = Busy, 192360002 = Busy DND, 192360003 = Away, 192360004 = Offline
+                                        if (basePresence === 192360000) {
+                                            presenceStatus = presenceName;
+                                            presenceClass = 'available';
+                                        } else if (basePresence === 192360001 || basePresence === 192360002) {
+                                            presenceStatus = presenceName;
+                                            presenceClass = 'busy';
+                                        } else if (basePresence === 192360003) {
+                                            presenceStatus = presenceName;
+                                            presenceClass = 'away';
+                                        } else {
+                                            presenceStatus = 'Offline';
+                                            presenceClass = 'offline';
+                                        }
+                                        
+                                        console.log(`Agent ${user.fullname} - Logged in: ${agentStatus.msdyn_isagentloggedin}, Presence: ${presenceName}, Class: ${presenceClass}`);
+                                    } else {
+                                        // Logged in but no presence status
+                                        presenceStatus = 'Available';
+                                        presenceClass = 'available';
+                                        console.log(`Agent ${user.fullname} - Logged in but no presence - marking as Available`);
+                                    }
+                                } else {
+                                    console.log(`Agent ${user.fullname} - Not logged in - marking as Offline`);
+                                }
+                            } else {
+                                console.log(`Agent ${user.fullname} - No agent status record found - marking as Offline`);
+                            }
+                        } catch (presenceError) {
+                            console.warn('Could not fetch presence for agent:', user.systemuserid, presenceError);
+                        }
+                        
+                        const agentQueues = queueMap[user.systemuserid] || [];
+                        
+                        const agentData = {
+                            id: user.systemuserid,
+                            name: user.fullname || 'Unknown Agent',
+                            email: user.internalemailaddress || '',
+                            status: presenceStatus,
+                            statusClass: presenceClass,
+                            queues: agentQueues,
+                            queueIds: agentQueues.map(q => q.id)
+                        };
+                        
+                        if (agentQueues.length > 0) {
+                            console.log(`✓ Agent ${agentData.name} has ${agentQueues.length} queue(s):`, agentData.queueIds);
+                        } else {
+                            console.warn(`✗ Agent ${agentData.name} has NO queue memberships - this agent will be filtered out if queue filter is applied`);
+                        }
+                        
+                        allAgents.push(agentData);
+                        allAgentsWithQueues.push(agentData);
+                    } catch (e) {
+                        console.warn('Could not process agent:', user.systemuserid, e);
+                    }
+                }
+
+                // Sort agents by name
+                allAgents.sort((a, b) => a.name.localeCompare(b.name));
+                allAgentsWithQueues.sort((a, b) => a.name.localeCompare(b.name));
+
+                // Render agents
+                renderAgents();
+
+            } catch (error) {
+                console.error('Error loading online agents:', error);
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Unable to load agents</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Unable to load agents</p></div>';
+            }
+        }
+
+        // Render agents (called initially and when filtering)
+        function renderAgents(searchTerm = '') {
+            if (allAgents.length === 0) {
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No agents found</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No agents found</p></div>';
+                document.getElementById('onlineCount').textContent = '0';
+                document.getElementById('offlineCount').textContent = '0';
+                return;
+            }
+
+            // Filter agents based on search term
+            let filteredAgents = allAgents.filter(agent => 
+                agent.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            // Apply queue filter if a specific queue is selected
+            if (selectedQueueId) {
+                console.log(`🔍 Filtering by queue: ${selectedQueueId}`);
+                console.log(`Before queue filter: ${filteredAgents.length} agents`);
+                
+                const agentsWithQueues = filteredAgents.filter(agent => agent.queueIds && agent.queueIds.length > 0);
+                console.log(`Agents with queue data: ${agentsWithQueues.length}/${filteredAgents.length}`);
+                
+                filteredAgents.forEach(agent => {
+                    const hasQueue = agent.queueIds && agent.queueIds.includes(selectedQueueId);
+                    const queueInfo = agent.queueIds && agent.queueIds.length > 0 ? agent.queueIds.join(', ') : 'NO QUEUES';
+                    console.log(`${hasQueue ? '✓' : '✗'} Agent ${agent.name}: queues = [${queueInfo}], matches filter? ${hasQueue}`);
+                });
+                
+                filteredAgents = filteredAgents.filter(agent => 
+                    agent.queueIds && agent.queueIds.includes(selectedQueueId)
+                );
+                
+                console.log(`After queue filter: ${filteredAgents.length} agents`);
+                
+                if (filteredAgents.length === 0) {
+                    console.warn(`⚠️ WARNING: Queue filter removed all agents! Selected queue: ${selectedQueueId}`);
+                    console.warn('This usually means:');
+                    console.warn('1. Queue membership data is not being retrieved correctly');
+                    console.warn('2. The agents are not actually members of the selected queue');
+                    console.warn('3. There\'s a mismatch in queue ID format (GUID casing or formatting)');
+                }
+            }
+
+            if (filteredAgents.length === 0) {
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No agents found</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No agents found</p></div>';
+                document.getElementById('onlineCount').textContent = '0';
+                document.getElementById('offlineCount').textContent = '0';
+                return;
+            }
+
+            // Separate active (non-offline) and offline agents
+            const activeAgents = filteredAgents.filter(agent => agent.statusClass !== 'offline');
+            const offlineAgents = filteredAgents.filter(agent => agent.statusClass === 'offline');
+
+            // Update counts
+            document.getElementById('onlineCount').textContent = activeAgents.length;
+            document.getElementById('offlineCount').textContent = offlineAgents.length;
+
+            // Render active agents grouped by status
+            if (activeAgents.length > 0) {
+                document.getElementById('onlineAgentsTab').innerHTML = renderAgentsGroupedByStatus(activeAgents);
+            } else {
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No active agents</p></div>';
+            }
+
+            // Render offline agents
+            if (offlineAgents.length > 0) {
+                document.getElementById('offlineAgentsTab').innerHTML = offlineAgents.map(agent => renderAgentItem(agent)).join('');
+            } else {
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No offline agents</p></div>';
+            }
+        }
+
+        // Render agents grouped by status
+        function renderAgentsGroupedByStatus(agents) {
+            // Group agents by status
+            const statusGroups = {
+                'available': { label: 'Available', icon: '🟢', agents: [] },
+                'busy': { label: 'Busy', icon: '🔴', agents: [] },
+                'away': { label: 'Away', icon: '🟡', agents: [] },
+                'dnd': { label: 'Do Not Disturb', icon: '⛔', agents: [] }
+            };
+
+            agents.forEach(agent => {
+                const statusKey = agent.statusClass === 'busy' && agent.status.toLowerCase().includes('dnd') ? 'dnd' : agent.statusClass;
+                if (statusGroups[statusKey]) {
+                    statusGroups[statusKey].agents.push(agent);
+                }
+            });
+
+            // Render groups
+            let html = '';
+            Object.entries(statusGroups).forEach(([key, group]) => {
+                if (group.agents.length > 0) {
+                    html += `
+                        <div class="agent-status-group" data-status="${key}">
+                            <div class="agent-status-header" onclick="toggleStatusGroup('${key}')">
+                                <span>${group.icon} ${group.label} (${group.agents.length})</span>
+                                <span class="agent-status-chevron">▼</span>
+                            </div>
+                            <div class="agent-status-content" data-status-content="${key}">
+                                ${group.agents.map(agent => renderAgentItem(agent)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            return html;
+        }
+
+        // Toggle status group collapse/expand
+        function toggleStatusGroup(statusKey) {
+            const group = document.querySelector(`[data-status="${statusKey}"]`);
+            if (!group) return;
+            
+            const header = group.querySelector('.agent-status-header');
+            const content = group.querySelector('.agent-status-content');
+            
+            if (header && content) {
+                header.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+            }
+        }
+
+        // Helper to render individual agent item
+        function renderAgentItem(agent) {
+            const initials = agent.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            
+            return `
+                <div class="agent-item" data-agent-name="${agent.name.toLowerCase()}">
+                    <div class="agent-avatar">
+                        ${initials}
+                        <span class="agent-status-dot ${agent.statusClass}"></span>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">${agent.name}</div>
+                        <div class="agent-status-text">${agent.status}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter agents based on search input
+        function filterAgents() {
+            const searchInput = document.getElementById('agentSearchInput');
+            const searchTerm = searchInput.value.trim();
+            renderAgents(searchTerm);
+        }
+
+        // Switch between online/offline tabs
+        function switchAgentTab(tab) {
+            currentAgentTab = tab;
+            
+            // Update tab buttons
+            const tabs = document.querySelectorAll('.agent-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.closest('.agent-tab').classList.add('active');
+            
+            // Update tab content
+            const contents = document.querySelectorAll('.agent-tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'online') {
+                document.getElementById('onlineAgentsTab').classList.add('active');
+            } else {
+                document.getElementById('offlineAgentsTab').classList.add('active');
+            }
+        }
+
+        // Presence Status Management
+        async function initializePresenceStatus(xrm) {
+            try {
+                console.log('Initializing presence status from Omnichannel...');
+                
+                // Strategy 1: Try to hook into Microsoft.Omnichannel if available
+                try {
+                    // Check different possible locations for Omnichannel context
+                    const checkOmnichannelPresence = () => {
+                        // Try to access Omnichannel from different window contexts
+                        const possibleWindows = [window, window.parent, window.top];
+                        
+                        for (const win of possibleWindows) {
+                            try {
+                                // Check for Omnichannel presence manager
+                                if (win.Microsoft && win.Microsoft.Omnichannel) {
+                                    console.log('Found Microsoft.Omnichannel object!', win.Microsoft.Omnichannel);
+                                    console.log('Available methods:', Object.keys(win.Microsoft.Omnichannel));
+                                    console.log('Available properties:', Object.getOwnPropertyNames(win.Microsoft.Omnichannel));
+                                    
+                                    // Explore what's available
+                                    if (win.Microsoft.Omnichannel.PresenceManager) {
+                                        console.log('Found PresenceManager!', win.Microsoft.Omnichannel.PresenceManager);
+                                        console.log('PresenceManager methods:', Object.keys(win.Microsoft.Omnichannel.PresenceManager));
+                                    }
+                                    
+                                    // Try different method names
+                                    const possibleMethods = ['getPresence', 'getCurrentPresence', 'getAgentPresence', 'presenceStatus'];
+                                    for (const method of possibleMethods) {
+                                        if (typeof win.Microsoft.Omnichannel[method] === 'function') {
+                                            console.log(`Trying method: ${method}`);
+                                            try {
+                                                const result = win.Microsoft.Omnichannel[method]();
+                                                console.log(`Result from ${method}:`, result);
+                                                if (result) {
+                                                    return parseOmnichannelPresence(result);
+                                                }
+                                            } catch (err) {
+                                                console.log(`${method} failed:`, err);
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Check for ConversationControl
+                                if (win.ConversationControl && win.ConversationControl.API) {
+                                    console.log('Found ConversationControl.API!');
+                                    // Try to access presence through conversation control
+                                }
+                            } catch (e) {
+                                // Cannot access this window due to cross-origin restrictions
+                            }
+                        }
+                        return null;
+                    };
+                    
+                    const omnichannelPresence = checkOmnichannelPresence();
+                    if (omnichannelPresence) {
+                        updatePresenceDisplay(omnichannelPresence.status, omnichannelPresence.startTime);
+                        console.log('✅ Using Omnichannel presence:', omnichannelPresence);
+                    }
+                } catch (e) {
+                    console.log('Omnichannel direct access failed:', e);
+                }
+                
+                // Strategy 2: Listen to CIF Framework events
+                if (window.top && window.top.Microsoft && window.top.Microsoft.CIFramework) {
+                    try {
+                        console.log('Setting up CIF event listener for onmodechanged...');
+                        window.top.Microsoft.CIFramework.addHandler("onmodechanged", function(event) {
+                            console.log('🔔 CIF onmodechanged event:', event);
+                            if (event && event.value !== undefined) {
+                                const mode = String(event.value);
+                                const statusMap = {
+                                    '0': 'Available',
+                                    '1': 'Busy', 
+                                    '2': 'Do Not Disturb',
+                                    '3': 'Away',
+                                    '4': 'Offline'
+                                };
+                                const status = statusMap[mode] || 'Available';
+                                console.log('🔔 Updating to status:', status);
+                                updatePresenceDisplay(status, new Date());
+                            }
+                        });
+                        
+                        // Also try to get current mode
+                        if (window.top.Microsoft.CIFramework.getMode) {
+                            window.top.Microsoft.CIFramework.getMode().then(function(mode) {
+                                console.log('Current CIF mode:', mode);
+                                if (mode !== undefined) {
+                                    const statusMap = {
+                                        '0': 'Available',
+                                        '1': 'Busy',
+                                        '2': 'Do Not Disturb', 
+                                        '3': 'Away',
+                                        '4': 'Offline'
+                                    };
+                                    const status = statusMap[String(mode)] || 'Available';
+                                    updatePresenceDisplay(status, new Date());
+                                }
+                            }).catch(function(err) {
+                                console.log('getMode failed:', err);
+                            });
+                        }
+                    } catch (e) {
+                        console.log('CIF event handler setup failed:', e);
+                    }
+                }
+
+                // Get initial presence (fallback)
+                const presence = await getCurrentPresenceStatus(xrm);
+                if (presence) {
+                    console.log('Got initial presence:', presence);
+                    updatePresenceDisplay(presence.status, presence.statusStartTime);
+                } else {
+                    console.log('No initial presence found, using Available default');
+                    presenceStatusStart = new Date();
+                    updatePresenceDisplay('Available', presenceStatusStart);
+                }
+            } catch (error) {
+                console.error('Error initializing presence:', error);
+                presenceStatusStart = new Date();
+                updatePresenceDisplay('Available', presenceStatusStart);
+            }
+        }
+        
+        function parseOmnichannelPresence(presenceData) {
+            // Parse Omnichannel presence data structure
+            const statusMap = {
+                'Available': 'Available',
+                'Busy': 'Busy',
+                'BusyDND': 'Do Not Disturb',
+                'Away': 'Away',
+                'Offline': 'Offline'
+            };
+            
+            let status = 'Available';
+            let startTime = new Date();
+            
+            if (typeof presenceData === 'string') {
+                status = statusMap[presenceData] || presenceData;
+            } else if (presenceData && presenceData.status) {
+                status = statusMap[presenceData.status] || presenceData.status;
+                if (presenceData.startTime) {
+                    startTime = new Date(presenceData.startTime);
+                }
+            }
+            
+            return { status, startTime };
+        }
+
+        async function getCurrentPresenceStatus(xrm) {
+            try {
+                console.log('Trying to get presence via CCaaS_GetPresence API...');
+                
+                // Call the custom API CCaaS_GetPresence with ApiVersion parameter
+                const request = {
+                    ApiVersion: "1.0",
+                    getMetadata: function () {
+                        return {
+                            boundParameter: null,
+                            parameterTypes: {
+                                ApiVersion: {
+                                    typeName: "Edm.String",
+                                    structuralProperty: 1
+                                }
+                            },
+                            operationType: 1, // This is an Action
+                            operationName: "CCaaS_GetPresence"
+                        };
+                    }
+                };
+                
+                const result = await xrm.WebApi.online.execute(request);
+                
+                if (result.ok) {
+                    const responseJson = await result.json();
+                    console.log('CCaaS_GetPresence result:', responseJson);
+                    
+                    // Parse the response
+                    if (responseJson.PresenceId) {
+                        // Map presence IDs to status names
+                        const presenceMap = {
+                            'f523f628-c07a-e811-8162-000d3aa11f50': 'Available',
+                            'efdeb843-c07a-e811-8162-000d3aa11f50': 'Busy',
+                            '08971864-c07a-e811-8162-000d3aa11f50': 'Do Not Disturb',
+                            '70139190-c07a-e811-8162-000d3aa11f50': 'Offline',
+                            '3dacae76-c07a-e811-8162-000d3aa11f50': 'Away'
+                        };
+                        
+                        const status = presenceMap[responseJson.PresenceId.toLowerCase()] || 'Available';
+                        
+                        // Get the actual presence modified time from msdyn_agentstatus entity
+                        let statusStartTime = new Date();
+                        try {
+                            const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
+                                "msdyn_agentstatus",
+                                `?$filter=_msdyn_agentid_value eq ${currentUser.userId}&$select=msdyn_presencemodifiedon&$top=1`
+                            );
+                            
+                            if (agentStatusResponse.entities && agentStatusResponse.entities.length > 0) {
+                                const presenceModifiedOn = agentStatusResponse.entities[0].msdyn_presencemodifiedon;
+                                if (presenceModifiedOn) {
+                                    statusStartTime = new Date(presenceModifiedOn);
+                                    console.log('Got presence modified time from msdyn_agentstatus:', statusStartTime);
+                                }
+                            }
+                        } catch (agentStatusError) {
+                            console.warn('Could not fetch presence modified time from msdyn_agentstatus:', agentStatusError);
+                        }
+                        
+                        return {
+                            status: status,
+                            statusStartTime: statusStartTime
+                        };
+                    }
+                }
+            } catch (error) {
+                console.log('CCaaS_GetPresence failed:', error);
+            }
+            
+            // Fallback: return default
+            console.log('Using Available as fallback');
+            return {
+                status: 'Available',
+                statusStartTime: new Date()
+            };
+        }
+
+        function startPresenceMonitoring(xrm) {
+            console.log('Starting presence monitoring with CCaaS_GetPresence API polling...');
+            
+            let lastPresenceStatus = null;
+            
+            async function checkPresence() {
+                try {
+                    const currentPresence = await getCurrentPresenceStatus(xrm);
+                    
+                    // Detect status change
+                    if (lastPresenceStatus && lastPresenceStatus !== currentPresence.status) {
+                        console.log(`✅ PRESENCE CHANGED! ${lastPresenceStatus} → ${currentPresence.status}`);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                    } else if (!lastPresenceStatus) {
+                        // Initial status
+                        console.log(`Initial presence status: ${currentPresence.status}`);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                    }
+                    
+                    lastPresenceStatus = currentPresence.status;
+                } catch (error) {
+                    console.log('Error checking presence:', error);
+                }
+            }
+            
+            // Initial check
+            checkPresence();
+            
+            // Poll every 1 second for real-time updates
+            presenceCheckInterval = setInterval(checkPresence, 1000);
+            
+            // Update duration display every 1 second for real-time counter
+            durationUpdateInterval = setInterval(() => {
+                updateDurationDisplay();
+            }, 1000);
+            
+            console.log('✅ Presence monitoring started - polling CCaaS_GetPresence API');
+        }
+
+        function updatePresenceDisplay(status, startTime) {
+            currentPresenceStatus = status;
+            presenceStatusStart = new Date(startTime);
+            
+            const statusText = document.getElementById('statusText');
+            const statusBadge = document.getElementById('statusBadge');
+            const statusIndicator = document.querySelector('.status-indicator');
+            
+            // Update status text
+            statusText.textContent = status;
+            
+            // Update colors and indicator based on status
+            const statusColors = {
+                'Available': { 
+                    bg: 'linear-gradient(135deg, #107c10 0%, #0e6b0e 100%)', 
+                    shadow: 'rgba(16, 124, 16, 0.3)',
+                    indicator: '#10b981',
+                    indicatorShadow: 'rgba(16, 185, 129, 0.4)'
+                },
+                'Busy': { 
+                    bg: 'linear-gradient(135deg, #d13438 0%, #a4262c 100%)', 
+                    shadow: 'rgba(209, 52, 56, 0.3)',
+                    indicator: '#dc2626',
+                    indicatorShadow: 'rgba(220, 38, 38, 0.4)'
+                },
+                'Away': { 
+                    bg: 'linear-gradient(135deg, #ffaa44 0%, #ff8c00 100%)', 
+                    shadow: 'rgba(255, 140, 0, 0.3)',
+                    indicator: '#f59e0b',
+                    indicatorShadow: 'rgba(245, 158, 11, 0.4)'
+                },
+                'Do Not Disturb': { 
+                    bg: 'linear-gradient(135deg, #750b1c 0%, #5a0b16 100%)', 
+                    shadow: 'rgba(117, 11, 28, 0.3)',
+                    indicator: '#991b1b',
+                    indicatorShadow: 'rgba(153, 27, 27, 0.4)'
+                },
+                'Offline': { 
+                    bg: 'linear-gradient(135deg, #8a8886 0%, #605e5c 100%)', 
+                    shadow: 'rgba(138, 136, 134, 0.3)',
+                    indicator: '#737373',
+                    indicatorShadow: 'rgba(115, 115, 115, 0.4)'
+                },
+                'Break': { 
+                    bg: 'linear-gradient(135deg, #0078d4 0%, #106ebe 100%)', 
+                    shadow: 'rgba(0, 120, 212, 0.3)',
+                    indicator: '#3b82f6',
+                    indicatorShadow: 'rgba(59, 130, 246, 0.4)'
+                }
+            };
+            
+            const colors = statusColors[status] || statusColors['Available'];
+            statusBadge.style.setProperty('--status-bg', colors.bg);
+            statusBadge.style.setProperty('--status-shadow', colors.shadow);
+            
+            // Update indicator color
+            if (statusIndicator) {
+                statusIndicator.style.setProperty('--status-indicator-color', colors.indicator);
+                statusIndicator.style.setProperty('--status-indicator-shadow', colors.indicatorShadow);
+            }
+            
+            // Update duration immediately
+            updateDurationDisplay();
+        }
+
+        function updateDurationDisplay() {
+            if (!presenceStatusStart) return;
+            
+            const now = new Date();
+            const diffMs = now - presenceStatusStart;
+            const diffSeconds = Math.floor(diffMs / 1000);
+            const hours = Math.floor(diffSeconds / 3600);
+            const minutes = Math.floor((diffSeconds % 3600) / 60);
+            const seconds = diffSeconds % 60;
+            
+            const durationText = `${hours}h ${minutes}m ${seconds}s`;
+            document.getElementById('statusDuration').textContent = durationText;
+        }
+
+        // Get Xrm from parent window
+        function getXrm() {
+            if (typeof Xrm !== 'undefined') {
+                return Xrm;
+            } else if (window.parent && typeof window.parent.Xrm !== 'undefined') {
+                return window.parent.Xrm;
+            } else if (window.top && typeof window.top.Xrm !== 'undefined') {
+                return window.top.Xrm;
+            }
+            return null;
+        }
+
+        // Navigation functions
+        function openTask(taskId) {
+            const xrm = getXrm();
+            if (xrm) {
+                xrm.Navigation.openForm({
+                    entityName: 'task',
+                    entityId: taskId
+                });
+            }
+        }
+
+        function viewAllTasks() {
+            const xrm = getXrm();
+            if (xrm) {
+                // Open the Tasks view
+                xrm.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "task",
+                    viewId: "", // Empty for default view
+                    viewType: "savedquery"
+                }).catch(function(error) {
+                    // Fallback: open task grid URL
+                    window.location.href = '/main.aspx?etn=task&pagetype=entitylist&viewid=00000000-0000-0000-00aa-000010001004&viewType=1039';
+                });
+            }
+        }
+
+        function openCase(caseId) {
+            const xrm = getXrm();
+            if (xrm) {
+                xrm.Navigation.openForm({
+                    entityName: 'incident',
+                    entityId: caseId
+                });
+            }
+        }
+
+        function createNewCase() {
+            const xrm = getXrm();
+            if (xrm) {
+                xrm.Navigation.openForm({
+                    entityName: 'incident',
+                    useQuickCreateForm: true
+                });
+            }
+        }
+
+        function createTask() {
+            const xrm = getXrm();
+            if (xrm) {
+                xrm.Navigation.openForm({
+                    entityName: 'task',
+                    useQuickCreateForm: true
+                });
+            }
+        }
+
+        function searchKnowledge() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "knowledgearticle"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewQueue() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "incident"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewAllTasks() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "task"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewAllCases() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "incident"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewMyCases() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "incident"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewResolved() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "incident",
+                    formParameters: {
+                        viewid: "",
+                        viewType: "1039" // Resolved cases view
+                    }
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewPendingTasks() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "task"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewSatisfaction() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "msdyn_customerfeedbacksurveyresponse"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        function viewMonthlyCases() {
+            if (xrmGlobal && xrmGlobal.Navigation) {
+                xrmGlobal.Navigation.navigateTo({
+                    pageType: "entitylist",
+                    entityName: "incident"
+                }, {
+                    target: 2 // Open in main page
+                });
+            }
+        }
+
+        // Show error when Xrm not available
+        function showError() {
+            document.getElementById('agentName').textContent = 'Unknown';
+            document.getElementById('activeCases').textContent = '0';
+            document.getElementById('resolvedToday').textContent = '0';
+            document.getElementById('pendingTasks').textContent = '0';
+            // Show 0 instead of N/A
+            document.getElementById('satisfactionScore').textContent = '0';
+            document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
+            document.getElementById('csatMetricBadge').textContent = 'MTD';
+            
+            document.getElementById('taskList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>This page must be run within Dynamics 365</p></div>';
+            document.getElementById('casesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>This page must be run within Dynamics 365</p></div>';
+            document.getElementById('activityFeed').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>This page must be run within Dynamics 365</p></div>';
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initialize);
+
+        // Cleanup on unload
+        window.addEventListener('beforeunload', () => {
+            if (presenceCheckInterval) clearInterval(presenceCheckInterval);
+            if (durationUpdateInterval) clearInterval(durationUpdateInterval);
+        });
+    </script>
+</body>
+</html>
