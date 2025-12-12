@@ -2,7 +2,7 @@
 
 Say hello to the new Contact Center agent homepage! A fresh, modern alternative to the legacy Dynamics 365 view. This updated design brings together beautiful UI, clear information hierarchy, and powerful productivity tools. Agents can easily track active cases, view their tasks, respond faster with quick-action buttons, and monitor team status at a glance. It’s a smarter, cleaner, more intuitive workspace built for today’s Contact Center needs.
 
-
+![Agent Homepage Screenshot](screenshot.png)
 
 ## What You'll Find on Your Homepage
 
