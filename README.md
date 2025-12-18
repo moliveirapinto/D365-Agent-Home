@@ -4,7 +4,7 @@
 
 ## 🔄 Recent Updates (Agent Home Enhancements)
 
-I’ve introduced several improvements to make the Agent Home experience even more dynamic and user-friendly:
+I’ve introduced Data Refresh capabilities to the Agent Home Dashboard:
 
 ### ✅ **What's New**
 - **Header Layout Refresh**  
