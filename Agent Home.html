@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -119,13 +119,157 @@
             position: relative;
         }
 
+        /* =====================================================================
+           REFRESH CONTROLS SECTION - Styles for auto-refresh and manual refresh
+           ===================================================================== */
+        
+        /* Agent status container - holds both the refresh controls and status badge
+           Changed from horizontal (row) to vertical (column) layout to stack controls above status */
         .agent-status {
             display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
+            flex-direction: column; /* Stack controls vertically: refresh controls on top, status badge below */
+            align-items: flex-end;  /* Align all children to the right side */
+            gap: 6px;               /* Tight vertical spacing between controls and status badge */
             min-width: 280px;
-            padding: 40px 48px 40px 0;
+            padding: 0 48px 8px 0;  /* Reduced top padding so controls sit near the top of header */
+        }
+
+        /* Container for all refresh-related controls (dropdown, buttons) */
+        .agent-controls { 
+            text-align: right; 
+            margin-top: 0; 
+        }
+        
+        /* Flex row container for refresh controls - keeps all controls in a horizontal line */
+        .agent-controls .controls-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        /* Push the status badge to the bottom of the agent-status container
+           This creates visual separation between controls and presence status */
+        .agent-status .status-badge { 
+            margin-top: auto; 
+        }
+
+        /* Override refresh button positioning when inside agent-status (not inside welcome section) */
+        .agent-status .refresh-btn {
+            position: relative;
+            right: auto;
+            top: auto;
+            transform: none;
+            margin: 0;
+        }
+
+        /* Style the interval dropdown and custom input field when inside agent-status */
+        .agent-status .refresh-interval-control select,
+        .agent-status .refresh-interval-control input {
+            background: #ffffff;       /* White background for better visibility */
+            color: #0a0a0a;            /* Dark text for contrast */
+            border: 1px solid #e5e5e5; /* Subtle border */
+        }
+
+        /* Dropdown option styling */
+        .agent-status .refresh-interval-control select option {
+            background: #ffffff;
+            color: #0a0a0a;
+        }
+
+        /* Focus states for accessibility - clear visual indicator when focused */
+        .agent-status .refresh-interval-control select:focus,
+        .agent-status .refresh-interval-control input:focus {
+            outline: 2px solid rgba(0,0,0,0.08);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.03);
+        }
+
+        /* Manual refresh button - the button users click to immediately refresh data
+           Styled as a square icon button with rounded corners */
+        .refresh-manual-btn {
+            padding: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+            color: #0a0a0a;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.12s ease;
+            margin-left: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Size the SVG icon inside the manual refresh button */
+        .refresh-manual-btn svg { 
+            display: block; 
+            width: 18px; 
+            height: 18px; 
+        }
+        
+        /* Hover effect - slight lift and shadow for depth */
+        .refresh-manual-btn:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06); 
+        }
+        
+        /* Disabled state - reduced opacity and no interactive effects */
+        .refresh-manual-btn:disabled { 
+            opacity: 0.6; 
+            cursor: default; 
+            transform: none; 
+            box-shadow: none; 
+        }
+        
+        /* Focus state for keyboard navigation accessibility */
+        .refresh-manual-btn:focus { 
+            outline: 3px solid rgba(0,0,0,0.06); 
+        }
+
+        /* Main refresh button (the smaller icon button, typically hidden in this layout)
+           Positioned absolutely but overridden when inside .agent-status */
+        .refresh-btn {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .refresh-btn svg { 
+            display: block; 
+        }
+
+        /* Spin animation for refresh icon - applied when refresh is in progress
+           This provides visual feedback that data is being loaded */
+        .spin-animation {
+            animation: spin 0.8s ease-in-out;
+            transform-origin: center center;
+        }
+
+        /* Alternative: animate the SVG inside a container with .spin-animation class */
+        .spin-animation svg {
+            animation: spin 0.8s ease-in-out;
+            transform-origin: center center;
+        }
+
+        /* Keyframe animation for 360-degree rotation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .status-badge {
@@ -1116,13 +1260,79 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- =====================================================================
+             HEADER SECTION
+             Contains: Welcome message, Date/Time, Refresh Controls, Presence Status
+             ===================================================================== -->
         <div class="header">
+            <!-- Welcome Section - Left side of header with purple gradient background -->
             <div class="welcome-section">
                 <h1>Welcome back, <span id="agentName">Agent</span>!</h1>
                 <p id="currentDateTime">Loading...</p>
             </div>
+            
+            <!-- Agent Status Section - Right side of header -->
+            <!-- Contains: Refresh controls (top) and Presence status badge (bottom) -->
             <div class="agent-status">
+                
+                <!-- =====================================================================
+                     REFRESH CONTROLS CONTAINER
+                     Provides auto-refresh interval selection and manual refresh button
+                     ===================================================================== -->
+                <div class="agent-controls">
+                    <!-- Controls Row - Horizontal flex container for all refresh controls -->
+                    <div class="controls-row" style="display:flex; align-items:center; gap:8px;">
+                        
+                        <!-- Hidden Main Refresh Button (used for storing interval data attribute)
+                             This button stores the data-refreshintervall attribute used by the auto-refresh timer
+                             Default: 120000ms (2 minutes) -->
+                        <button class="refresh-btn" id="refreshBtn" data-refreshintervall="120000" 
+                                title="Refresh Dashboard" aria-label="Refresh Dashboard" style="display:none;">
+                            <svg id="refreshIcon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Refresh Interval Control Container -->
+                        <div class="refresh-interval-control" style="display:flex; align-items:center; gap:8px;">
+                            
+                            <!-- Label for the auto-refresh dropdown -->
+                            <label for="refreshIntervalSelect" style="font-size:12px; color:rgba(0,0,0,0.85);">
+                                Auto-refresh
+                            </label>
+                            
+                            <!-- Auto-Refresh Interval Dropdown
+                                 Options: 30 seconds, 1 minute, 2 minutes (default), 5 minutes, Custom
+                                 When changed, updates the data-refreshintervall attribute and resets the timer -->
+                            <select id="refreshIntervalSelect" style="font-size:12px; padding:6px; border-radius:6px;">
+                                <option value="30000">30s</option>
+                                <option value="60000">1m</option>
+                                <option value="120000" selected>2m</option>  <!-- Default: 2 minutes -->
+                                <option value="300000">5m</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            
+                            <!-- Custom Interval Input Field
+                                 Hidden by default, shown when "Custom" is selected
+                                 Allows users to enter a custom refresh interval in seconds -->
+                            <input id="refreshIntervalCustom" type="number" min="5" placeholder="sec" 
+                                   style="width:64px; padding:6px; border-radius:6px; display:none;" />
+                            
+                            <!-- Manual Refresh Button
+                                 Click to immediately refresh all dashboard data
+                                 Shows spinning animation while refresh is in progress -->
+                            <button id="refreshManualBtn" class="refresh-manual-btn" 
+                                    title="Refresh Dashboard" aria-label="Refresh Dashboard">
+                                <svg id="refreshManualIcon" viewBox="0 0 24 24" width="18" height="18" 
+                                     aria-hidden="true" focusable="false">
+                                    <path fill="currentColor" d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Presence Status Badge - Shows current agent availability status -->
                 <div class="status-badge" id="statusBadge" style="--status-bg: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%); --status-shadow: rgba(16, 124, 16, 0.3);">
                     <span class="status-indicator"></span>
                     <div class="status-info">
@@ -2778,13 +2988,359 @@
             document.getElementById('activityFeed').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>This page must be run within Dynamics 365</p></div>';
         }
 
+        /* =====================================================================
+           REFRESH FUNCTIONALITY JAVASCRIPT
+           This section handles:
+           - Auto-refresh timer management
+           - Manual refresh button clicks
+           - Toast notifications for refresh status
+           - Saving/loading user's preferred refresh interval
+           ===================================================================== */
+
+        // -----------------------------------------------------------------------
+        // AUTO-REFRESH TIMER SETUP
+        // Read the initial auto-refresh interval from the button's data attribute
+        // Default: 120000 milliseconds (2 minutes)
+        // -----------------------------------------------------------------------
+        const refreshBtnEl = document.getElementById('refreshBtn');
+        const refreshIntervalMs = (refreshBtnEl && parseInt(refreshBtnEl.getAttribute('data-refreshintervall'), 10)) || 120000;
+
+        // Create the auto-refresh timer that calls refreshDashboard at the specified interval
+        // This timer runs continuously in the background to keep data fresh
+        let autoRefreshTimer = setInterval(() => {
+            // Check if refreshDashboard function exists before calling
+            // (it may not be defined yet during initial page load)
+            if (typeof refreshDashboard !== 'undefined') refreshDashboard();
+        }, refreshIntervalMs);
+
+        // -----------------------------------------------------------------------
+        // RESET AUTO-REFRESH INTERVAL
+        // Call this function whenever the refresh interval is changed by the user
+        // It clears the existing timer and creates a new one with the updated interval
+        // -----------------------------------------------------------------------
+        function resetAutoRefreshInterval() {
+            const btnEl = document.getElementById('refreshBtn');
+            // Read the current interval from the button's data attribute
+            const ms = (btnEl && parseInt(btnEl.getAttribute('data-refreshintervall'), 10)) || 120000;
+            
+            // Clear the existing timer to prevent multiple timers running
+            clearInterval(autoRefreshTimer);
+            
+            // Create a new timer with the updated interval
+            autoRefreshTimer = setInterval(() => {
+                if (typeof refreshDashboard !== 'undefined') refreshDashboard();
+            }, ms);
+        }
+
+        // -----------------------------------------------------------------------
+        // TOAST NOTIFICATION HELPER
+        // Displays a small notification message next to the refresh button
+        // Used to provide feedback when refresh completes successfully
+        // Parameters:
+        //   - message: The text to display
+        //   - success: true for green success toast, false for red error toast
+        //   - duration: How long to show the toast (milliseconds)
+        // -----------------------------------------------------------------------
+        function showToast(message, success = true, duration = 2000) {
+            try {
+                // Find the controls row to position the toast relative to it
+                const controlsRow = document.querySelector('.controls-row');
+                const container = document.querySelector('.agent-controls') || document.body;
+                
+                // Create the toast element
+                const toast = document.createElement('div');
+                toast.className = 'refresh-toast ' + (success ? 'success' : 'error');
+                toast.textContent = message;
+                
+                // Position the toast to the right of the refresh controls
+                toast.style.position = 'absolute';
+                toast.style.left = 'calc(100% + 12px)'; // 12px gap to the right of the container
+                toast.style.top = '50%';
+                toast.style.transform = 'translateY(-50%)';
+                toast.style.padding = '8px 12px';
+                toast.style.borderRadius = '8px';
+                // Green for success, red for error
+                toast.style.background = success ? 'rgba(0,128,64,0.95)' : 'rgba(196, 40, 28, 0.95)';
+                toast.style.color = 'white';
+                toast.style.fontWeight = '600';
+                toast.style.zIndex = '2000';
+                toast.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
+                toast.style.whiteSpace = 'nowrap'; // Prevent text wrapping
+                
+                // Append to the controls row (requires position: relative on parent)
+                if (controlsRow) {
+                    controlsRow.style.position = 'relative';
+                    controlsRow.appendChild(toast);
+                } else {
+                    container.appendChild(toast);
+                }
+                
+                // Auto-remove the toast after the specified duration
+                setTimeout(() => {
+                    try { toast.remove(); } catch(e){}
+                }, duration);
+            } catch (e) { 
+                console.warn('showToast failed', e); 
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // REFRESH INTERVAL UI INITIALIZATION
+        // Sets up the dropdown and custom input field functionality
+        // Runs when the DOM is fully loaded
+        // -----------------------------------------------------------------------
+        window.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('refreshIntervalSelect');
+            const custom = document.getElementById('refreshIntervalCustom');
+            const btn = document.getElementById('refreshBtn');
+            
+            // Exit if required elements don't exist
+            if (!select || !custom || !btn) return;
+
+            // -----------------------------------------------------------------------
+            // RESTORE SAVED PREFERENCES
+            // Check localStorage for a previously saved refresh interval
+            // This persists the user's preference across page reloads
+            // -----------------------------------------------------------------------
+            const savedMs = parseInt(localStorage.getItem('dashboardRefreshIntervalMs') || '0', 10);
+            
+            if (savedMs && [30000, 60000, 120000, 300000].includes(savedMs)) {
+                // Saved value matches one of the preset options
+                select.value = String(savedMs);
+                btn.setAttribute('data-refreshintervall', String(savedMs));
+                resetAutoRefreshInterval();
+            } else if (savedMs && savedMs > 0) {
+                // Saved value is a custom interval - show the custom input
+                select.value = 'custom';
+                custom.style.display = 'inline-block';
+                custom.value = String(Math.round(savedMs / 1000)); // Convert ms to seconds
+                btn.setAttribute('data-refreshintervall', String(savedMs));
+                resetAutoRefreshInterval();
+            } else {
+                // No saved value - use the default from the button's attribute
+                const attrMs = parseInt(btn.getAttribute('data-refreshintervall') || '120000', 10);
+                select.value = String(attrMs);
+            }
+
+            // -----------------------------------------------------------------------
+            // DROPDOWN CHANGE HANDLER
+            // When user selects a different interval from the dropdown
+            // -----------------------------------------------------------------------
+            select.addEventListener('change', (ev) => {
+                const val = select.value;
+                
+                if (val === 'custom') {
+                    // Show the custom input field and focus it
+                    custom.style.display = 'inline-block';
+                    custom.focus();
+                } else {
+                    // Hide the custom input and update the interval
+                    custom.style.display = 'none';
+                    const ms = parseInt(val, 10) || 120000;
+                    btn.setAttribute('data-refreshintervall', String(ms));
+                    // Save to localStorage for persistence
+                    localStorage.setItem('dashboardRefreshIntervalMs', String(ms));
+                    // Reset the timer with the new interval
+                    resetAutoRefreshInterval();
+                }
+            });
+
+            // -----------------------------------------------------------------------
+            // CUSTOM INPUT BLUR HANDLER
+            // When user finishes entering a custom interval (clicks away from input)
+            // -----------------------------------------------------------------------
+            custom.addEventListener('blur', () => {
+                const seconds = parseInt(custom.value, 10);
+                
+                if (!isNaN(seconds) && seconds > 0) {
+                    // Convert seconds to milliseconds
+                    const ms = seconds * 1000;
+                    btn.setAttribute('data-refreshintervall', String(ms));
+                    // Save to localStorage for persistence
+                    localStorage.setItem('dashboardRefreshIntervalMs', String(ms));
+                    // Reset the timer with the new interval
+                    resetAutoRefreshInterval();
+                }
+            });
+        });
+
+        // -----------------------------------------------------------------------
+        // EXPOSE HELPER FUNCTIONS GLOBALLY
+        // Makes these functions available to other scripts and the console
+        // -----------------------------------------------------------------------
+        window.resetAutoRefreshInterval = resetAutoRefreshInterval;
+        window.showToast = showToast;
+
+        // -----------------------------------------------------------------------
+        // REFRESH DASHBOARD FUNCTION
+        // Core function that refreshes all dashboard data
+        // Can be triggered by:
+        //   - Auto-refresh timer
+        //   - Manual refresh button click
+        //   - Initial page load
+        // Parameters:
+        //   - triggerBtn: Optional - the button that triggered the refresh (for animation)
+        // -----------------------------------------------------------------------
+        async function refreshDashboard(triggerBtn) {
+            // Get a fresh Xrm instance each time (don't rely on cached value)
+            // This handles cases where the context might change
+            const xrm = window.xrmGlobal || getXrm();
+            
+            // Exit silently if no Xrm context (page not running in Dynamics 365)
+            if (!xrm) {
+                console.warn('No Xrm context found - cannot refresh Dataverse data.');
+                return;
+            }
+
+            // Ensure currentUser is available for queries that filter by owner
+            if (!window.currentUser) {
+                const xrmContext = xrm.Utility.getGlobalContext();
+                window.currentUser = xrmContext.userSettings;
+            }
+
+            // Determine which button triggered the refresh
+            // If called without a trigger button (e.g., from timer), use the hidden main button
+            const mainBtn = document.getElementById('refreshBtn');
+            const btn = triggerBtn || mainBtn;
+            if (!btn) return;
+
+            // -----------------------------------------------------------------------
+            // ANIMATE REFRESH ICON
+            // Find the SVG icon and add spin animation to show refresh is in progress
+            // -----------------------------------------------------------------------
+            const icon = btn.querySelector('svg#refreshManualIcon') || btn.querySelector('svg#refreshIcon') || btn.querySelector('svg');
+            const mainIcon = mainBtn ? (mainBtn.querySelector('svg#refreshIcon') || mainBtn.querySelector('svg')) : null;
+
+            // Restart the spin animation (remove and re-add class with reflow)
+            if (icon) {
+                icon.classList.remove('spin-animation');
+                void icon.offsetWidth; // Force reflow to restart animation
+                icon.classList.add('spin-animation');
+            }
+            
+            // If manual button was clicked, also animate the main icon for consistency
+            if (btn !== mainBtn && mainIcon) {
+                mainIcon.classList.remove('spin-animation');
+                void mainIcon.offsetWidth;
+                mainIcon.classList.add('spin-animation');
+            }
+
+            // -----------------------------------------------------------------------
+            // DISABLE BUTTONS DURING REFRESH
+            // Prevent multiple simultaneous refreshes
+            // -----------------------------------------------------------------------
+            const manualBtns = document.querySelectorAll('.refresh-manual-btn');
+            if (mainBtn) { 
+                mainBtn.disabled = true; 
+                mainBtn.setAttribute('aria-disabled', 'true'); 
+            }
+            manualBtns.forEach(b => { 
+                b.disabled = true; 
+                b.setAttribute('aria-disabled', 'true'); 
+            });
+
+            // -----------------------------------------------------------------------
+            // EXECUTE REFRESH
+            // Load all data sections in parallel using Promise.allSettled
+            // This ensures all sections complete even if one fails
+            // -----------------------------------------------------------------------
+            try {
+                console.log('refreshDashboard: starting refresh', { xrmAvailable: !!xrm });
+                
+                // Refresh all data sections in parallel
+                const results = await Promise.allSettled([
+                    loadMetrics(xrm),      // KPI cards (active cases, resolved, pending, etc.)
+                    loadTasks(xrm),        // My Tasks list
+                    loadCases(xrm),        // Recent Cases list
+                    loadOnlineAgents(xrm)  // Team Agents panel
+                ]);
+                
+                console.log('refreshDashboard: results', results);
+
+                // Check if any promises were rejected (failed)
+                const rejected = results.filter(r => r.status === 'rejected');
+                
+                if (rejected.length === 0) {
+                    // All sections refreshed successfully - show green toast
+                    showToast('Refreshed', true);
+                } else {
+                    // Some sections failed - log errors but don't show error toast
+                    // (keeping UI clean per user preference)
+                    console.error('refreshDashboard: some refresh operations failed', rejected);
+                    // Uncomment below to show error toast:
+                    // showToast('Refresh completed with errors', false);
+                }
+            } catch (err) {
+                // Unexpected error - log but don't show error toast
+                console.error('Error during refresh:', err);
+                // Uncomment below to show error toast:
+                // showToast('Refresh failed', false);
+            } finally {
+                // -----------------------------------------------------------------------
+                // CLEANUP
+                // Always runs - remove animation and re-enable buttons
+                // -----------------------------------------------------------------------
+                if (icon) icon.classList.remove('spin-animation');
+                if (mainIcon) mainIcon.classList.remove('spin-animation');
+                if (mainBtn) { 
+                    mainBtn.disabled = false; 
+                    mainBtn.removeAttribute('aria-disabled'); 
+                }
+                manualBtns.forEach(b => { 
+                    b.disabled = false; 
+                    b.removeAttribute('aria-disabled'); 
+                });
+            }
+        }
+        
+        // Make refreshDashboard available globally
+        window.refreshDashboard = refreshDashboard;
+
+        // -----------------------------------------------------------------------
+        // ATTACH CLICK HANDLERS FOR REFRESH BUTTONS
+        // Using addEventListener instead of onclick attributes for better CSP compatibility
+        // -----------------------------------------------------------------------
+        window.addEventListener('load', () => {
+            try {
+                const manual = document.getElementById('refreshManualBtn');
+                const main = document.getElementById('refreshBtn');
+                
+                // Manual refresh button - the visible button users click
+                if (manual) {
+                    manual.addEventListener('click', (e) => { 
+                        console.log('refreshManualBtn clicked'); 
+                        refreshDashboard(manual); 
+                    });
+                }
+                
+                // Main refresh button (hidden, but keeping handler for completeness)
+                if (main) {
+                    main.addEventListener('click', (e) => { 
+                        console.log('refreshBtn clicked'); 
+                        refreshDashboard(main); 
+                    });
+                }
+            } catch (e) { 
+                console.warn('Failed to attach click handlers for refresh buttons', e); 
+            }
+        });
+
+        // -----------------------------------------------------------------------
+        // INITIAL REFRESH ON PAGE LOAD
+        // Automatically refresh data when the page first loads
+        // -----------------------------------------------------------------------
+        // Note: This is commented out because initialize() already loads data
+        // Uncomment if you want an additional refresh after initialize completes:
+        // refreshDashboard();
+
         // Initialize on load
         window.addEventListener('load', initialize);
 
-        // Cleanup on unload
+        // Cleanup on unload - clear all intervals to prevent memory leaks
         window.addEventListener('beforeunload', () => {
             if (presenceCheckInterval) clearInterval(presenceCheckInterval);
             if (durationUpdateInterval) clearInterval(durationUpdateInterval);
+            if (autoRefreshTimer) clearInterval(autoRefreshTimer); // Also clear refresh timer
         });
     </script>
 </body>
