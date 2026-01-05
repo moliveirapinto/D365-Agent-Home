@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Conversations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 0;
+            color: #0a0a0a;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            padding: 0 48px 48px 48px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px 24px 24px;
+            }
+        }
+
+        /* Header Section */
+        .header {
+            background: #ffffff;
+            padding: 0;
+            margin: 0 0 32px 0;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 32px;
+            position: relative;
+            z-index: 1;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .welcome-section {
+            flex: 1;
+            min-width: 0;
+            padding: 40px 48px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+            position: relative;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .welcome-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+            position: relative;
+        }
+
+        .welcome-section p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 40px 48px 40px 0;
+        }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            background: #0a0a0a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 2px solid #e5e5e5;
+            padding: 24px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            border-color: var(--card-color, #6366f1);
+        }
+
+        .stat-card .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--card-color, #0a0a0a);
+            letter-spacing: -1px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: #ffffff;
+            border: 2px solid #e5e5e5;
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 180px;
+        }
+
+        .filter-group label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #737373;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #fafafa;
+            color: #0a0a0a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            background: #f5f5f5;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 700;
+            color: #737373;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background: #ffffff;
+            color: #6366f1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-tab:hover:not(.active) {
+            color: #0a0a0a;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #fafafa;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #737373;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Conversations Table */
+        .conversations-card {
+            background: #ffffff;
+            border: 2px solid #e5e5e5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .conversations-header {
+            padding: 24px;
+            border-bottom: 2px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .conversations-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0a0a0a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .conversations-count {
+            background: #6366f1;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #fafafa;
+        }
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #737373;
+            border-bottom: 2px solid #f5f5f5;
+            white-space: nowrap;
+        }
+
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th.sortable:hover {
+            color: #6366f1;
+        }
+
+        th .sort-icon {
+            margin-left: 6px;
+            opacity: 0.5;
+        }
+
+        th.sorted .sort-icon {
+            opacity: 1;
+            color: #6366f1;
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #0a0a0a;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+        }
+
+        tr {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .conversation-id {
+            font-weight: 700;
+            color: #6366f1;
+            font-size: 13px;
+        }
+
+        .customer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .customer-name {
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+
+        .customer-channel {
+            font-size: 12px;
+            color: #737373;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .agent-name {
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.status-active {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 2px solid #dbeafe;
+        }
+
+        .status-badge.status-open {
+            background: #fef3c7;
+            color: #d97706;
+            border: 2px solid #fde68a;
+        }
+
+        .status-badge.status-waiting {
+            background: #fef3c7;
+            color: #d97706;
+            border: 2px solid #fde68a;
+        }
+
+        .status-badge.status-wrapup {
+            background: #f3e8ff;
+            color: #9333ea;
+            border: 2px solid #e9d5ff;
+        }
+
+        .status-badge.status-closed {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 2px solid #bbf7d0;
+        }
+
+        .channel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #f5f5f5;
+            color: #525252;
+        }
+
+        .channel-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .duration-cell {
+            font-weight: 600;
+            color: #525252;
+        }
+
+        .date-cell {
+            font-size: 13px;
+            color: #737373;
+        }
+
+        .date-cell .time {
+            font-weight: 600;
+            color: #0a0a0a;
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 20px 24px;
+            border-top: 2px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: #737373;
+            font-weight: 600;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .page-btn {
+            padding: 8px 16px;
+            border: 2px solid #e5e5e5;
+            background: #ffffff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        /* Loading & Empty States */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #737373;
+        }
+
+        .spinner {
+            border: 3px solid #f5f5f5;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #737373;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-weight: 600;
+            color: #737373;
+            font-size: 16px;
+        }
+
+        /* Queue Badge */
+        .queue-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #f0f9ff;
+            color: #0369a1;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Sentiment Badge */
+        .sentiment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .sentiment-badge.positive {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .sentiment-badge.neutral {
+            background: #f5f5f5;
+            color: #737373;
+        }
+
+        .sentiment-badge.negative {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                min-width: auto;
+            }
+            
+            .search-box {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="welcome-section">
+                <h1>💬 Conversation Records</h1>
+                <p>View and manage all customer conversations across channels</p>
+            </div>
+            <div class="header-actions">
+                <button class="refresh-btn" onclick="loadConversations()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card" style="--card-color: #2563eb;" onclick="filterByStatus('active')">
+                <div class="stat-value" id="activeCount">-</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card" style="--card-color: #d97706;" onclick="filterByStatus('waiting')">
+                <div class="stat-value" id="waitingCount">-</div>
+                <div class="stat-label">Waiting</div>
+            </div>
+            <div class="stat-card" style="--card-color: #9333ea;" onclick="filterByStatus('wrapup')">
+                <div class="stat-value" id="wrapupCount">-</div>
+                <div class="stat-label">Wrap-up</div>
+            </div>
+            <div class="stat-card" style="--card-color: #16a34a;" onclick="filterByStatus('closed')">
+                <div class="stat-value" id="closedCount">-</div>
+                <div class="stat-label">Closed Today</div>
+            </div>
+            <div class="stat-card" style="--card-color: #0a0a0a;" onclick="filterByStatus('all')">
+                <div class="stat-value" id="totalCount">-</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="setStatusFilter('all')">All</button>
+                <button class="filter-tab" data-filter="ongoing" onclick="setStatusFilter('ongoing')">Ongoing</button>
+                <button class="filter-tab" data-filter="closed" onclick="setStatusFilter('closed')">Closed</button>
+            </div>
+            
+            <div class="filter-group">
+                <label>Channel</label>
+                <select id="channelFilter" onchange="applyFilters()">
+                    <option value="">All Channels</option>
+                    <option value="192350000">Live Chat</option>
+                    <option value="192350001">Voice</option>
+                    <option value="192350002">Video</option>
+                    <option value="192360000">Teams</option>
+                    <option value="192330000">SMS</option>
+                    <option value="192340000">Facebook</option>
+                    <option value="192350003">Twitter</option>
+                    <option value="192370000">WhatsApp</option>
+                    <option value="192380000">LINE</option>
+                    <option value="192390000">WeChat</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Queue</label>
+                <select id="queueFilter" onchange="applyFilters()">
+                    <option value="">All Queues</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Agent</label>
+                <select id="agentFilter" onchange="applyFilters()">
+                    <option value="">All Agents</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Date Range</label>
+                <select id="dateFilter" onchange="applyFilters()">
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="month" selected>Last 30 Days</option>
+                    <option value="quarter">Last 90 Days</option>
+                    <option value="all">All Time</option>
+                </select>
+            </div>
+            
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search by customer, agent, or ID..." oninput="debounceSearch()">
+            </div>
+        </div>
+
+        <!-- Conversations Table -->
+        <div class="conversations-card">
+            <div class="conversations-header">
+                <div class="conversations-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                    </svg>
+                    Conversations
+                    <span class="conversations-count" id="displayCount">0</span>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sortable" onclick="sortBy('workitemid')">ID <span class="sort-icon">↕</span></th>
+                            <th class="sortable" onclick="sortBy('customer')">Customer <span class="sort-icon">↕</span></th>
+                            <th>Channel</th>
+                            <th class="sortable" onclick="sortBy('agent')">Agent <span class="sort-icon">↕</span></th>
+                            <th>Queue</th>
+                            <th class="sortable" onclick="sortBy('status')">Status <span class="sort-icon">↕</span></th>
+                            <th class="sortable" onclick="sortBy('createdon')">Started <span class="sort-icon">↕</span></th>
+                            <th class="sortable" onclick="sortBy('duration')">Duration <span class="sort-icon">↕</span></th>
+                            <th>Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="conversationsTable">
+                        <tr>
+                            <td colspan="9">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    <p>Loading conversations...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing <span id="showingStart">0</span>-<span id="showingEnd">0</span> of <span id="totalRecords">0</span> conversations
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" id="prevBtn" onclick="previousPage()" disabled>← Previous</button>
+                    <button class="page-btn" id="nextBtn" onclick="nextPage()" disabled>Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let allConversations = [];
+        let filteredConversations = [];
+        let currentPage = 1;
+        const pageSize = 25;
+        let currentStatusFilter = 'all';
+        let sortColumn = 'createdon';
+        let sortDirection = 'desc';
+        let searchTimeout = null;
+        let xrmGlobal = null;
+        let currentUser = null;
+
+        // Channel mapping
+        const channelMap = {
+            192350000: { name: 'Live Chat', icon: '💬' },
+            192350001: { name: 'Voice', icon: '📞' },
+            192350002: { name: 'Video', icon: '📹' },
+            192360000: { name: 'Teams', icon: '👥' },
+            192330000: { name: 'SMS', icon: '📱' },
+            192340000: { name: 'Facebook', icon: '📘' },
+            192350003: { name: 'Twitter', icon: '🐦' },
+            192370000: { name: 'WhatsApp', icon: '📲' },
+            192380000: { name: 'LINE', icon: '💚' },
+            192390000: { name: 'WeChat', icon: '💬' },
+            192400000: { name: 'Email', icon: '📧' }
+        };
+
+        // Status mapping
+        const statusMap = {
+            1: { label: 'Open', class: 'open' },
+            2: { label: 'Active', class: 'active' },
+            3: { label: 'Waiting', class: 'waiting' },
+            4: { label: 'Closed', class: 'closed' },
+            5: { label: 'Wrap-up', class: 'wrapup' },
+            6: { label: 'Resolved', class: 'closed' },
+            7: { label: 'Scheduled', class: 'waiting' }
+        };
+
+        // Sentiment mapping
+        const sentimentMap = {
+            0: { label: 'N/A', class: 'neutral' },
+            1: { label: 'Very Negative', class: 'negative' },
+            2: { label: 'Negative', class: 'negative' },
+            3: { label: 'Slightly Negative', class: 'negative' },
+            4: { label: 'Neutral', class: 'neutral' },
+            5: { label: 'Slightly Positive', class: 'positive' },
+            6: { label: 'Positive', class: 'positive' },
+            7: { label: 'Very Positive', class: 'positive' }
+        };
+
+        // Initialize
+        async function initialize() {
+            try {
+                const xrm = getXrm();
+                if (!xrm) {
+                    showError();
+                    return;
+                }
+
+                xrmGlobal = xrm;
+                
+                // Get current user
+                currentUser = await xrm.Utility.getGlobalContext().userSettings;
+                
+                // Load filter options
+                await Promise.all([
+                    loadQueues(xrm),
+                    loadAgents(xrm)
+                ]);
+                
+                // Load conversations
+                await loadConversations();
+                
+            } catch (error) {
+                console.error('Error initializing:', error);
+                showError();
+            }
+        }
+
+        // Get Xrm from parent window
+        function getXrm() {
+            if (typeof Xrm !== 'undefined') return Xrm;
+            if (window.parent && typeof window.parent.Xrm !== 'undefined') return window.parent.Xrm;
+            if (window.top && typeof window.top.Xrm !== 'undefined') return window.top.Xrm;
+            return null;
+        }
+
+        // Load queues for filter
+        async function loadQueues(xrm) {
+            try {
+                const response = await xrm.WebApi.retrieveMultipleRecords(
+                    "queue",
+                    "?$select=queueid,name&$filter=statecode eq 0&$orderby=name asc&$top=200"
+                );
+                
+                const queueFilter = document.getElementById('queueFilter');
+                response.entities.forEach(queue => {
+                    if (!queue.name.includes('#') && !queue.name.includes('<')) {
+                        const option = document.createElement('option');
+                        option.value = queue.queueid;
+                        option.textContent = queue.name;
+                        queueFilter.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading queues:', error);
+            }
+        }
+
+        // Load agents for filter
+        async function loadAgents(xrm) {
+            try {
+                const response = await xrm.WebApi.retrieveMultipleRecords(
+                    "systemuser",
+                    "?$select=systemuserid,fullname&$filter=isdisabled eq false&$orderby=fullname asc&$top=200"
+                );
+                
+                const agentFilter = document.getElementById('agentFilter');
+                response.entities.forEach(agent => {
+                    if (agent.fullname && !agent.fullname.includes('#') && !agent.fullname.toLowerCase().includes('copilot')) {
+                        const option = document.createElement('option');
+                        option.value = agent.systemuserid;
+                        option.textContent = agent.fullname;
+                        agentFilter.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading agents:', error);
+            }
+        }
+
+        // Build date filter
+        function getDateFilter() {
+            const dateFilter = document.getElementById('dateFilter').value;
+            const now = new Date();
+            let startDate;
+            
+            switch (dateFilter) {
+                case 'today':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    break;
+                case 'yesterday':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                    break;
+                case 'week':
+                    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'month':
+                    startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'quarter':
+                    startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'all':
+                    return '';
+                default:
+                    startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            }
+            
+            return `createdon ge ${startDate.toISOString()}`;
+        }
+
+        // Load conversations from D365
+        async function loadConversations() {
+            const xrm = xrmGlobal || getXrm();
+            if (!xrm) {
+                showError();
+                return;
+            }
+
+            try {
+                showLoading();
+                
+                // Build filter
+                let filters = [];
+                
+                // Date filter
+                const dateFilter = getDateFilter();
+                if (dateFilter) filters.push(dateFilter);
+                
+                // Status filter
+                if (currentStatusFilter === 'ongoing') {
+                    filters.push('(statuscode eq 1 or statuscode eq 2 or statuscode eq 3 or statuscode eq 5)');
+                } else if (currentStatusFilter === 'closed') {
+                    filters.push('(statuscode eq 4 or statuscode eq 6)');
+                }
+                
+                // Channel filter
+                const channelValue = document.getElementById('channelFilter').value;
+                if (channelValue) {
+                    filters.push(`msdyn_channel eq ${channelValue}`);
+                }
+                
+                // Queue filter
+                const queueValue = document.getElementById('queueFilter').value;
+                if (queueValue) {
+                    filters.push(`_msdyn_queueid_value eq '${queueValue}'`);
+                }
+                
+                // Agent filter
+                const agentValue = document.getElementById('agentFilter').value;
+                if (agentValue) {
+                    filters.push(`_msdyn_activeagentid_value eq '${agentValue}'`);
+                }
+                
+                const filterString = filters.length > 0 ? `&$filter=${filters.join(' and ')}` : '';
+                
+                // Query conversations
+                const query = `?$select=msdyn_ocliveworkitemid,msdyn_liveworkstreamid,msdyn_channel,statuscode,statecode,createdon,msdyn_closedon,msdyn_title,msdyn_customersentimentlabel,_msdyn_activeagentid_value,_msdyn_queueid_value,_msdyn_liveworkstreamid_value,_msdyn_customer_value&$expand=msdyn_activeagentid($select=fullname),msdyn_queueid($select=name),msdyn_customer_msdyn_ocliveworkitem_customer_contact($select=fullname),msdyn_customer_msdyn_ocliveworkitem_customer_account($select=name)&$orderby=createdon desc&$top=500${filterString}`;
+                
+                const response = await xrm.WebApi.retrieveMultipleRecords("msdyn_ocliveworkitem", query);
+                
+                allConversations = response.entities.map(conv => ({
+                    id: conv.msdyn_ocliveworkitemid,
+                    workitemid: conv.msdyn_ocliveworkitemid ? conv.msdyn_ocliveworkitemid.substring(0, 8).toUpperCase() : 'N/A',
+                    title: conv.msdyn_title || 'Conversation',
+                    channel: conv.msdyn_channel,
+                    statuscode: conv.statuscode,
+                    statecode: conv.statecode,
+                    createdon: conv.createdon,
+                    closedon: conv.msdyn_closedon,
+                    sentiment: conv.msdyn_customersentimentlabel || 0,
+                    agentId: conv._msdyn_activeagentid_value,
+                    agentName: conv.msdyn_activeagentid?.fullname || 'Unassigned',
+                    queueId: conv._msdyn_queueid_value,
+                    queueName: conv.msdyn_queueid?.name || 'N/A',
+                    customerId: conv._msdyn_customer_value,
+                    customerName: conv.msdyn_customer_msdyn_ocliveworkitem_customer_contact?.fullname || 
+                                  conv.msdyn_customer_msdyn_ocliveworkitem_customer_account?.name || 
+                                  'Unknown Customer'
+                }));
+                
+                // Apply search filter if any
+                applySearchFilter();
+                
+                // Update stats
+                updateStats();
+                
+                // Render
+                renderConversations();
+                
+            } catch (error) {
+                console.error('Error loading conversations:', error);
+                document.getElementById('conversationsTable').innerHTML = `
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">⚠️</div>
+                                <p>Error loading conversations: ${error.message}</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Apply search filter
+        function applySearchFilter() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                filteredConversations = [...allConversations];
+            } else {
+                filteredConversations = allConversations.filter(conv => 
+                    conv.customerName.toLowerCase().includes(searchTerm) ||
+                    conv.agentName.toLowerCase().includes(searchTerm) ||
+                    conv.workitemid.toLowerCase().includes(searchTerm) ||
+                    conv.title.toLowerCase().includes(searchTerm) ||
+                    conv.queueName.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Sort
+            sortConversations();
+        }
+
+        // Sort conversations
+        function sortConversations() {
+            filteredConversations.sort((a, b) => {
+                let valA, valB;
+                
+                switch (sortColumn) {
+                    case 'workitemid':
+                        valA = a.workitemid;
+                        valB = b.workitemid;
+                        break;
+                    case 'customer':
+                        valA = a.customerName;
+                        valB = b.customerName;
+                        break;
+                    case 'agent':
+                        valA = a.agentName;
+                        valB = b.agentName;
+                        break;
+                    case 'status':
+                        valA = a.statuscode;
+                        valB = b.statuscode;
+                        break;
+                    case 'createdon':
+                        valA = new Date(a.createdon).getTime();
+                        valB = new Date(b.createdon).getTime();
+                        break;
+                    case 'duration':
+                        valA = calculateDurationMs(a);
+                        valB = calculateDurationMs(b);
+                        break;
+                    default:
+                        valA = a.createdon;
+                        valB = b.createdon;
+                }
+                
+                if (typeof valA === 'string') {
+                    return sortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return sortDirection === 'asc' ? valA - valB : valB - valA;
+            });
+        }
+
+        // Calculate duration in milliseconds
+        function calculateDurationMs(conv) {
+            const start = new Date(conv.createdon).getTime();
+            const end = conv.closedon ? new Date(conv.closedon).getTime() : Date.now();
+            return end - start;
+        }
+
+        // Format duration
+        function formatDuration(conv) {
+            const ms = calculateDurationMs(conv);
+            const seconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            if (days > 0) return `${days}d ${hours % 24}h`;
+            if (hours > 0) return `${hours}h ${minutes % 60}m`;
+            if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
+            return `${seconds}s`;
+        }
+
+        // Update stats
+        function updateStats() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const activeCount = allConversations.filter(c => c.statuscode === 2).length;
+            const waitingCount = allConversations.filter(c => c.statuscode === 3 || c.statuscode === 1).length;
+            const wrapupCount = allConversations.filter(c => c.statuscode === 5).length;
+            const closedTodayCount = allConversations.filter(c => {
+                if (c.statuscode !== 4 && c.statuscode !== 6) return false;
+                if (!c.closedon) return false;
+                const closeDate = new Date(c.closedon);
+                closeDate.setHours(0, 0, 0, 0);
+                return closeDate.getTime() === today.getTime();
+            }).length;
+            
+            document.getElementById('activeCount').textContent = activeCount;
+            document.getElementById('waitingCount').textContent = waitingCount;
+            document.getElementById('wrapupCount').textContent = wrapupCount;
+            document.getElementById('closedCount').textContent = closedTodayCount;
+            document.getElementById('totalCount').textContent = allConversations.length;
+        }
+
+        // Render conversations
+        function renderConversations() {
+            const tbody = document.getElementById('conversationsTable');
+            
+            if (filteredConversations.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">💬</div>
+                                <p>No conversations found</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                updatePagination(0, 0, 0);
+                return;
+            }
+            
+            // Pagination
+            const totalRecords = filteredConversations.length;
+            const totalPages = Math.ceil(totalRecords / pageSize);
+            currentPage = Math.min(currentPage, totalPages);
+            
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalRecords);
+            const pageData = filteredConversations.slice(startIndex, endIndex);
+            
+            tbody.innerHTML = pageData.map(conv => {
+                const channel = channelMap[conv.channel] || { name: 'Unknown', icon: '❓' };
+                const status = statusMap[conv.statuscode] || { label: 'Unknown', class: 'open' };
+                const sentiment = sentimentMap[conv.sentiment] || sentimentMap[0];
+                const createdDate = new Date(conv.createdon);
+                const initials = conv.agentName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                
+                return `
+                    <tr onclick="openConversation('${conv.id}')">
+                        <td><span class="conversation-id">${conv.workitemid}</span></td>
+                        <td>
+                            <div class="customer-info">
+                                <span class="customer-name">${escapeHtml(conv.customerName)}</span>
+                                <span class="customer-channel">${escapeHtml(conv.title)}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="channel-badge">${channel.icon} ${channel.name}</span>
+                        </td>
+                        <td>
+                            <div class="agent-info">
+                                <div class="agent-avatar">${initials || '??'}</div>
+                                <span class="agent-name">${escapeHtml(conv.agentName)}</span>
+                            </div>
+                        </td>
+                        <td><span class="queue-badge">${escapeHtml(conv.queueName)}</span></td>
+                        <td><span class="status-badge status-${status.class}">${status.label}</span></td>
+                        <td>
+                            <div class="date-cell">
+                                <div class="time">${createdDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
+                                <div>${createdDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                            </div>
+                        </td>
+                        <td><span class="duration-cell">${formatDuration(conv)}</span></td>
+                        <td><span class="sentiment-badge ${sentiment.class}">${sentiment.label}</span></td>
+                    </tr>
+                `;
+            }).join('');
+            
+            updatePagination(startIndex + 1, endIndex, totalRecords);
+            document.getElementById('displayCount').textContent = totalRecords;
+        }
+
+        // Update pagination
+        function updatePagination(start, end, total) {
+            document.getElementById('showingStart').textContent = start;
+            document.getElementById('showingEnd').textContent = end;
+            document.getElementById('totalRecords').textContent = total;
+            
+            const totalPages = Math.ceil(total / pageSize);
+            document.getElementById('prevBtn').disabled = currentPage <= 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+        }
+
+        // Pagination controls
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderConversations();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredConversations.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderConversations();
+            }
+        }
+
+        // Filter functions
+        function setStatusFilter(status) {
+            currentStatusFilter = status;
+            currentPage = 1;
+            
+            // Update tab UI
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.filter === status);
+            });
+            
+            loadConversations();
+        }
+
+        function filterByStatus(status) {
+            if (status === 'all') {
+                setStatusFilter('all');
+            } else if (status === 'active') {
+                currentStatusFilter = 'all';
+                document.getElementById('channelFilter').value = '';
+                loadConversations().then(() => {
+                    filteredConversations = allConversations.filter(c => c.statuscode === 2);
+                    currentPage = 1;
+                    renderConversations();
+                });
+            } else if (status === 'waiting') {
+                currentStatusFilter = 'all';
+                loadConversations().then(() => {
+                    filteredConversations = allConversations.filter(c => c.statuscode === 3 || c.statuscode === 1);
+                    currentPage = 1;
+                    renderConversations();
+                });
+            } else if (status === 'wrapup') {
+                currentStatusFilter = 'all';
+                loadConversations().then(() => {
+                    filteredConversations = allConversations.filter(c => c.statuscode === 5);
+                    currentPage = 1;
+                    renderConversations();
+                });
+            } else if (status === 'closed') {
+                setStatusFilter('closed');
+            }
+        }
+
+        function applyFilters() {
+            currentPage = 1;
+            loadConversations();
+        }
+
+        // Search with debounce
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentPage = 1;
+                applySearchFilter();
+                renderConversations();
+            }, 300);
+        }
+
+        // Sort
+        function sortBy(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'desc';
+            }
+            
+            sortConversations();
+            renderConversations();
+            
+            // Update UI
+            document.querySelectorAll('th.sortable').forEach(th => th.classList.remove('sorted'));
+        }
+
+        // Open conversation
+        function openConversation(conversationId) {
+            const xrm = xrmGlobal || getXrm();
+            if (xrm && xrm.Navigation) {
+                xrm.Navigation.openForm({
+                    entityName: 'msdyn_ocliveworkitem',
+                    entityId: conversationId
+                });
+            }
+        }
+
+        // Helper functions
+        function showLoading() {
+            document.getElementById('conversationsTable').innerHTML = `
+                <tr>
+                    <td colspan="9">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading conversations...</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function showError() {
+            document.getElementById('conversationsTable').innerHTML = `
+                <tr>
+                    <td colspan="9">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">⚠️</div>
+                            <p>This page must be run within Dynamics 365 Customer Service</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('activeCount').textContent = '0';
+            document.getElementById('waitingCount').textContent = '0';
+            document.getElementById('wrapupCount').textContent = '0';
+            document.getElementById('closedCount').textContent = '0';
+            document.getElementById('totalCount').textContent = '0';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initialize);
+    </script>
+</body>
+</html>
