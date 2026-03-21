@@ -1,5 +1,44 @@
 # D365 Contact Center Agent Home
 
+
+
+## 🔄 Recent Updates (Agent Home Enhancements)
+
+I’ve introduced Data Refresh capabilities to the Agent Home Dashboard:
+
+### ✅ **What's New**
+- **Header Layout Refresh**  
+  Added components to right side of header, moving presence slightly down to give space for new refresh controls.
+  
+- **Auto-Refresh with Custom Intervals**  
+  Agents can now select refresh intervals from a dropdown menu for real-time updates.
+
+- **Manual Refresh with Spin Animation**  
+  Added a sleek refresh button with a loading spinner for instant data reload.
+
+- **Future-Ready Options (Commented)**  
+  Code includes placeholders for advanced refresh status indicators (e.g., *Failed*, *Partial*) for upcoming enhancements.
+
+---
+
+### 🖼 **Visual Highlights of Changes**
+
+![New Header Components](https://github.com/danieag/D365-Agent-Home/blob/019dd8bc8d96d9f959da4aaca51ab2ec0df4412b/Screenshot%202025-12-18%20133617.png)
+
+![Auto Refresh Dropdown](https://github.com/danieag/D365-Agent-Home/blob/019dd8bc8d96d9f959da4aaca51ab2ec0df4412b/Screenshot%202025-12-18%20133714.png)
+
+![Auto Refresh custom value (seconds)](https://github.com/danieag/D365-Agent-Home/blob/019dd8bc8d96d9f959da4aaca51ab2ec0df4412b/Screenshot%202025-12-18%20133747.png)
+
+
+![Refreshed Status Toast (Other are commented out in code)](https://github.com/danieag/D365-Agent-Home/blob/019dd8bc8d96d9f959da4aaca51ab2ec0df4412b/Screenshot%202025-12-18%20133908.png)
+
+---
+
+These updates aim to improve **agent productivity**, **data visibility**, and **overall user experience** in the Contact Center workspace.
+
+Original Readme.md below ⬇️
+---
+
 Say hello to the new Contact Center agent homepage! A fresh, modern alternative to the legacy Dynamics 365 view. This updated design brings together beautiful UI, clear information hierarchy, and powerful productivity tools. Agents can easily track active cases, view their tasks, respond faster with quick-action buttons, and monitor team status at a glance. It’s a smarter, cleaner, more intuitive workspace built for today’s Contact Center needs.
 
 ![Agent Homepage Screenshot](Screenshot.png)
