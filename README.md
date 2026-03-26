@@ -2,7 +2,7 @@
 
 A modern, high-performance homepage for Dynamics 365 Contact Center agents. Built as a single HTML web resource with the **Horizon** design system  Inter font, violet accent (`#7c5cfc`), semantic color tokens, frosted-glass effects, and responsive layout.
 
-![Agent Homepage Screenshot](Screenshot.png)
+![Agent Homepage Screenshot](screenshot.jpeg)
 
 ## Highlights
 
