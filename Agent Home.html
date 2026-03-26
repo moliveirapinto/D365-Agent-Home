@@ -181,9 +181,10 @@
             z-index: 2;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 28px 40px;
+            justify-content: center;
+            padding: 32px 40px;
             gap: 24px;
+            min-height: 140px;
         }
 
         @media (max-width: 900px) {
@@ -200,7 +201,8 @@
             display: flex;
             align-items: center;
             gap: 18px;
-            flex-shrink: 0;
+            flex: 1;
+            min-width: 0;
         }
 
         .avatar-ring {
@@ -247,6 +249,14 @@
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .greeting-block {
@@ -336,7 +346,8 @@
         .header-right {
             display: flex;
             align-items: center;
-            flex-shrink: 0;
+            flex: 1;
+            justify-content: flex-end;
         }
 
         @media (max-width: 640px) {
@@ -1543,12 +1554,13 @@
                     // Update agent name
                     document.getElementById('agentName').textContent = currentUser.userName;
                     
-                    // Update avatar initials
+                    // Update avatar: try profile photo, fall back to initials
                     const nameParts = currentUser.userName.split(' ');
                     const initials = nameParts.length >= 2 
                         ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
                         : currentUser.userName.substring(0, 2).toUpperCase();
                     document.getElementById('agentAvatar').textContent = initials;
+                    loadUserProfilePhoto(xrm, currentUser.userId);
                     
                     // Load all data
                     await Promise.all([
@@ -1601,6 +1613,31 @@
 
             const timeEl = document.getElementById('headerTime');
             if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Load user profile photo from D365 systemuser entityimage
+        async function loadUserProfilePhoto(xrm, userId) {
+            try {
+                const cleanId = userId.replace(/[{}]/g, '');
+                const result = await xrm.WebApi.retrieveRecord(
+                    'systemuser',
+                    cleanId,
+                    '?$select=entityimage'
+                );
+                if (result.entityimage) {
+                    const avatarEl = document.getElementById('agentAvatar');
+                    if (avatarEl) {
+                        const img = document.createElement('img');
+                        img.src = 'data:image/jpeg;base64,' + result.entityimage;
+                        img.alt = 'Profile';
+                        avatarEl.textContent = '';
+                        avatarEl.appendChild(img);
+                    }
+                }
+            } catch (e) {
+                // Silently fall back to initials — they're already set
+                console.log('Profile photo not available, using initials');
+            }
         }
 
         const isoDaysAgo = (days) => {
