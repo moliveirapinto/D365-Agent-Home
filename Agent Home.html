@@ -781,27 +781,28 @@
         }
 
         .view-all {
-            color: var(--violet);
-            font-size: 12px;
+            color: var(--slate-2);
+            font-size: 11.5px;
             text-decoration: none;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
+            letter-spacing: 0.3px;
             transition: all var(--dur) var(--ease);
             display: inline-flex;
             align-items: center;
-            gap: 3px;
-            padding: 5px 14px;
-            border-radius: var(--r-full);
-            background: var(--violet-dim);
+            gap: 4px;
+            padding: 4px 0;
+            border-radius: 0;
+            background: none;
             border: none;
+            border-bottom: 1px dotted transparent;
         }
 
         .view-all:hover {
-            background: var(--violet);
-            color: var(--white);
-            gap: 5px;
+            color: var(--violet);
+            border-bottom-color: var(--violet);
+            gap: 6px;
         }
-
         /* ─────────────────────────────────────
            TASKS — Clean rows, colored dot accent
            ───────────────────────────────────── */
