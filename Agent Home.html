@@ -576,6 +576,22 @@
             font-weight: 600;
         }
 
+        .queue-hidden-pills {
+            display: inline;
+            max-height: 120px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .queue-hidden-pills::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .queue-hidden-pills::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
         .appt-text {
             color: var(--ink);
         }
@@ -1573,15 +1589,15 @@
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 5h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg>
-                <span class="info-strip-label">Overdue</span>
-                <span class="info-strip-value" id="infoOverdueTasks">-</span>
+                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                <span class="info-strip-label">Oldest Case</span>
+                <span class="info-strip-value" id="infoOldestCase">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-                <span class="info-strip-label">Cases/Month</span>
-                <span class="info-strip-value" id="infoCasesMonth">-</span>
+                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                <span class="info-strip-label">Calls Today</span>
+                <span class="info-strip-value" id="infoCallsToday">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
@@ -1822,7 +1838,9 @@
             const hidden = container.querySelector('.queue-hidden-pills');
             if (!hidden) return;
             const isShowing = hidden.style.display !== 'none';
-            hidden.style.display = isShowing ? 'none' : 'inline';
+            hidden.style.display = isShowing ? 'none' : 'inline-flex';
+            hidden.style.flexWrap = 'wrap';
+            hidden.style.gap = '4px';
             const totalHidden = hidden.querySelectorAll('.queue-pill').length;
             el.textContent = isShowing ? '+' + totalHidden + ' more' : 'Show less';
         }
@@ -2271,22 +2289,34 @@
                 document.getElementById('casesTrend').textContent = Math.floor(Math.random() * 5);
 
 
-                // === Populate Info Strip Stats ===
-                // 1. Overdue Tasks (already computed above)
-                const infoOverdueEl = document.getElementById('infoOverdueTasks');
-                if (infoOverdueEl) {
-                    infoOverdueEl.textContent = overdueCount;
-                    if (overdueCount > 0) infoOverdueEl.style.color = '#d13438';
-                }
 
-                // 2. Cases This Month
+                // === Populate Info Strip Stats ===
+                // 1. Oldest Open Case (age)
                 try {
-                    const monthCasesResp = await xrm.WebApi.retrieveMultipleRecords(
+                    const oldestResp = await xrm.WebApi.retrieveMultipleRecords(
                         "incident",
-                        `?$filter=_ownerid_value eq '${currentUser.userId}' and createdon ge ${firstDayOfMonthISO}&$count=true&$select=incidentid`
+                        `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$orderby=createdon asc&$top=1&$select=createdon`
                     );
-                    const infoCasesEl = document.getElementById('infoCasesMonth');
-                    if (infoCasesEl) infoCasesEl.textContent = monthCasesResp.entities.length;
+                    const oldestEl = document.getElementById('infoOldestCase');
+                    if (oldestEl && oldestResp.entities.length > 0) {
+                        const created = new Date(oldestResp.entities[0].createdon);
+                        const ageDays = Math.floor((new Date() - created) / (1000 * 60 * 60 * 24));
+                        oldestEl.textContent = ageDays === 0 ? 'Today' : ageDays + 'd';
+                        if (ageDays > 14) oldestEl.style.color = '#d13438';
+                    } else if (oldestEl) {
+                        oldestEl.textContent = 'None';
+                    }
+                } catch (e) { console.warn('Info strip - oldest case error:', e); }
+
+                // 2. Phone Calls Today
+                try {
+                    const callsResp = await xrm.WebApi.retrieveMultipleRecords(
+                        "phonecall",
+                        `?$filter=_ownerid_value eq '${currentUser.userId}' and createdon ge ${todayISO}&$count=true&$select=activityid`
+                    );
+                    const callsEl = document.getElementById('infoCallsToday');
+                    if (callsEl) callsEl.textContent = callsResp.entities.length;
+                } catch (e) { console.warn('Info strip - calls today error:', e); }
                 } catch (e) { console.warn('Info strip - cases this month error:', e); }
 
                 // 3. Emails Today
