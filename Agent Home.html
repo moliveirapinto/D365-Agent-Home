@@ -106,92 +106,241 @@
         }
 
         /* ─────────────────────────────────────
-           HEADER
+           HEADER — Mission Control
            ───────────────────────────────────── */
         .header {
-            display: flex;
-            align-items: stretch;
-            gap: 0;
-            margin: 0 0 28px 0;
-            background: transparent;
-            padding: 0;
-        }
-
-        @media (max-width: 640px) {
-            .header { flex-direction: column; }
-        }
-
-        .welcome-section {
-            flex: 1;
-            min-width: 0;
-            padding: 36px 44px 32px;
-            background: var(--ink);
             position: relative;
+            margin: 0 0 28px 0;
+            padding: 0;
+            border-radius: var(--r-xl);
+            background: var(--ink);
             overflow: hidden;
-            border-radius: 0 0 var(--r-xl) 0;
-            clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+            min-height: 140px;
         }
 
-        /* Grain texture overlay */
-        .welcome-section::before {
-            content: '';
+        /* Animated gradient orbs */
+        .header-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .header-orb--1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(124, 92, 252, 0.3);
+            top: -40%;
+            left: -5%;
+            animation: orb-drift-1 12s ease-in-out infinite alternate;
+        }
+
+        .header-orb--2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(59, 130, 246, 0.2);
+            top: -20%;
+            right: 10%;
+            animation: orb-drift-2 10s ease-in-out infinite alternate;
+        }
+
+        .header-orb--3 {
+            width: 250px;
+            height: 250px;
+            background: rgba(6, 182, 212, 0.15);
+            bottom: -50%;
+            left: 40%;
+            animation: orb-drift-3 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes orb-drift-1 {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 30px) scale(1.15); }
+        }
+        @keyframes orb-drift-2 {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, 20px) scale(1.1); }
+        }
+        @keyframes orb-drift-3 {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -20px) scale(1.2); }
+        }
+
+        /* Noise texture overlay */
+        .header-noise {
             position: absolute;
             inset: 0;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
+            z-index: 1;
         }
 
-        /* Soft glow */
-        .welcome-section::after {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -5%;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(124,92,252,0.2) 0%, transparent 70%);
-            pointer-events: none;
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 40px;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .header-content { flex-wrap: wrap; padding: 24px; }
         }
 
         @media (max-width: 640px) {
-            .welcome-section {
-                clip-path: none;
-                padding: 24px;
-                border-radius: 0;
-            }
+            .header { border-radius: 0; min-height: auto; }
+            .header-content { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
         }
 
-        .welcome-section h1 {
-            font-size: clamp(20px, 2.2vw, 26px);
+        /* --- Left: Avatar + Greeting --- */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-shrink: 0;
+        }
+
+        .avatar-ring {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--violet), var(--blue), var(--cyan), var(--violet));
+            padding: 3px;
+            animation: ring-spin 8s linear infinite;
+        }
+
+        @keyframes ring-spin {
+            to { background: conic-gradient(from 360deg, var(--violet), var(--blue), var(--cyan), var(--violet)); }
+        }
+
+        /* Smooth continuous rotation for the ring border */
+        .avatar-ring::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--violet), var(--blue), var(--cyan), var(--violet));
+            animation: ring-rotate 6s linear infinite;
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+        }
+
+        @keyframes ring-rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--ink-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
             font-weight: 700;
             color: var(--white);
-            margin-bottom: 4px;
-            letter-spacing: -0.4px;
+            letter-spacing: 1px;
             position: relative;
+            z-index: 1;
         }
 
-        .welcome-section p {
+        .greeting-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .greeting-time {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             color: var(--ghost);
-            font-size: 13px;
-            font-weight: 500;
-            position: relative;
         }
 
-        .agent-status {
+        .greeting-name {
+            font-size: clamp(22px, 2.4vw, 28px);
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        /* --- Center: Editorial Date --- */
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 900px) {
+            .header-center { order: 3; width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 640px) {
+            .header-center { justify-content: flex-start; }
+        }
+
+        .date-editorial {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .date-day {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -2px;
+            color: var(--white);
+            opacity: 0.9;
+        }
+
+        .date-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .date-weekday {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--white);
+            opacity: 0.8;
+            letter-spacing: 0.3px;
+        }
+
+        .date-month {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--ghost);
+            letter-spacing: 0.2px;
+        }
+
+        .header-time {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ghost);
+            padding-left: 20px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Right: Status Badge --- */
+        .header-right {
             display: flex;
             align-items: center;
             flex-shrink: 0;
-            min-width: 260px;
-            padding: 32px 36px 32px 20px;
         }
 
         @media (max-width: 640px) {
-            .agent-status {
-                min-width: 0;
-                padding: 12px 24px 20px;
-                justify-content: center;
-            }
+            .header-right { width: 100%; justify-content: center; }
         }
 
         .status-badge {
@@ -202,9 +351,11 @@
             border-radius: var(--r-full);
             font-size: 13px;
             font-weight: 600;
-            background: var(--ink);
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: var(--white);
-            border: 1px solid var(--ink-3);
+            border: 1px solid rgba(255,255,255,0.12);
             box-shadow: var(--sh-2);
             transition: all var(--dur) var(--ease);
             cursor: pointer;
@@ -212,8 +363,9 @@
 
         .status-badge:hover {
             transform: translateY(-1px);
-            box-shadow: var(--sh-3);
+            background: rgba(255,255,255,0.12);
             border-color: var(--violet);
+            box-shadow: var(--sh-violet);
         }
 
         .status-info {
@@ -1114,18 +1266,46 @@
     </style>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Header — Mission Control -->
         <div class="header">
-            <div class="welcome-section">
-                <h1>Welcome back, <span id="agentName">Agent</span>!</h1>
-                <p id="currentDateTime">Loading...</p>
-            </div>
-            <div class="agent-status">
-                <div class="status-badge" id="statusBadge" style="--status-bg: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%); --status-shadow: rgba(16, 124, 16, 0.3);">
-                    <span class="status-indicator"></span>
-                    <div class="status-info">
-                        <span class="status-label" id="statusText">Available</span>
-                        <span class="status-duration" id="statusDuration">0h 0m 0s</span>
+            <!-- Animated background orbs -->
+            <div class="header-orb header-orb--1"></div>
+            <div class="header-orb header-orb--2"></div>
+            <div class="header-orb header-orb--3"></div>
+            <div class="header-noise"></div>
+
+            <div class="header-content">
+                <!-- Left: Avatar + Greeting -->
+                <div class="header-left">
+                    <div class="avatar-ring">
+                        <div class="avatar" id="agentAvatar">MO</div>
+                    </div>
+                    <div class="greeting-block">
+                        <p class="greeting-time" id="greetingTime">Good morning</p>
+                        <h1 class="greeting-name"><span id="agentName">Agent</span></h1>
+                    </div>
+                </div>
+
+                <!-- Center: Editorial date -->
+                <div class="header-center">
+                    <div class="date-editorial">
+                        <span class="date-day" id="headerDay">26</span>
+                        <div class="date-meta">
+                            <span class="date-weekday" id="headerWeekday">Thursday</span>
+                            <span class="date-month" id="headerMonth">March 2026</span>
+                        </div>
+                    </div>
+                    <div class="header-time" id="headerTime">11:57 AM</div>
+                </div>
+
+                <!-- Right: Status -->
+                <div class="header-right">
+                    <div class="status-badge" id="statusBadge" style="--status-bg: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%); --status-shadow: rgba(16, 124, 16, 0.3);">
+                        <span class="status-indicator"></span>
+                        <div class="status-info">
+                            <span class="status-label" id="statusText">Available</span>
+                            <span class="status-duration" id="statusDuration">0h 0m 0s</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1363,6 +1543,13 @@
                     // Update agent name
                     document.getElementById('agentName').textContent = currentUser.userName;
                     
+                    // Update avatar initials
+                    const nameParts = currentUser.userName.split(' ');
+                    const initials = nameParts.length >= 2 
+                        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+                        : currentUser.userName.substring(0, 2).toUpperCase();
+                    document.getElementById('agentAvatar').textContent = initials;
+                    
                     // Load all data
                     await Promise.all([
                         loadMetrics(xrm),
@@ -1393,15 +1580,27 @@
         // Update date and time
         function updateDateTime() {
             const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Time-of-day greeting
+            const hour = now.getHours();
+            let greeting = 'Good evening';
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 17) greeting = 'Good afternoon';
+            const greetEl = document.getElementById('greetingTime');
+            if (greetEl) greetEl.textContent = greeting;
+
+            // Editorial date pieces
+            const dayEl = document.getElementById('headerDay');
+            if (dayEl) dayEl.textContent = now.getDate();
+
+            const weekdayEl = document.getElementById('headerWeekday');
+            if (weekdayEl) weekdayEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+
+            const monthEl = document.getElementById('headerMonth');
+            if (monthEl) monthEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const timeEl = document.getElementById('headerTime');
+            if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         }
 
         const isoDaysAgo = (days) => {
