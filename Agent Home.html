@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1865,11 +1865,20 @@
                 let queues = [];
 
                 try {
+                    // Step 1: Get queue IDs from membership (no $expand  works across all environments)
                     const resp = await xrm.WebApi.retrieveMultipleRecords(
                         'queuemembership',
-                        `?$filter=_systemuserid_value eq ${cleanId}&$select=queuemembershipid&$expand=queueid($select=queueid,name)&$top=20`
+                        `?$filter=_systemuserid_value eq ${cleanId}&$select=_queueid_value&$top=50`
                     );
-                    queues = (resp.entities || []).map(qm => qm.queueid?.name).filter(Boolean);
+                    const queueIds = (resp.entities || []).map(qm => qm._queueid_value).filter(Boolean);
+                    if (queueIds.length > 0) {
+                        // Step 2: Get queue names
+                        const queueFilter = queueIds.map(id => `queueid eq ${id}`).join(' or ');
+                        const qResp = await xrm.WebApi.retrieveMultipleRecords(
+                            'queue', `?$filter=${queueFilter}&$select=queueid,name`
+                        );
+                        queues = (qResp.entities || []).map(q => q.name).filter(Boolean);
+                    }
                 } catch (e) {
                     // Fallback: check queue entity with membership expansion
                     try {
@@ -1952,29 +1961,70 @@
             }
         }
 
-        // Load user profile photo from D365 systemuser entityimage
+        // Load user profile photo  tries multiple methods for cross-environment reliability
         async function loadUserProfilePhoto(xrm, userId) {
+            const cleanId = userId.replace(/[{}]/g, '');
+            const avatarEl = document.getElementById('agentAvatar');
+            if (!avatarEl) return;
+
+            function setPhoto(src) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Profile';
+                avatarEl.textContent = '';
+                avatarEl.appendChild(img);
+            }
+
+            // Method 1: entityimage via WebApi (works when photo is synced to Dataverse)
             try {
-                const cleanId = userId.replace(/[{}]/g, '');
                 const result = await xrm.WebApi.retrieveRecord(
-                    'systemuser',
-                    cleanId,
-                    '?$select=entityimage'
+                    'systemuser', cleanId, '?$select=entityimage,entityimage_url'
                 );
                 if (result.entityimage) {
-                    const avatarEl = document.getElementById('agentAvatar');
-                    if (avatarEl) {
-                        const img = document.createElement('img');
-                        img.src = 'data:image/jpeg;base64,' + result.entityimage;
-                        img.alt = 'Profile';
-                        avatarEl.textContent = '';
-                        avatarEl.appendChild(img);
+                    setPhoto('data:image/jpeg;base64,' + result.entityimage);
+                    return;
+                }
+                if (result.entityimage_url) {
+                    setPhoto(result.entityimage_url);
+                    return;
+                }
+            } catch (e) {
+                console.log('entityimage WebApi method unavailable:', e.message);
+            }
+
+            // Method 2: Direct REST endpoint for raw image bytes
+            try {
+                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
+                const imgUrl = clientUrl + '/api/data/v9.2/systemusers(' + cleanId + ')/entityimage/$value';
+                const resp = await fetch(imgUrl, { credentials: 'include' });
+                if (resp.ok) {
+                    const blob = await resp.blob();
+                    if (blob.size > 100) {
+                        setPhoto(URL.createObjectURL(blob));
+                        return;
                     }
                 }
             } catch (e) {
-                // Silently fall back to initials — they're already set
-                console.log('Profile photo not available, using initials');
+                console.log('Direct REST image endpoint unavailable:', e.message);
             }
+
+            // Method 3: Legacy image download endpoint
+            try {
+                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
+                const imgUrl = clientUrl + '/Image/download.aspx?Entity=systemuser&Attribute=entityimage&Id=' + cleanId;
+                const resp = await fetch(imgUrl, { credentials: 'include' });
+                if (resp.ok) {
+                    const blob = await resp.blob();
+                    if (blob.size > 100) {
+                        setPhoto(URL.createObjectURL(blob));
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log('Legacy image download endpoint unavailable:', e.message);
+            }
+
+            console.log('Profile photo not available from any source, using initials');
         }
 
         const isoDaysAgo = (days) => {
@@ -2531,74 +2581,51 @@
                     return;
                 }
 
-                // Fetch queue memberships for all users in parallel
-                const queueMembershipPromises = usersResponse.entities.map(async (user) => {
+                // Filter out service/system accounts before any queries
+                const realUsers = usersResponse.entities.filter(user => {
+                    const name = (user.fullname || '').toLowerCase();
+                    return !name.includes('#') && !name.includes('copilot studio');
+                });
+
+                if (realUsers.length === 0) {
+                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
+                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
+                    return;
+                }
+
+                // Fetch queue memberships  uses expand-free query for cross-environment reliability
+                const queueMembershipPromises = realUsers.map(async (user) => {
                     try {
-                        console.log(`Fetching queue membership for user: ${user.fullname} (${user.systemuserid})`);
-                        
-                        // Primary method: Query queuemembership entity
-                        let queueResponse;
+                        // Get queue IDs from membership (no $expand)
+                        let queueIds = [];
                         try {
-                            queueResponse = await xrm.WebApi.retrieveMultipleRecords(
+                            const resp = await xrm.WebApi.retrieveMultipleRecords(
                                 "queuemembership",
-                                `?$filter=_systemuserid_value eq ${user.systemuserid}&$select=queuemembershipid&$expand=queueid($select=queueid,name)&$top=50`
+                                `?$filter=_systemuserid_value eq ${user.systemuserid}&$select=_queueid_value&$top=50`
                             );
-                            console.log(`Primary method succeeded for ${user.fullname}:`, queueResponse.entities.length, 'memberships found');
-                        } catch (primaryError) {
-                            console.warn(`Primary queue membership query failed for ${user.fullname}, trying alternative method:`, primaryError);
-                            
-                            // Fallback method: Query from queue entity side
+                            queueIds = (resp.entities || []).map(qm => qm._queueid_value).filter(Boolean);
+                        } catch (e) {
+                            console.warn(`Queue membership query failed for ${user.fullname}:`, e.message);
+                        }
+
+                        // Look up queue names from IDs
+                        let queues = [];
+                        if (queueIds.length > 0) {
                             try {
-                                const queuesResponse = await xrm.WebApi.retrieveMultipleRecords(
-                                    "queue",
-                                    `?$filter=Microsoft.Dynamics.CRM.In(PropertyName='queueid',PropertyValues=[${user.systemuserid}])&$select=queueid,name&$top=50`
+                                const queueFilter = queueIds.map(id => `queueid eq ${id}`).join(' or ');
+                                const qResp = await xrm.WebApi.retrieveMultipleRecords(
+                                    "queue", `?$filter=${queueFilter}&$select=queueid,name`
                                 );
-                                
-                                // Convert to queuemembership format
-                                queueResponse = {
-                                    entities: queuesResponse.entities.map(q => ({
-                                        queueid: { queueid: q.queueid, name: q.name }
-                                    }))
-                                };
-                                console.log(`Fallback method succeeded for ${user.fullname}:`, queueResponse.entities.length, 'queues found');
-                            } catch (fallbackError) {
-                                console.error(`Both queue membership methods failed for ${user.fullname}:`, fallbackError);
-                                
-                                // Last resort: Query all queues and check membership manually
-                                try {
-                                    const allQueuesResponse = await xrm.WebApi.retrieveMultipleRecords(
-                                        "queue",
-                                        `?$select=queueid,name&$expand=queuemembership_association($select=systemuserid;$filter=systemuserid eq ${user.systemuserid})&$top=100`
-                                    );
-                                    
-                                    queueResponse = {
-                                        entities: allQueuesResponse.entities
-                                            .filter(q => q.queuemembership_association && q.queuemembership_association.length > 0)
-                                            .map(q => ({
-                                                queueid: { queueid: q.queueid, name: q.name }
-                                            }))
-                                    };
-                                    console.log(`Last resort method found ${queueResponse.entities.length} queues for ${user.fullname}`);
-                                } catch (lastResortError) {
-                                    console.error(`All queue retrieval methods failed for ${user.fullname}:`, lastResortError);
-                                    queueResponse = { entities: [] };
-                                }
+                                queues = (qResp.entities || []).map(q => ({
+                                    id: q.queueid, name: q.name
+                                })).filter(q => q.id && q.name);
+                            } catch (e2) {
+                                console.warn(`Queue name lookup failed for ${user.fullname}:`, e2.message);
                             }
                         }
-                        
-                        const queues = queueResponse.entities.map(qm => ({
-                            id: qm.queueid?.queueid,
-                            name: qm.queueid?.name
-                        })).filter(q => q.id);
-                        
-                        console.log(`Final queue list for ${user.fullname}:`, queues.map(q => `${q.name} (${q.id})`));
-                        
-                        return {
-                            userId: user.systemuserid,
-                            queues: queues
-                        };
+
+                        return { userId: user.systemuserid, queues };
                     } catch (error) {
-                        console.error('Unexpected error fetching queue membership for user:', user.fullname, user.systemuserid, error);
                         return { userId: user.systemuserid, queues: [] };
                     }
                 });
@@ -2607,24 +2634,14 @@
                 const queueMap = {};
                 queueMemberships.forEach(membership => {
                     queueMap[membership.userId] = membership.queues;
-                    if (membership.queues.length > 0) {
-                        console.log(`User ${membership.userId} belongs to queues:`, membership.queues.map(q => `${q.name} (${q.id})`));
-                    }
                 });
 
                 // Fetch presence status for all agents
                 allAgents = [];
                 allAgentsWithQueues = [];
-                
-                for (const user of usersResponse.entities) {
+
+                for (const user of realUsers) {
                     try {
-                        // Filter out agents with "#" or "Copilot Studio" in their names
-                        const fullname = user.fullname || '';
-                        const lowerName = fullname.toLowerCase();
-                        if (lowerName.includes('#') || lowerName.includes('copilot studio')) {
-                            continue; // Skip this agent
-                        }
-                        
                         // Try to get presence status for each agent
                         let presenceStatus = 'Offline';
                         let presenceClass = 'offline';
