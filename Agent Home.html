@@ -515,7 +515,22 @@
         }
 
         .info-strip-icon {
-            display: none;
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+            color: var(--slate-2);
+            opacity: 0.6;
+        }
+
+        .info-strip-clickable[data-case-url] {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 2px;
+        }
+        .info-strip-clickable[data-case-url]:hover {
+            color: var(--violet);
+            text-decoration-style: solid;
         }
 
         .info-strip-label {
@@ -1587,7 +1602,7 @@
             <div class="info-strip-item">
                 <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
                 <span class="info-strip-label">Oldest Case</span>
-                <span class="info-strip-value" id="infoOldestCase">-</span>
+                <span class="info-strip-value info-strip-clickable" id="infoOldestCase" title="Click to open case" style="cursor:default">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
@@ -2287,23 +2302,29 @@
 
 
                 // === Populate Info Strip Stats ===
-                // 1. Oldest Open Case (age)
+                // 1. Oldest Open Case (age)  clickable
                 try {
                     const oldestResp = await xrm.WebApi.retrieveMultipleRecords(
                         "incident",
-                        `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$orderby=createdon asc&$top=1&$select=createdon`
+                        `?$filter=statecode eq 0 and _ownerid_value eq '${currentUser.userId}'&$orderby=createdon asc&$top=1&$select=createdon,incidentid`
                     );
                     const oldestEl = document.getElementById('infoOldestCase');
                     if (oldestEl && oldestResp.entities.length > 0) {
-                        const created = new Date(oldestResp.entities[0].createdon);
+                        const caseRecord = oldestResp.entities[0];
+                        const created = new Date(caseRecord.createdon);
                         const ageDays = Math.floor((new Date() - created) / (1000 * 60 * 60 * 24));
                         oldestEl.textContent = ageDays === 0 ? 'Today' : ageDays + 'd';
                         if (ageDays > 14) oldestEl.style.color = '#d13438';
+                        // Make clickable  navigate to the case record
+                        const caseId = caseRecord.incidentid;
+                        const caseUrl = xrm.Utility.getGlobalContext().getClientUrl() + '/main.aspx?etn=incident&pagetype=entityrecord&id=' + caseId;
+                        oldestEl.setAttribute('data-case-url', caseUrl);
+                        oldestEl.style.cursor = 'pointer';
+                        oldestEl.onclick = function() { window.top.location.href = caseUrl; };
                     } else if (oldestEl) {
                         oldestEl.textContent = 'None';
                     }
                 } catch (e) { console.warn('Info strip - oldest case error:', e); }
-
                 // 2. Phone Calls Today
                 try {
                     const callsResp = await xrm.WebApi.retrieveMultipleRecords(
