@@ -354,7 +354,111 @@
             .header-right { width: 100%; justify-content: center; }
         }
 
-        /* Old header-stats removed — moved to info-strip card */
+        /* --- Header Stats Bar --- */
+        .header-stats {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0 40px 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            .header-stats { flex-direction: column; align-items: flex-start; padding: 0 20px 16px; gap: 8px; }
+        }
+
+        .header-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .header-stat-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            color: var(--ghost);
+        }
+
+        .header-stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--ghost);
+            white-space: nowrap;
+        }
+
+        .header-stat-value {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .header-stat-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 20px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+            .header-stat-divider { display: none; }
+        }
+
+        .queue-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: var(--r-full);
+            background: rgba(124, 92, 252, 0.15);
+            color: rgba(200, 180, 255, 0.9);
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            border: 1px solid rgba(124, 92, 252, 0.2);
+            transition: all var(--dur) var(--ease);
+        }
+
+        .queue-pill:hover {
+            background: rgba(124, 92, 252, 0.25);
+            border-color: rgba(124, 92, 252, 0.4);
+        }
+
+        .queue-pill-more {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: var(--r-full);
+            background: rgba(255,255,255,0.06);
+            color: var(--ghost);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .appt-text {
+            color: rgba(255,255,255,0.85);
+        }
+
+        .appt-time {
+            color: var(--violet);
+            font-weight: 600;
+        }
+
+        .appt-none {
+            color: var(--ghost);
+            font-style: italic;
+        }
 
         .status-badge {
             display: inline-flex;
@@ -420,115 +524,6 @@
             0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
             50%  { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
             100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
-        }
-
-        /* ─────────────────────────────────────
-           INFO STRIP
-           ───────────────────────────────────── */
-        .info-strip {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            padding: 10px 24px;
-            margin-bottom: 24px;
-            background: var(--surface);
-            border: 1px solid var(--cloud);
-            border-radius: var(--r-md);
-            box-shadow: var(--sh-1);
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 900px) {
-            .info-strip { gap: 8px; }
-        }
-
-        @media (max-width: 640px) {
-            .info-strip { flex-direction: column; align-items: flex-start; padding: 12px 16px; gap: 8px; }
-        }
-
-        .info-strip-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 0;
-            min-width: 0;
-        }
-
-        .info-strip-icon {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            color: var(--slate-2);
-        }
-
-        .info-strip-label {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--slate-2);
-            white-space: nowrap;
-        }
-
-        .info-strip-value {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .info-strip-sep {
-            width: 1px;
-            height: 20px;
-            background: var(--cloud);
-            margin: 0 18px;
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 640px) {
-            .info-strip-sep { display: none; }
-        }
-
-        .queue-pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 2px 10px;
-            border-radius: var(--r-full);
-            background: var(--violet-dim);
-            color: var(--violet);
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-            border: 1px solid var(--violet-med);
-        }
-
-        .queue-pill-more {
-            display: inline-flex;
-            align-items: center;
-            padding: 2px 8px;
-            border-radius: var(--r-full);
-            background: var(--snow);
-            color: var(--slate-2);
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .appt-text {
-            color: var(--ink);
-        }
-
-        .appt-time {
-            color: var(--violet);
-            font-weight: 600;
-        }
-
-        .appt-none {
-            color: var(--slate-2);
-            font-style: italic;
         }
 
         /* ─────────────────────────────────────
@@ -1431,6 +1426,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Header Stats Bar -->
+            <div class="header-stats" id="headerStats">
+                <div class="header-stat">
+                    <svg class="header-stat-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3 5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25v4.5A2.25 2.25 0 0 1 18.75 12H5.25A2.25 2.25 0 0 1 3 9.75v-4.5ZM5.25 4.5a.75.75 0 0 0-.75.75v4.5c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-4.5a.75.75 0 0 0-.75-.75H5.25Zm-2 9.75A2.25 2.25 0 0 1 5.5 12h13A2.25 2.25 0 0 1 20.75 14.25v4.5A2.25 2.25 0 0 1 18.5 21h-13a2.25 2.25 0 0 1-2.25-2.25v-4.5Z"/></svg>
+                    <span class="header-stat-label">Queues:</span>
+                    <span class="header-stat-value" id="userQueues">Loading...</span>
+                </div>
+                <div class="header-stat-divider"></div>
+                <div class="header-stat">
+                    <svg class="header-stat-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.75 3A3.25 3.25 0 0 1 21 6.25v11.5A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3h11.5Zm1.75 5.5H4.5v9.25c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V8.5Zm-6.5 2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4ZM17.75 4.5H6.25A1.75 1.75 0 0 0 4.5 6.25V7h15v-.75a1.75 1.75 0 0 0-1.75-1.75Z"/></svg>
+                    <span class="header-stat-label">Next:</span>
+                    <span class="header-stat-value" id="nextAppointment">Loading...</span>
+                </div>
+                <div class="header-stat-divider"></div>
+                <div class="header-stat">
+                    <svg class="header-stat-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 11H7v-2h6V7h2v4h-4v2z"/></svg>
+                    <span class="header-stat-label">Avg Response:</span>
+                    <span class="header-stat-value" id="avgResponseTime">-</span>
+                </div>
+                <div class="header-stat-divider"></div>
+                <div class="header-stat">
+                    <svg class="header-stat-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    <span class="header-stat-label">Avg Resolution:</span>
+                    <span class="header-stat-value" id="avgResolutionTime">-</span>
+                </div>
+            </div>
         </div>
 
         <!-- Metrics Grid -->
@@ -1481,33 +1503,6 @@
                     <span class="trend-up" id="csatTrendIcon">↑</span>
                     <span id="csatTrendText"><span id="satisfactionTrend">0</span>% this week</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- Info Strip -->
-        <div class="info-strip">
-            <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25v4.5A2.25 2.25 0 0 1 18.75 12H5.25A2.25 2.25 0 0 1 3 9.75v-4.5ZM5.25 4.5a.75.75 0 0 0-.75.75v4.5c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-4.5a.75.75 0 0 0-.75-.75H5.25Zm-2 9.75A2.25 2.25 0 0 1 5.5 12h13A2.25 2.25 0 0 1 20.75 14.25v4.5A2.25 2.25 0 0 1 18.5 21h-13a2.25 2.25 0 0 1-2.25-2.25v-4.5Z"/></svg>
-                <span class="info-strip-label">Queues</span>
-                <span class="info-strip-value" id="userQueues">Loading...</span>
-            </div>
-            <div class="info-strip-sep"></div>
-            <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.75 3A3.25 3.25 0 0 1 21 6.25v11.5A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3h11.5Zm1.75 5.5H4.5v9.25c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V8.5Zm-6.5 2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4ZM17.75 4.5H6.25A1.75 1.75 0 0 0 4.5 6.25V7h15v-.75a1.75 1.75 0 0 0-1.75-1.75Z"/></svg>
-                <span class="info-strip-label">Next Appointment</span>
-                <span class="info-strip-value" id="nextAppointment">Loading...</span>
-            </div>
-            <div class="info-strip-sep"></div>
-            <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 11H7v-2h6V7h2v4h-4v2z"/></svg>
-                <span class="info-strip-label">Avg Response</span>
-                <span class="info-strip-value" id="avgResponseTime">-</span>
-            </div>
-            <div class="info-strip-sep"></div>
-            <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                <span class="info-strip-label">Avg Resolution</span>
-                <span class="info-strip-value" id="avgResolutionTime">-</span>
             </div>
         </div>
 
