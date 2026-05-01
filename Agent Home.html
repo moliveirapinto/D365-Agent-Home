@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2763,8 +2763,15 @@
 
                 
                 document.getElementById('csatTrendIcon').textContent = difference >= 0 ? '↑' : '↓';
-                document.getElementById('satisfactionTrend').textContent = Math.abs(difference);
-                document.getElementById('csatTrendText').innerHTML = `<span id="satisfactionTrend">${Math.abs(difference)}</span> vs last month`;
+                const csatTrendEl = document.getElementById('csatTrendText');
+                if (csatTrendEl) {
+                    const trendSpan = document.createElement('span');
+                    trendSpan.id = 'satisfactionTrend';
+                    trendSpan.textContent = String(Math.abs(difference));
+                    csatTrendEl.textContent = '';
+                    csatTrendEl.appendChild(trendSpan);
+                    csatTrendEl.appendChild(document.createTextNode(' vs last month'));
+                }
                 
                 // Change card color to purple/violet and update click handler
                 const card = document.getElementById('csatMetricCard');
@@ -2850,7 +2857,7 @@
                     // Query survey responses for the agent's cases with CSAT values
                     const surveyResponse = await xrm.WebApi.retrieveMultipleRecords(
                         "msdyn_customerfeedbacksurveyresponse",
-                        `?$filter=_msdyn_regarding_value ne null and createdon ge ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
+                        `?$filter=createdon ge ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
                     );
 
 
@@ -2884,7 +2891,7 @@
                             
                             const prevResponse = await xrm.WebApi.retrieveMultipleRecords(
                                 "msdyn_customerfeedbacksurveyresponse",
-                                `?$filter=_msdyn_regarding_value ne null and createdon ge ${previousMonthISO} and createdon lt ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
+                                `?$filter=createdon ge ${previousMonthISO} and createdon lt ${firstDayOfMonthISO}&$select=msdyn_satisfactionmetricvalue&$top=100`
                             );
                             
                             if (prevResponse.entities && prevResponse.entities.length > 0) {
