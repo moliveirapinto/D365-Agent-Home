@@ -1,5 +1,7 @@
 # Agent Home — D365 Custom Web Resource
 
+![Agent Home Screenshot](screenshot.png)
+
 A unified agent dashboard for Dynamics 365 Customer Service, providing real-time presence, queue management, performance metrics, and schedule visualization in a single web resource.
 
 ---
@@ -82,6 +84,7 @@ pac solution import --path AgentHome_<version>.zip --publish-changes --force-ove
 | v2.4.0.0 | 2025-04    | `queuemembership` filter fix: `systemuserid eq` (intersect entity) instead of `_systemuserid_value eq`; WFM schedule filter fix |
 | v2.5.0.0 | 2025-04    | Schedule UI overhaul: square-corner bars, solid colors (no gradients), no text on bars, full 7-type static color legend |
 | v2.6.0.0 | 2025-05    | Dynamic color system: custom/unknown schedule types auto-assigned unique colors via deterministic hash; dynamic legend shows all types including custom; `type-default` gray fallback eliminated |
+| v2.7.0.0 | 2025-05    | UI: My Queues section gets white card background with border, shadow, and aligned padding |
 
 ---
 
