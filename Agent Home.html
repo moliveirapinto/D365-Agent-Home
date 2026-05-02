@@ -1928,7 +1928,7 @@
             position: absolute;
             top: 4px;
             bottom: 4px;
-            border-radius: var(--r-sm);
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1938,7 +1938,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            padding: 0 8px;
+            padding: 0;
             min-width: 2px;
             transition: all var(--dur) var(--ease);
             cursor: default;
@@ -1952,37 +1952,31 @@
         }
 
         .schedule-block.type-shift {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: #2563eb;
         }
 
         .schedule-block.type-break {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: #f59e0b;
         }
 
         .schedule-block.type-lunch {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: #16a34a;
         }
 
         .schedule-block.type-training {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: #7c3aed;
         }
 
         .schedule-block.type-meeting {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            background: #0891b2;
         }
 
         .schedule-block.type-timeoff {
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(239,68,68,0.8),
-                rgba(239,68,68,0.8) 4px,
-                rgba(239,68,68,0.6) 4px,
-                rgba(239,68,68,0.6) 8px
-            );
+            background: #ef4444;
         }
 
         .schedule-block.type-default {
-            background: linear-gradient(135deg, var(--violet), #6d4aed);
+            background: #64748b;
         }
 
         /* Current time indicator */
@@ -4290,15 +4284,15 @@
 
         function getBlockColor(typeClass) {
             const colors = {
-                'type-shift': '#3b82f6',
+                'type-shift': '#2563eb',
                 'type-break': '#f59e0b',
-                'type-lunch': '#22c55e',
-                'type-training': '#8b5cf6',
-                'type-meeting': '#06b6d4',
+                'type-lunch': '#16a34a',
+                'type-training': '#7c3aed',
+                'type-meeting': '#0891b2',
                 'type-timeoff': '#ef4444',
-                'type-default': '#7c5cfc'
+                'type-default': '#64748b'
             };
-            return colors[typeClass] || '#7c5cfc';
+            return colors[typeClass] || '#64748b';
         }
 
         function renderScheduleTimeline(activities, targetDate) {
@@ -4354,7 +4348,7 @@
                 usedTypes.add(typeClass);
                 
                 const durationMin = Math.round((activity.end - activity.start) / 60000);
-                const label = widthPct > 8 ? activity.label : '';
+                const label = '';
                 const tooltip = `${activity.label} (${formatTimeShort(activity.start)} - ${formatTimeShort(activity.end)}, ${durationMin}m)`;
 
                 blocksHtml += `<div class="schedule-block ${typeClass}" style="left:${leftPct}%;width:${widthPct}%" title="${tooltip}">${label}</div>`;
@@ -4370,19 +4364,19 @@
                 }
             }
 
-            // Legend
-            const legendTypes = {
-                'type-shift': 'Shift',
-                'type-break': 'Break',
-                'type-lunch': 'Lunch',
-                'type-training': 'Training',
-                'type-meeting': 'Meeting',
-                'type-timeoff': 'Time Off',
-                'type-default': 'Other'
-            };
+            // Legend — always show all types
+            const legendTypes = [
+                { cls: 'type-shift',    label: 'Shift' },
+                { cls: 'type-break',    label: 'Break' },
+                { cls: 'type-lunch',    label: 'Lunch' },
+                { cls: 'type-training', label: 'Training' },
+                { cls: 'type-meeting',  label: 'Meeting' },
+                { cls: 'type-timeoff',  label: 'Time Off' },
+                { cls: 'type-default',  label: 'Other' }
+            ];
             let legendHtml = '';
-            usedTypes.forEach(t => {
-                legendHtml += `<div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:${getBlockColor(t)}"></div>${legendTypes[t] || 'Other'}</div>`;
+            legendTypes.forEach(({ cls, label: lbl }) => {
+                legendHtml += `<div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:${getBlockColor(cls)}"></div>${lbl}</div>`;
             });
 
             // Details list
