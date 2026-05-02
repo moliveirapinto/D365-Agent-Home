@@ -1493,13 +1493,20 @@
         .queues-section {
             margin-bottom: 0;
             min-width: 0;
+            background: var(--surface);
+            border: 1px solid var(--cloud);
+            border-radius: var(--r-xl);
+            box-shadow: var(--sh-2);
+            overflow: hidden;
         }
 
         .section-title-bar {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 0;
+            padding: 18px 24px 14px;
+            border-bottom: 1px solid var(--cloud);
         }
 
         .section-title-bar h2 {
@@ -1543,11 +1550,12 @@
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--ghost);
-            padding: 0 10px 8px 10px;
+            padding: 8px 10px 8px 10px;
             border-bottom: 1px solid var(--cloud);
         }
 
-        .queues-grid-header-cell:last-child { text-align: right; }
+        .queues-grid-header-cell:first-child { padding-left: 24px; }
+        .queues-grid-header-cell:last-child { text-align: right; padding-right: 24px; }
         .queues-grid-header-cell:nth-child(2) { text-align: right; }
 
         .queue-card {
@@ -1564,6 +1572,9 @@
             border-bottom: 1px solid var(--cloud);
             transition: background var(--dur) var(--ease);
         }
+        .queue-cell:first-child { padding-left: 24px; }
+        .queue-cell:last-child  { padding-right: 24px; }
+        .queue-card:last-child .queue-cell { border-bottom: none; }
 
         .queue-card-name {
             font-size: 12.5px;
