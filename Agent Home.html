@@ -2555,9 +2555,9 @@
                     // Step 1: Get queue IDs from membership (no $expand  works across all environments)
                     const resp = await xrm.WebApi.retrieveMultipleRecords(
                         'queuemembership',
-                        `?$filter=_systemuserid_value eq ${cleanId}&$top=50`
+                        `?$filter=systemuserid eq ${cleanId}&$top=50`
                     );
-                    const queueIds = (resp.entities || []).map(qm => qm._queueid_value).filter(Boolean);
+                    const queueIds = (resp.entities || []).map(qm => qm.queueid).filter(Boolean);
                     if (queueIds.length > 0) {
                         // Step 2: Get queue names
                         const queueFilter = queueIds.map(id => `queueid eq ${id}`).join(' or ');
@@ -3304,9 +3304,9 @@
                         try {
                             const resp = await xrm.WebApi.retrieveMultipleRecords(
                                 "queuemembership",
-                                `?$filter=_systemuserid_value eq ${user.systemuserid}&$top=50`
+                                `?$filter=systemuserid eq ${user.systemuserid}&$top=50`
                             );
-                            queueIds = (resp.entities || []).map(qm => qm._queueid_value).filter(Boolean);
+                            queueIds = (resp.entities || []).map(qm => qm.queueid).filter(Boolean);
                         } catch (e) {
 
                         }
@@ -3998,9 +3998,9 @@
                 try {
                     const resp = await xrm.WebApi.retrieveMultipleRecords(
                         'queuemembership',
-                        `?$filter=_systemuserid_value eq ${cleanId}&$top=50`
+                        `?$filter=systemuserid eq ${cleanId}&$top=50`
                     );
-                    queueIds = (resp.entities || []).map(qm => qm._queueid_value).filter(Boolean);
+                    queueIds = (resp.entities || []).map(qm => qm.queueid).filter(Boolean);
                 } catch (e) {
 
                 }
