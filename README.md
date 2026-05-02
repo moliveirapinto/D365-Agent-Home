@@ -1,6 +1,6 @@
 # Agent Home — D365 Custom Web Resource
 
-![Agent Home Screenshot](screenshot.png)
+![Agent Home Screenshot](screeshot.png)
 
 A unified agent dashboard for Dynamics 365 Customer Service, providing real-time presence, queue management, performance metrics, and schedule visualization in a single web resource.
 
