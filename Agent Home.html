@@ -4271,28 +4271,59 @@
             }
         }
 
-        function getBlockTypeClass(activityType) {
-            const t = (activityType || '').toLowerCase();
-            if (t.includes('break')) return 'type-break';
-            if (t.includes('lunch') || t.includes('meal')) return 'type-lunch';
-            if (t.includes('training') || t.includes('learn')) return 'type-training';
-            if (t.includes('meeting') || t.includes('huddle')) return 'type-meeting';
-            if (t.includes('off') || t.includes('pto') || t.includes('vacation') || t.includes('holiday')) return 'type-timeoff';
-            if (t.includes('shift') || t.includes('work') || t.includes('productive')) return 'type-shift';
-            return 'type-default';
+        // Palette for custom/unknown schedule types — visually distinct from the 6 standard colors
+        const CUSTOM_TYPE_PALETTE = [
+            '#db2777', // pink
+            '#ea580c', // orange
+            '#0284c7', // sky-blue
+            '#4f46e5', // indigo
+            '#c026d3', // fuchsia
+            '#be123c', // rose-dark
+            '#b45309', // amber-dark
+            '#15803d', // dark-green
+            '#0e7490', // dark-cyan
+            '#6d28d9', // deep-violet
+            '#92400e', // brown
+            '#1d4ed8', // royal-blue
+        ];
+
+        const KNOWN_TYPE_MAP = {
+            'type-shift':    { color: '#2563eb', label: 'Shift' },
+            'type-break':    { color: '#f59e0b', label: 'Break' },
+            'type-lunch':    { color: '#16a34a', label: 'Lunch' },
+            'type-training': { color: '#7c3aed', label: 'Training' },
+            'type-meeting':  { color: '#0891b2', label: 'Meeting' },
+            'type-timeoff':  { color: '#ef4444', label: 'Time Off' },
+        };
+
+        function _typeStringHash(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) { h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+            return Math.abs(h);
         }
 
-        function getBlockColor(typeClass) {
-            const colors = {
-                'type-shift': '#2563eb',
-                'type-break': '#f59e0b',
-                'type-lunch': '#16a34a',
-                'type-training': '#7c3aed',
-                'type-meeting': '#0891b2',
-                'type-timeoff': '#ef4444',
-                'type-default': '#64748b'
-            };
-            return colors[typeClass] || '#64748b';
+        // Returns { cls, color, label, isCustom } for any activity type string.
+        // Known types get a fixed CSS class + fixed color.
+        // Unknown/custom types get a deterministic unique color from the palette
+        // (same type name always maps to the same color across re-renders).
+        function getActivityInfo(rawType) {
+            const t = (rawType || '').toLowerCase();
+            if (t.includes('break'))                                                           return { cls: 'type-break',    ...KNOWN_TYPE_MAP['type-break'],    isCustom: false };
+            if (t.includes('lunch') || t.includes('meal'))                                     return { cls: 'type-lunch',    ...KNOWN_TYPE_MAP['type-lunch'],    isCustom: false };
+            if (t.includes('training') || t.includes('learn'))                                 return { cls: 'type-training', ...KNOWN_TYPE_MAP['type-training'], isCustom: false };
+            if (t.includes('meeting') || t.includes('huddle'))                                 return { cls: 'type-meeting',  ...KNOWN_TYPE_MAP['type-meeting'],  isCustom: false };
+            if (t.includes('off') || t.includes('pto') || t.includes('vacation') || t.includes('holiday')) return { cls: 'type-timeoff', ...KNOWN_TYPE_MAP['type-timeoff'], isCustom: false };
+            if (t.includes('shift') || t.includes('work') || t.includes('productive'))         return { cls: 'type-shift',    ...KNOWN_TYPE_MAP['type-shift'],    isCustom: false };
+            // Custom/unknown type — assign a unique color deterministically from the palette
+            const rawLabel = (rawType && rawType.trim()) ? rawType.trim() : 'Other';
+            const color = CUSTOM_TYPE_PALETTE[_typeStringHash(t) % CUSTOM_TYPE_PALETTE.length];
+            const safeCls = 'type-custom-' + t.replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+            return { cls: safeCls, color, label: rawLabel, isCustom: true };
+        }
+
+        function getBlockColor(clsOrRaw) {
+            if (KNOWN_TYPE_MAP[clsOrRaw]) return KNOWN_TYPE_MAP[clsOrRaw].color;
+            return getActivityInfo(clsOrRaw).color;
         }
 
         function renderScheduleTimeline(activities, targetDate) {
@@ -4329,7 +4360,8 @@
 
             // Build schedule blocks
             let blocksHtml = '';
-            const usedTypes = new Set();
+            // Track all types seen — keyed by cls to avoid duplicates in legend
+            const seenActivityTypes = new Map();
 
             activities.forEach(activity => {
                 const startHour = activity.start.getHours() + activity.start.getMinutes() / 60;
@@ -4344,14 +4376,15 @@
                 const leftPct = ((clampedStart - SCHEDULE_START_HOUR) / SCHEDULE_TOTAL_HOURS) * 100;
                 const widthPct = ((clampedEnd - clampedStart) / SCHEDULE_TOTAL_HOURS) * 100;
                 
-                const typeClass = getBlockTypeClass(activity.type);
-                usedTypes.add(typeClass);
+                const actInfo = getActivityInfo(activity.type);
+                seenActivityTypes.set(actInfo.cls, actInfo);
                 
                 const durationMin = Math.round((activity.end - activity.start) / 60000);
-                const label = '';
                 const tooltip = `${activity.label} (${formatTimeShort(activity.start)} - ${formatTimeShort(activity.end)}, ${durationMin}m)`;
+                // Custom types use inline background since they have no CSS class rule
+                const bgStyle = actInfo.isCustom ? `;background:${actInfo.color}` : '';
 
-                blocksHtml += `<div class="schedule-block ${typeClass}" style="left:${leftPct}%;width:${widthPct}%" title="${tooltip}">${label}</div>`;
+                blocksHtml += `<div class="schedule-block ${actInfo.cls}" style="left:${leftPct}%;width:${widthPct}%${bgStyle}" title="${tooltip}"></div>`;
             });
 
             // Current time indicator
@@ -4364,31 +4397,36 @@
                 }
             }
 
-            // Legend — always show all types
-            const legendTypes = [
-                { cls: 'type-shift',    label: 'Shift' },
-                { cls: 'type-break',    label: 'Break' },
-                { cls: 'type-lunch',    label: 'Lunch' },
-                { cls: 'type-training', label: 'Training' },
-                { cls: 'type-meeting',  label: 'Meeting' },
-                { cls: 'type-timeoff',  label: 'Time Off' },
-                { cls: 'type-default',  label: 'Other' }
+            // Legend — always show all 6 standard types, then append any custom types seen today
+            const standardLegendTypes = [
+                { color: '#2563eb', label: 'Shift' },
+                { color: '#f59e0b', label: 'Break' },
+                { color: '#16a34a', label: 'Lunch' },
+                { color: '#7c3aed', label: 'Training' },
+                { color: '#0891b2', label: 'Meeting' },
+                { color: '#ef4444', label: 'Time Off' },
             ];
             let legendHtml = '';
-            legendTypes.forEach(({ cls, label: lbl }) => {
-                legendHtml += `<div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:${getBlockColor(cls)}"></div>${lbl}</div>`;
+            standardLegendTypes.forEach(({ color, label: lbl }) => {
+                legendHtml += `<div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:${color}"></div>${lbl}</div>`;
+            });
+            // Append custom types actually present in today's schedule
+            seenActivityTypes.forEach(actInfo => {
+                if (actInfo.isCustom) {
+                    legendHtml += `<div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:${actInfo.color}"></div>${actInfo.label}</div>`;
+                }
             });
 
             // Details list
             let detailsHtml = '';
             activities.forEach(activity => {
-                const typeClass = getBlockTypeClass(activity.type);
+                const actInfo = getActivityInfo(activity.type);
                 const durationMin = Math.round((activity.end - activity.start) / 60000);
                 const durLabel = durationMin >= 60 ? Math.floor(durationMin / 60) + 'h ' + (durationMin % 60) + 'm' : durationMin + 'm';
 
                 detailsHtml += `
                     <div class="schedule-detail-item">
-                        <div class="schedule-detail-dot" style="background:${getBlockColor(typeClass)}"></div>
+                        <div class="schedule-detail-dot" style="background:${actInfo.color}"></div>
                         <div class="schedule-detail-time">${formatTimeShort(activity.start)} – ${formatTimeShort(activity.end)}</div>
                         <div class="schedule-detail-label">${activity.label}</div>
                         <div class="schedule-detail-duration">${durLabel}</div>
