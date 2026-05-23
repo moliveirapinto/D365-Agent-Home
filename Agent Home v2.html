@@ -402,7 +402,20 @@ body::after { content: none; }
 @media (max-width: 640px) { .info-strip { flex-direction: column; align-items: flex-start; gap: 6px; } }
 
 .info-strip-item { display: flex; align-items: center; gap: 6px; padding: 4px 0; min-width: 0; }
-.info-strip-icon { width: 15px; height: 15px; flex-shrink: 0; color: var(--indigo); opacity: 0.9; }
+.info-strip-icon {
+    width: 16px; height: 16px; flex-shrink: 0;
+    background-color: var(--indigo); opacity: 0.95;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: contain; mask-size: contain;
+    display: inline-block;
+}
+.info-strip-icon.i-clock     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/clock_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/clock_24_regular.svg'); }
+.info-strip-icon.i-check     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/checkmark_circle_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/checkmark_circle_24_regular.svg'); }
+.info-strip-icon.i-briefcase { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/briefcase_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/briefcase_24_regular.svg'); }
+.info-strip-icon.i-call      { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/call_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/call_24_regular.svg'); }
+.info-strip-icon.i-mail      { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/mail_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/mail_24_regular.svg'); }
+.info-strip-icon.i-flash     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/flash_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/flash_24_regular.svg'); }
 
 .info-strip-clickable[data-case-url] {
     cursor: pointer;
@@ -1650,7 +1663,37 @@ body::after { content: none; }
         <!-- Info Strip -->
         <div class="info-strip">
             <div class="info-strip-item">
-                <svg class="info-strip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+                <span class="info-strip-icon i-clock"></span>
+                <span class="info-strip-label">Avg Response</span>
+                <span class="info-strip-value" id="avgResponseTime">-</span>
+            </div>
+            <div class="info-strip-sep"></div>
+            <div class="info-strip-item">
+                <span class="info-strip-icon i-check"></span>
+                <span class="info-strip-label">Avg Resolution</span>
+                <span class="info-strip-value" id="avgResolutionTime">-</span>
+            </div>
+            <div class="info-strip-sep"></div>
+            <div class="info-strip-item">
+                <span class="info-strip-icon i-briefcase"></span>
+                <span class="info-strip-label">Oldest Case</span>
+                <span class="info-strip-value info-strip-clickable" id="infoOldestCase" title="Click to open case" style="cursor:default">-</span>
+            </div>
+            <div class="info-strip-sep"></div>
+            <div class="info-strip-item">
+                <span class="info-strip-icon i-call"></span>
+                <span class="info-strip-label">Calls Today</span>
+                <span class="info-strip-value" id="infoCallsToday">-</span>
+            </div>
+            <div class="info-strip-sep"></div>
+            <div class="info-strip-item">
+                <span class="info-strip-icon i-mail"></span>
+                <span class="info-strip-label">Emails Today</span>
+                <span class="info-strip-value" id="infoEmailsToday">-</span>
+            </div>
+            <div class="info-strip-sep"></div>
+            <div class="info-strip-item">
+                <span class="info-strip-icon i-flash"></span>
                 <span class="info-strip-label">1st Response</span>
                 <span class="info-strip-value" id="infoFirstResponsePct">-</span>
             </div>
