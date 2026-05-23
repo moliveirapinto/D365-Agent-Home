@@ -4184,9 +4184,8 @@ body::after { content: none; }
             document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
             document.getElementById('csatMetricBadge').textContent = 'MTD';
             
-            document.getElementById('taskList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>This page must be run within Dynamics 365</p></div>';
-            document.getElementById('casesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>This page must be run within Dynamics 365</p></div>';
-            document.getElementById('activityFeed').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>This page must be run within Dynamics 365</p></div>';
+            var _msg = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>This page must be run within Dynamics 365</p></div>';
+            ['taskList','casesList','activityFeed'].forEach(function(id){ var el = document.getElementById(id); if (el) el.innerHTML = _msg; });
         }
 
         // Initialize on load
