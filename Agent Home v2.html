@@ -3717,27 +3717,27 @@ body::after { content: none; }
 
         // Palette for custom/unknown schedule types — visually distinct from the 6 standard colors
         const CUSTOM_TYPE_PALETTE = [
-            '#db2777', // pink
-            '#ea580c', // orange
-            '#0284c7', // sky-blue
-            '#4f46e5', // indigo
-            '#c026d3', // fuchsia
-            '#be123c', // rose-dark
-            '#b45309', // amber-dark
-            '#15803d', // dark-green
-            '#0e7490', // dark-cyan
-            '#6d28d9', // deep-violet
-            '#92400e', // brown
-            '#1d4ed8', // royal-blue
+            '#ec4899', // pink
+            '#f97316', // orange
+            '#06b6d4', // cyan
+            '#a855f7', // purple
+            '#14b8a6', // teal
+            '#3b82f6', // blue
+            '#84cc16', // lime
+            '#d946ef', // fuchsia
+            '#22c55e', // emerald-2
+            '#eab308', // yellow
+            '#6366f1', // indigo-2
+            '#64748b', // slate
         ];
 
         const KNOWN_TYPE_MAP = {
-            'type-shift':    { color: '#2563eb', label: 'Shift' },
+            'type-shift':    { color: '#4f46e5', label: 'Shift' },
             'type-break':    { color: '#f59e0b', label: 'Break' },
-            'type-lunch':    { color: '#16a34a', label: 'Lunch' },
-            'type-training': { color: '#7c3aed', label: 'Training' },
-            'type-meeting':  { color: '#0891b2', label: 'Meeting' },
-            'type-timeoff':  { color: '#ef4444', label: 'Time Off' },
+            'type-lunch':    { color: '#10b981', label: 'Lunch' },
+            'type-training': { color: '#8b5cf6', label: 'Training' },
+            'type-meeting':  { color: '#0ea5e9', label: 'Meeting' },
+            'type-timeoff':  { color: '#f43f5e', label: 'Time Off' },
         };
 
         function _typeStringHash(str) {
@@ -3843,12 +3843,12 @@ body::after { content: none; }
 
             // Legend — always show all 6 standard types, then append any custom types seen today
             const standardLegendTypes = [
-                { color: '#2563eb', label: 'Shift' },
+                { color: '#4f46e5', label: 'Shift' },
                 { color: '#f59e0b', label: 'Break' },
-                { color: '#16a34a', label: 'Lunch' },
-                { color: '#7c3aed', label: 'Training' },
-                { color: '#0891b2', label: 'Meeting' },
-                { color: '#ef4444', label: 'Time Off' },
+                { color: '#10b981', label: 'Lunch' },
+                { color: '#8b5cf6', label: 'Training' },
+                { color: '#0ea5e9', label: 'Meeting' },
+                { color: '#f43f5e', label: 'Time Off' },
             ];
             let legendHtml = '';
             standardLegendTypes.forEach(({ color, label: lbl }) => {
