@@ -1458,7 +1458,7 @@ body::after { content: none; }
 .schedule-block {
     position: absolute;
     top: 4px; bottom: 4px;
-    border-radius: 3px;
+    border-radius: 0;
     display: flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 600;
     color: var(--white);
@@ -1475,13 +1475,13 @@ body::after { content: none; }
     box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     z-index: 3;
 }
-.schedule-block.type-shift    { background: #2563eb; }
-.schedule-block.type-break    { background: #f59e0b; }
-.schedule-block.type-lunch    { background: #16a34a; }
-.schedule-block.type-training { background: #7c3aed; }
-.schedule-block.type-meeting  { background: #0891b2; }
-.schedule-block.type-timeoff  { background: #ef4444; }
-.schedule-block.type-default  { background: #64748b; }
+.schedule-block.type-shift    { background: #818cf8; }
+.schedule-block.type-break    { background: #fbbf24; }
+.schedule-block.type-lunch    { background: #34d399; }
+.schedule-block.type-training { background: #a78bfa; }
+.schedule-block.type-meeting  { background: #38bdf8; }
+.schedule-block.type-timeoff  { background: #fb7185; }
+.schedule-block.type-default  { background: #94a3b8; }
 
 .schedule-now-line {
     position: absolute;
@@ -3717,27 +3717,27 @@ body::after { content: none; }
 
         // Palette for custom/unknown schedule types — visually distinct from the 6 standard colors
         const CUSTOM_TYPE_PALETTE = [
-            '#ec4899', // pink
-            '#f97316', // orange
-            '#06b6d4', // cyan
-            '#a855f7', // purple
-            '#14b8a6', // teal
-            '#3b82f6', // blue
-            '#84cc16', // lime
-            '#d946ef', // fuchsia
-            '#22c55e', // emerald-2
-            '#eab308', // yellow
-            '#6366f1', // indigo-2
-            '#64748b', // slate
+            '#f472b6', // pink
+            '#fb923c', // orange
+            '#22d3ee', // cyan
+            '#c084fc', // purple
+            '#2dd4bf', // teal
+            '#60a5fa', // blue
+            '#a3e635', // lime
+            '#e879f9', // fuchsia
+            '#4ade80', // emerald-2
+            '#facc15', // yellow
+            '#818cf8', // indigo-2
+            '#94a3b8', // slate
         ];
 
         const KNOWN_TYPE_MAP = {
-            'type-shift':    { color: '#4f46e5', label: 'Shift' },
-            'type-break':    { color: '#f59e0b', label: 'Break' },
-            'type-lunch':    { color: '#10b981', label: 'Lunch' },
-            'type-training': { color: '#8b5cf6', label: 'Training' },
-            'type-meeting':  { color: '#0ea5e9', label: 'Meeting' },
-            'type-timeoff':  { color: '#f43f5e', label: 'Time Off' },
+            'type-shift':    { color: '#818cf8', label: 'Shift' },
+            'type-break':    { color: '#fbbf24', label: 'Break' },
+            'type-lunch':    { color: '#34d399', label: 'Lunch' },
+            'type-training': { color: '#a78bfa', label: 'Training' },
+            'type-meeting':  { color: '#38bdf8', label: 'Meeting' },
+            'type-timeoff':  { color: '#fb7185', label: 'Time Off' },
         };
 
         function _typeStringHash(str) {
@@ -3843,12 +3843,12 @@ body::after { content: none; }
 
             // Legend — always show all 6 standard types, then append any custom types seen today
             const standardLegendTypes = [
-                { color: '#4f46e5', label: 'Shift' },
-                { color: '#f59e0b', label: 'Break' },
-                { color: '#10b981', label: 'Lunch' },
-                { color: '#8b5cf6', label: 'Training' },
-                { color: '#0ea5e9', label: 'Meeting' },
-                { color: '#f43f5e', label: 'Time Off' },
+                { color: '#818cf8', label: 'Shift' },
+                { color: '#fbbf24', label: 'Break' },
+                { color: '#34d399', label: 'Lunch' },
+                { color: '#a78bfa', label: 'Training' },
+                { color: '#38bdf8', label: 'Meeting' },
+                { color: '#fb7185', label: 'Time Off' },
             ];
             let legendHtml = '';
             standardLegendTypes.forEach(({ color, label: lbl }) => {
