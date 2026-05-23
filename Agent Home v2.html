@@ -286,13 +286,16 @@ body::after { content: none; }
     letter-spacing: 0.2px;
 }
 .header-time {
-    font-size: 13px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.65);
-    padding-left: 22px;
-    border-left: 1px solid rgba(255,255,255,0.12);
-    letter-spacing: 0.4px;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.95);
+    padding-left: 24px;
+    margin-left: 6px;
+    border-left: 1px solid rgba(255,255,255,0.14);
+    letter-spacing: 0.2px;
     font-variant-numeric: tabular-nums;
+    line-height: 1;
 }
 
 /* --- Right: Status Badge --- */
@@ -1575,7 +1578,7 @@ body::after { content: none; }
                             <span class="date-month" id="headerMonth">March 2026</span>
                         </div>
                     </div>
-                    <div class="header-time" id="headerTime">11:57 AM</div>
+                    <div class="header-time" id="headerTime"></div>
                 </div>
 
                 <!-- Right: Status -->
@@ -4193,7 +4196,14 @@ body::after { content: none; }
             if (presenceCheckInterval) clearInterval(presenceCheckInterval);
             if (durationUpdateInterval) clearInterval(durationUpdateInterval);
         });
-    </script>
+    
+        // Kick off clock immediately so header time is correct even before Xrm init completes
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function(){ try { updateDateTime(); setInterval(updateDateTime, 30000); } catch(e){} });
+        } else {
+            try { updateDateTime(); setInterval(updateDateTime, 30000); } catch(e){}
+        }
+</script>
 
     <!-- Queue Items Modal -->
     <div class="qm-backdrop" id="qmBackdrop" onclick="closeQueueModal(event)">
