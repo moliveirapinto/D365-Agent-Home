@@ -53,6 +53,15 @@ Custom type palette (12 colors, cycled by hash): pink, orange, sky-blue, indigo,
 
 ---
 
+### Languages (Automatic Localization)
+- **Automatically detects** the signed-in user's Dynamics 365 display language from their user settings (LCID) — no prompt, no manual switch
+- Renders **all** UI text — greetings, section titles, metrics, queues, schedule, tasks, cases, buttons, empty states, and modals — in the detected language
+- **Locale-aware** date, time, and number formatting
+- Supported languages: English, French, German, Spanish, Brazilian Portuguese, Italian, Dutch, Japanese, Simplified Chinese, Korean, Russian
+- Any unsupported language **falls back to English** so the UI never breaks
+
+---
+
 ## Requirements
 
 - Dynamics 365 Customer Service (with Omnichannel or equivalent)
@@ -63,15 +72,19 @@ Custom type palette (12 colors, cycled by hash): pink, orange, sky-blue, indigo,
 
 ## Deployment
 
-1. Download the latest release ZIP from the [Releases](https://github.com/moliveirapinto/D365-Agent-Home/releases) page
-2. Import to D365 via **Settings → Solutions → Import**
+Import the prebuilt **`solution.zip`** (unmanaged, version 2.8.0.0) included in this repository:
+
+1. In D365 go to **Settings → Solutions → Import** (or **make.powerapps.com → Solutions → Import solution**)
+2. Select `solution.zip` and complete the import
 3. Publish all customizations
-4. Add the `maulabs_agent_home` web resource to your model-driven app
+4. Add the `maulabs_agent_home` web resource to your model-driven app page
 
 Or use the Power Platform CLI:
 ```bash
-pac solution import --path AgentHome_<version>.zip --publish-changes --force-overwrite
+pac solution import --path solution.zip --publish-changes --force-overwrite
 ```
+
+> The solution imports as a new version (2.8.0.0), so importing over an existing Agent Home install upgrades it in place.
 
 ---
 
@@ -85,6 +98,7 @@ pac solution import --path AgentHome_<version>.zip --publish-changes --force-ove
 | v2.5.0.0 | 2025-04    | Schedule UI overhaul: square-corner bars, solid colors (no gradients), no text on bars, full 7-type static color legend |
 | v2.6.0.0 | 2025-05    | Dynamic color system: custom/unknown schedule types auto-assigned unique colors via deterministic hash; dynamic legend shows all types including custom; `type-default` gray fallback eliminated |
 | v2.7.0.0 | 2025-05    | UI: My Queues section gets white card background with border, shadow, and aligned padding |
+| v2.8.0.0 | 2026-06    | **Automatic language detection (i18n):** the dashboard detects the signed-in user's Dynamics 365 display language (LCID) and renders **all** UI text in that language with no prompt. Ships with 11 languages — English, French, German, Spanish, Brazilian Portuguese, Italian, Dutch, Japanese, Simplified Chinese, Korean, Russian — plus locale-aware date/number formatting. Unsupported languages fall back to English. |
 
 ---
 
