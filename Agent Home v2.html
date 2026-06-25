@@ -1580,7 +1580,7 @@ body::after { content: none; }
                         <div class="avatar" id="agentAvatar">MO</div>
                     </div>
                     <div class="greeting-block">
-                        <p class="greeting-time" id="greetingTime">Good morning</p>
+                        <p class="greeting-time" id="greetingTime" data-i18n="greeting_morning">Good morning</p>
                         <h1 class="greeting-name"><span id="agentName">Agent</span></h1>
                     </div>
                 </div>
@@ -1602,7 +1602,7 @@ body::after { content: none; }
                     <div class="status-badge" id="statusBadge" style="--status-bg: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%); --status-shadow: rgba(16, 124, 16, 0.3);">
                         <span class="status-indicator"></span>
                         <div class="status-info">
-                            <span class="status-label" id="statusText">Available</span>
+                            <span class="status-label" id="statusText" data-i18n="p_available">Available</span>
                             <span class="status-duration" id="statusDuration">0h 0m 0s</span>
                         </div>
                     </div>
@@ -1615,49 +1615,49 @@ body::after { content: none; }
         <div class="metrics-grid">
             <div class="metric-card" style="--card-color: #0078d4; --card-soft: rgba(0, 120, 212, 0.12);" onclick="viewMyCases()">
                 <div class="metric-header">
-                    <div class="metric-label">My Active Cases</div>
-                    <span class="metric-badge">Live queue</span>
+                    <div class="metric-label" data-i18n="m_activeCases">My Active Cases</div>
+                    <span class="metric-badge" data-i18n="b_liveQueue">Live queue</span>
                 </div>
                 <div class="metric-value" id="activeCases">-</div>
                 <div class="metric-trend">
                     <span class="trend-up">↑</span>
-                    <span><span id="casesTrend">0</span> from yesterday</span>
+                    <span><span id="casesTrend">0</span> <span data-i18n="t_fromYesterday">from yesterday</span></span>
                 </div>
             </div>
 
             <div class="metric-card" style="--card-color: #107c10; --card-soft: rgba(16, 124, 16, 0.14);" onclick="viewResolved()">
                 <div class="metric-header">
-                    <div class="metric-label">Resolved Today</div>
-                    <span class="metric-badge">Today</span>
+                    <div class="metric-label" data-i18n="m_resolvedToday">Resolved Today</div>
+                    <span class="metric-badge" data-i18n="b_today">Today</span>
                 </div>
                 <div class="metric-value" id="resolvedToday">-</div>
                 <div class="metric-trend">
                     <span class="trend-up">↑</span>
-                    <span><span id="resolvedPercent">0</span>% completion rate</span>
+                    <span><span id="resolvedPercent">0</span><span data-i18n="t_completionRate">% completion rate</span></span>
                 </div>
             </div>
 
             <div class="metric-card" style="--card-color: #ff8c00; --card-soft: rgba(255, 140, 0, 0.16);" onclick="viewPendingTasks()">
                 <div class="metric-header">
-                    <div class="metric-label">Pending Tasks</div>
-                    <span class="metric-badge">Backlog</span>
+                    <div class="metric-label" data-i18n="m_pendingTasks">Pending Tasks</div>
+                    <span class="metric-badge" data-i18n="b_backlog">Backlog</span>
                 </div>
                 <div class="metric-value" id="pendingTasks">-</div>
                 <div class="metric-trend">
                     <span class="trend-up">↺</span>
-                    <span><span id="overdueCount" style="color: #d13438; font-weight: 700;">0</span> overdue · <span id="dueSoon">0</span> due today</span>
+                    <span><span id="overdueCount" style="color: #d13438; font-weight: 700;">0</span> <span data-i18n="t_overdue">overdue</span> · <span id="dueSoon">0</span> <span data-i18n="t_dueToday">due today</span></span>
                 </div>
             </div>
 
             <div class="metric-card" id="csatMetricCard" style="--card-color: #a4262c; --card-soft: rgba(164, 38, 44, 0.14);" onclick="viewSatisfaction()">
                 <div class="metric-header">
-                    <div class="metric-label" id="csatMetricLabel">Satisfaction Score</div>
-                    <span class="metric-badge" id="csatMetricBadge">CX</span>
+                    <div class="metric-label" id="csatMetricLabel" data-i18n="m_satisfaction">Satisfaction Score</div>
+                    <span class="metric-badge" id="csatMetricBadge" data-i18n="b_cx">CX</span>
                 </div>
                 <div class="metric-value" id="satisfactionScore">-</div>
                 <div class="metric-trend">
                     <span class="trend-up" id="csatTrendIcon">↑</span>
-                    <span id="csatTrendText"><span id="satisfactionTrend">0</span>% this week</span>
+                    <span id="csatTrendText"><span id="satisfactionTrend">0</span><span data-i18n="t_thisWeek">% this week</span></span>
                 </div>
             </div>
         </div>
@@ -1666,37 +1666,37 @@ body::after { content: none; }
         <div class="info-strip">
             <div class="info-strip-item">
                 <span class="info-strip-icon i-clock"></span>
-                <span class="info-strip-label">Avg Response</span>
+                <span class="info-strip-label" data-i18n="i_avgResponse">Avg Response</span>
                 <span class="info-strip-value" id="avgResponseTime">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
                 <span class="info-strip-icon i-check"></span>
-                <span class="info-strip-label">Avg Resolution</span>
+                <span class="info-strip-label" data-i18n="i_avgResolution">Avg Resolution</span>
                 <span class="info-strip-value" id="avgResolutionTime">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
                 <span class="info-strip-icon i-briefcase"></span>
-                <span class="info-strip-label">Oldest Case</span>
+                <span class="info-strip-label" data-i18n="i_oldestCase">Oldest Case</span>
                 <span class="info-strip-value info-strip-clickable" id="infoOldestCase" title="Click to open case" style="cursor:default">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
                 <span class="info-strip-icon i-call"></span>
-                <span class="info-strip-label">Calls Today</span>
+                <span class="info-strip-label" data-i18n="i_callsToday">Calls Today</span>
                 <span class="info-strip-value" id="infoCallsToday">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
                 <span class="info-strip-icon i-mail"></span>
-                <span class="info-strip-label">Emails Today</span>
+                <span class="info-strip-label" data-i18n="i_emailsToday">Emails Today</span>
                 <span class="info-strip-value" id="infoEmailsToday">-</span>
             </div>
             <div class="info-strip-sep"></div>
             <div class="info-strip-item">
                 <span class="info-strip-icon i-flash"></span>
-                <span class="info-strip-label">1st Response</span>
+                <span class="info-strip-label" data-i18n="i_firstResponse">1st Response</span>
                 <span class="info-strip-value" id="infoFirstResponsePct">-</span>
             </div>
         </div>
@@ -1707,13 +1707,13 @@ body::after { content: none; }
         <div class="queues-section">
             <div class="section-title-bar">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 5.75A.75.75 0 0 1 8.25 5h11.5a.75.75 0 0 1 0 1.5H8.25a.75.75 0 0 1-.75-.75Zm0 6a.75.75 0 0 1 .75-.75h11.5a.75.75 0 0 1 0 1.5H8.25a.75.75 0 0 1-.75-.75Zm.75 5.25a.75.75 0 0 0 0 1.5h11.5a.75.75 0 0 0 0-1.5H8.25ZM5 5.75a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0ZM3.75 13a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Zm0 6a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Z"/></svg>
-                <h2>My Queues</h2>
-                <span class="section-badge" id="queueCardCount">0 queues</span>
+                <h2 data-i18n="s_myQueues">My Queues</h2>
+                <span class="section-badge" id="queueCardCount" data-i18n="q_countMany">0 queues</span>
             </div>
             <div class="queues-grid" id="queuesGrid">
                 <div class="queues-loading">
                     <div class="spinner"></div>
-                    <p>Loading queue data...</p>
+                    <p data-i18n="ld_queue">Loading queue data...</p>
                 </div>
             </div>
         </div>
@@ -1724,15 +1724,15 @@ body::after { content: none; }
                 <div class="schedule-header">
                     <div class="schedule-title">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 2a.75.75 0 0 1 .75.75V4h6.5V2.75a.75.75 0 0 1 1.5 0V4h.5A3.25 3.25 0 0 1 20.5 7.25v10.5A3.25 3.25 0 0 1 17.25 21h-10.5A3.25 3.25 0 0 1 3.5 17.75V7.25A3.25 3.25 0 0 1 6.75 4h.5V2.75A.75.75 0 0 1 8 2Zm11 8H5v7.75c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 19 17.75V10Z"/></svg>
-                        My Schedule
+                        <span data-i18n="s_mySchedule">My Schedule</span>
                     </div>
                     <div class="schedule-nav">
-                        <button class="schedule-today-btn" id="scheduleTodayBtn" onclick="goToScheduleToday()">Today</button>
-                        <button class="schedule-nav-btn" onclick="changeScheduleDay(-1)" title="Previous day">
+                        <button class="schedule-today-btn" id="scheduleTodayBtn" onclick="goToScheduleToday()" data-i18n="sched_today">Today</button>
+                        <button class="schedule-nav-btn" onclick="changeScheduleDay(-1)" data-i18n-title="title_prevDay" title="Previous day">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                         </button>
-                        <span class="schedule-date-label" id="scheduleDateLabel">Today</span>
-                        <button class="schedule-nav-btn" onclick="changeScheduleDay(1)" title="Next day">
+                        <span class="schedule-date-label" id="scheduleDateLabel" data-i18n="sched_today">Today</span>
+                        <button class="schedule-nav-btn" onclick="changeScheduleDay(1)" data-i18n-title="title_nextDay" title="Next day">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
@@ -1741,7 +1741,7 @@ body::after { content: none; }
                     <div id="scheduleContent">
                         <div class="queues-loading">
                             <div class="spinner"></div>
-                            <p>Loading schedule...</p>
+                            <p data-i18n="ld_schedule">Loading schedule...</p>
                         </div>
                     </div>
                 </div>
@@ -1759,15 +1759,15 @@ body::after { content: none; }
                     <div class="card-header">
                         <div class="card-title">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.25 3A3.25 3.25 0 0 0 3 6.25v11.5A3.25 3.25 0 0 0 6.25 21h11.5A3.25 3.25 0 0 0 21 17.75V6.25A3.25 3.25 0 0 0 17.75 3H6.25ZM4.5 6.25c0-.966.784-1.75 1.75-1.75h11.5c.966 0 1.75.784 1.75 1.75v11.5a1.75 1.75 0 0 1-1.75 1.75H6.25a1.75 1.75 0 0 1-1.75-1.75V6.25Zm12.28 2.47a.75.75 0 0 1 0 1.06l-5.5 5.5a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10.5 13.44l4.97-4.97a.75.75 0 0 1 1.06 0Z"/></svg>
-                            My Tasks
+                            <span data-i18n="c_myTasks">My Tasks</span>
                         </div>
-                        <a class="view-all" onclick="viewAllTasks()">View All →</a>
+                        <a class="view-all" onclick="viewAllTasks()"><span data-i18n="viewAll">View All</span> →</a>
                     </div>
                     <div class="card-body">
                     <div class="task-list" id="taskList">
                         <div class="loading">
                             <div class="spinner"></div>
-                            <p>Loading tasks...</p>
+                            <p data-i18n="ld_tasks">Loading tasks...</p>
                         </div>
                     </div>
                     </div>
@@ -1778,15 +1778,15 @@ body::after { content: none; }
                     <div class="card-header">
                         <div class="card-title">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 4.5A2.5 2.5 0 0 1 11.5 2h1A2.5 2.5 0 0 1 15 4.5V5h3.25A2.75 2.75 0 0 1 21 7.75v9.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25v-9.5A2.75 2.75 0 0 1 5.75 5H9v-.5ZM13.5 5v-.5a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1V5h3ZM4.5 11.5v5.75c0 .69.56 1.25 1.25 1.25h12.5c.69 0 1.25-.56 1.25-1.25V11.5h-6v.75a.75.75 0 0 1-1.5 0v-.75h-7.5Zm15-1.5V7.75c0-.69-.56-1.25-1.25-1.25H5.75c-.69 0-1.25.56-1.25 1.25V10h7.5v-.25a.75.75 0 0 1 1.5 0V10h6Z"/></svg>
-                            Recent Cases
+                            <span data-i18n="c_recentCases">Recent Cases</span>
                         </div>
-                        <a class="view-all" onclick="viewAllCases()">View All →</a>
+                        <a class="view-all" onclick="viewAllCases()"><span data-i18n="viewAll">View All</span> →</a>
                     </div>
                     <div class="card-body">
                     <div id="casesList">
                         <div class="loading">
                             <div class="spinner"></div>
-                            <p>Loading cases...</p>
+                            <p data-i18n="ld_cases">Loading cases...</p>
                         </div>
                     </div>
                     </div>
@@ -1800,15 +1800,15 @@ body::after { content: none; }
                     <div class="card-header">
                         <div class="card-title">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.405 1.873a.75.75 0 0 1 .345.823l-2.025 7.804h5.525a.75.75 0 0 1 .574 1.234l-9 10.75a.75.75 0 0 1-1.3-.659l2.025-7.825H3.75a.75.75 0 0 1-.574-1.234l9-10.75a.75.75 0 0 1 .908-.143ZM5.354 12.5h4.621a.75.75 0 0 1 .726.939l-1.535 5.93 6.48-7.869h-4.621a.75.75 0 0 1-.726-.939l1.535-5.913L5.354 12.5Z"/></svg>
-                            Quick Actions
+                            <span data-i18n="c_quickActions">Quick Actions</span>
                         </div>
                     </div>
                     <div class="card-body">
                     <div class="quick-actions">
-                        <button class="action-btn primary" onclick="createNewCase()">New Case</button>
-                        <button class="action-btn secondary" onclick="createTask()">New Task</button>
-                        <button class="action-btn secondary" onclick="searchKnowledge()">Knowledge Base</button>
-                        <button class="action-btn secondary" onclick="viewQueue()">View Queue</button>
+                        <button class="action-btn primary" onclick="createNewCase()" data-i18n="a_newCase">New Case</button>
+                        <button class="action-btn secondary" onclick="createTask()" data-i18n="a_newTask">New Task</button>
+                        <button class="action-btn secondary" onclick="searchKnowledge()" data-i18n="a_knowledgeBase">Knowledge Base</button>
+                        <button class="action-btn secondary" onclick="viewQueue()" data-i18n="a_viewQueue">View Queue</button>
                     </div>
 
                     </div>
@@ -1819,43 +1819,43 @@ body::after { content: none; }
                     <div class="card-header">
                         <div class="card-title">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.754 10c.69 0 1.25.56 1.25 1.25v3.5c0 .69-.56 1.25-1.25 1.25H9.252a1.25 1.25 0 0 1-1.25-1.25v-3.5c0-.69.56-1.25 1.25-1.25h5.502ZM5.5 12c.279 0 .55.033.811.094a2.741 2.741 0 0 0-.31 1.156L6 17.748c0 .465.116.903.32 1.287l-.092.003C3.146 19.038 2 17.5 2 15.681c0-1.954 1.331-3.681 3.5-3.681Zm13.001 0c2.168 0 3.499 1.726 3.499 3.681 0 1.819-1.146 3.357-4.227 3.357l-.094-.002c.205-.385.321-.823.321-1.288v-4.498c0-.408-.111-.79-.305-1.118l-.001-.041a3.6 3.6 0 0 1 .807-.091ZM12 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6ZM5.5 5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm13 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>
-                            Team Agents
+                            <span data-i18n="c_teamAgents">Team Agents</span>
                         </div>
                     </div>
                     <div class="card-body">
                     <div class="agent-search-box">
-                        <input type="text" id="agentSearchInput" placeholder="Search agents..." oninput="filterAgents()">
+                        <input type="text" id="agentSearchInput" data-i18n-placeholder="ph_searchAgents" placeholder="Search agents..." oninput="filterAgents()">
                         <svg class="agent-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm10 3-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
                     <div class="agent-queue-filter">
                         <select id="queueFilterDropdown" onchange="filterAgentsByQueue()">
-                            <option value="">All Queues</option>
+                            <option value="" data-i18n="opt_allQueues">All Queues</option>
                         </select>
                     </div>
                     <div class="agent-tabs">
                         <button class="agent-tab active" onclick="switchAgentTab('online')">
                             <svg class="tab-presence-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#107c10"/><path d="M6.5 10.5 4 8l.7-.7L6.5 9.1l4.8-4.8.7.7Z" fill="#fff"/></svg>
-                            Active
+                            <span data-i18n="tab_active">Active</span>
                             <span class="agent-tab-badge" id="onlineCount">0</span>
                         </button>
                         <button class="agent-tab" onclick="switchAgentTab('offline')">
                             <svg class="tab-presence-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#8a8886"/><line x1="4.5" y1="4.5" x2="11.5" y2="11.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-                            Offline
+                            <span data-i18n="tab_offline">Offline</span>
                             <span class="agent-tab-badge" id="offlineCount">0</span>
                         </button>
                     </div>
                     <div id="onlineAgentsTab" class="agent-tab-content active">
                         <div class="loading">
                             <div class="spinner"></div>
-                            <p>Loading agents...</p>
+                            <p data-i18n="ld_agents">Loading agents...</p>
                         </div>
                     </div>
                     <div id="offlineAgentsTab" class="agent-tab-content">
                         <div class="loading">
                             <div class="spinner"></div>
-                            <p>Loading agents...</p>
+                            <p data-i18n="ld_agents">Loading agents...</p>
                         </div>
                     </div>
                     </div>
@@ -1865,6 +1865,557 @@ body::after { content: none; }
     </div>
 
     <script>
+        // ===================================================================
+        // Internationalization (i18n)
+        // Auto-detects the language the user is running Dynamics 365 in
+        // (via userSettings.languageId / LCID) and renders every piece of
+        // UI text in that language — without ever asking the user.
+        // Falls back to the browser language, then to English.
+        // ===================================================================
+        const I18N = {
+            lang: 'en',
+            locale: 'en-US',
+
+            // Map of D365 LCID (userSettings.languageId) -> supported language key.
+            LCID_TO_LANG: {
+                1033: 'en', 2057: 'en', 3081: 'en', 4105: 'en', 1041: 'ja',
+                1036: 'fr', 2060: 'fr', 3084: 'fr', 4108: 'fr',
+                1031: 'de', 2055: 'de', 3079: 'de',
+                1034: 'es', 2058: 'es', 3082: 'es', 11274: 'es', 13322: 'es',
+                1046: 'pt', 2070: 'pt',
+                1040: 'it', 1043: 'nl', 2067: 'nl',
+                2052: 'zh', 1028: 'zh', 3076: 'zh', 4100: 'zh', 5124: 'zh',
+                1042: 'ko', 1049: 'ru'
+            },
+
+            // Default BCP-47 locale used for date/time/number formatting per language.
+            LANG_LOCALE: {
+                en: 'en-US', fr: 'fr-FR', de: 'de-DE', es: 'es-ES', pt: 'pt-BR',
+                it: 'it-IT', nl: 'nl-NL', ja: 'ja-JP', zh: 'zh-CN', ko: 'ko-KR', ru: 'ru-RU'
+            },
+
+            STRINGS: {
+                en: {
+                    greeting_morning: "Good morning", greeting_afternoon: "Good afternoon", greeting_evening: "Good evening",
+                    m_activeCases: "My Active Cases", b_liveQueue: "Live queue", t_fromYesterday: "from yesterday",
+                    m_resolvedToday: "Resolved Today", b_today: "Today", t_completionRate: "% completion rate",
+                    m_pendingTasks: "Pending Tasks", b_backlog: "Backlog", t_overdue: "overdue", t_dueToday: "due today",
+                    m_satisfaction: "Satisfaction Score", b_cx: "CX", t_thisWeek: "% this week",
+                    i_avgResponse: "Avg Response", i_avgResolution: "Avg Resolution", i_oldestCase: "Oldest Case",
+                    i_callsToday: "Calls Today", i_emailsToday: "Emails Today", i_firstResponse: "1st Response",
+                    s_myQueues: "My Queues", ld_queue: "Loading queue data...", s_mySchedule: "My Schedule",
+                    sched_today: "Today", title_prevDay: "Previous day", title_nextDay: "Next day", ld_schedule: "Loading schedule...",
+                    c_myTasks: "My Tasks", viewAll: "View All", ld_tasks: "Loading tasks...",
+                    c_recentCases: "Recent Cases", ld_cases: "Loading cases...", c_quickActions: "Quick Actions",
+                    a_newCase: "New Case", a_newTask: "New Task", a_knowledgeBase: "Knowledge Base", a_viewQueue: "View Queue",
+                    c_teamAgents: "Team Agents", ph_searchAgents: "Search agents...", opt_allQueues: "All Queues",
+                    tab_active: "Active", tab_offline: "Offline", ld_agents: "Loading agents...",
+                    appt_noQueues: "No queues", appt_unavailable: "Unavailable", appt_noUpcoming: "No upcoming appointments",
+                    csat_casesThisMonth: "Cases This Month", b_mtd: "MTD", csat_noData: "No data",
+                    v_na: "N/A", v_none: "None", task_noDueDate: "No due date",
+                    prio_high: "HIGH", prio_medium: "MEDIUM", prio_low: "LOW", task_untitled: "Untitled Task", lbl_due: "Due:",
+                    e_noPendingTasks: "No pending tasks", e_unableTasks: "Unable to load tasks",
+                    st_inProgress: "In Progress", st_onHold: "On Hold", st_waitingDetails: "Waiting for Details",
+                    st_researching: "Researching", st_problemSolved: "Problem Solved", st_infoProvided: "Information Provided",
+                    st_merged: "Merged", st_active: "Active", cust_unknown: "Unknown Customer", case_untitled: "Untitled Case",
+                    e_noActiveCases: "No active cases", e_unableCases: "Unable to load cases",
+                    e_noOtherAgents: "No other agents found", e_unableAgents: "Unable to load agents",
+                    e_noAgents: "No agents found", e_noActiveAgents: "No active agents", e_noOfflineAgents: "No offline agents",
+                    p_available: "Available", p_busy: "Busy", p_away: "Away", p_dnd: "Do Not Disturb", p_offline: "Offline", p_break: "Break",
+                    q_notMember: "You are not a member of any queues", q_noActive: "No active queues found",
+                    col_queue: "Queue", col_waiting: "Waiting", col_avgWait: "Avg Wait", q_unableLoad: "Unable to load queue data",
+                    q_countOne: "{n} queue", q_countMany: "{n} queues",
+                    qm_queueItems: "Queue Items", qm_loading: "Loading...", qm_loadingItems: "Loading items...",
+                    qm_noItemsWaiting: "No items waiting", qm_oneItemWaiting: "1 item waiting", qm_itemsWaiting: "{n} items waiting",
+                    qm_noItemsInQueue: "No items are currently waiting in this queue.", qm_unableItems: "Unable to load queue items.",
+                    qm_untitled: "Untitled", qm_entered: "Entered:", qm_assigned: "Assigned", qm_waiting: "Waiting",
+                    title_openRecord: "Open record", title_openNewWindow: "Open in new window", title_close: "Close",
+                    sched_tomorrow: "Tomorrow", sched_yesterday: "Yesterday",
+                    sched_noScheduleDay: "No schedule found for this day",
+                    sched_noScheduleSub: "WFM schedule data may not be available or the schedule has not been published yet.",
+                    ty_shift: "Shift", ty_break: "Break", ty_lunch: "Lunch", ty_training: "Training", ty_meeting: "Meeting",
+                    ty_timeoff: "Time Off", ty_other: "Other", v_unknown: "Unknown", sched_scheduled: "Scheduled", sched_appointment: "Appointment",
+                    more: "+{n} more", showLess: "Show less", err_mustRunInD365: "This page must be run within Dynamics 365"
+                },
+                fr: {
+                    greeting_morning: "Bonjour", greeting_afternoon: "Bon après-midi", greeting_evening: "Bonsoir",
+                    m_activeCases: "Mes incidents actifs", b_liveQueue: "File en direct", t_fromYesterday: "depuis hier",
+                    m_resolvedToday: "Résolus aujourd'hui", b_today: "Aujourd'hui", t_completionRate: " % de taux de résolution",
+                    m_pendingTasks: "Tâches en attente", b_backlog: "Backlog", t_overdue: "en retard", t_dueToday: "à échéance aujourd'hui",
+                    m_satisfaction: "Score de satisfaction", b_cx: "CX", t_thisWeek: " % cette semaine",
+                    i_avgResponse: "Réponse moy.", i_avgResolution: "Résolution moy.", i_oldestCase: "Incident le plus ancien",
+                    i_callsToday: "Appels aujourd'hui", i_emailsToday: "E-mails aujourd'hui", i_firstResponse: "1re réponse",
+                    s_myQueues: "Mes files d'attente", ld_queue: "Chargement des files...", s_mySchedule: "Mon planning",
+                    sched_today: "Aujourd'hui", title_prevDay: "Jour précédent", title_nextDay: "Jour suivant", ld_schedule: "Chargement du planning...",
+                    c_myTasks: "Mes tâches", viewAll: "Tout afficher", ld_tasks: "Chargement des tâches...",
+                    c_recentCases: "Incidents récents", ld_cases: "Chargement des incidents...", c_quickActions: "Actions rapides",
+                    a_newCase: "Nouvel incident", a_newTask: "Nouvelle tâche", a_knowledgeBase: "Base de connaissances", a_viewQueue: "Voir la file",
+                    c_teamAgents: "Agents de l'équipe", ph_searchAgents: "Rechercher des agents...", opt_allQueues: "Toutes les files",
+                    tab_active: "Actif", tab_offline: "Hors ligne", ld_agents: "Chargement des agents...",
+                    appt_noQueues: "Aucune file", appt_unavailable: "Indisponible", appt_noUpcoming: "Aucun rendez-vous à venir",
+                    csat_casesThisMonth: "Incidents ce mois-ci", b_mtd: "Cumul mois", csat_noData: "Aucune donnée",
+                    v_na: "N/D", v_none: "Aucun", task_noDueDate: "Aucune échéance",
+                    prio_high: "ÉLEVÉE", prio_medium: "MOYENNE", prio_low: "FAIBLE", task_untitled: "Tâche sans titre", lbl_due: "Échéance :",
+                    e_noPendingTasks: "Aucune tâche en attente", e_unableTasks: "Impossible de charger les tâches",
+                    st_inProgress: "En cours", st_onHold: "En attente", st_waitingDetails: "En attente de détails",
+                    st_researching: "Recherche en cours", st_problemSolved: "Problème résolu", st_infoProvided: "Informations fournies",
+                    st_merged: "Fusionné", st_active: "Actif", cust_unknown: "Client inconnu", case_untitled: "Incident sans titre",
+                    e_noActiveCases: "Aucun incident actif", e_unableCases: "Impossible de charger les incidents",
+                    e_noOtherAgents: "Aucun autre agent trouvé", e_unableAgents: "Impossible de charger les agents",
+                    e_noAgents: "Aucun agent trouvé", e_noActiveAgents: "Aucun agent actif", e_noOfflineAgents: "Aucun agent hors ligne",
+                    p_available: "Disponible", p_busy: "Occupé", p_away: "Absent", p_dnd: "Ne pas déranger", p_offline: "Hors ligne", p_break: "Pause",
+                    q_notMember: "Vous n'êtes membre d'aucune file", q_noActive: "Aucune file active trouvée",
+                    col_queue: "File", col_waiting: "En attente", col_avgWait: "Attente moy.", q_unableLoad: "Impossible de charger les files",
+                    q_countOne: "{n} file", q_countMany: "{n} files",
+                    qm_queueItems: "Éléments de la file", qm_loading: "Chargement...", qm_loadingItems: "Chargement des éléments...",
+                    qm_noItemsWaiting: "Aucun élément en attente", qm_oneItemWaiting: "1 élément en attente", qm_itemsWaiting: "{n} éléments en attente",
+                    qm_noItemsInQueue: "Aucun élément n'est actuellement en attente dans cette file.", qm_unableItems: "Impossible de charger les éléments de la file.",
+                    qm_untitled: "Sans titre", qm_entered: "Entré :", qm_assigned: "Affecté", qm_waiting: "En attente",
+                    title_openRecord: "Ouvrir l'enregistrement", title_openNewWindow: "Ouvrir dans une nouvelle fenêtre", title_close: "Fermer",
+                    sched_tomorrow: "Demain", sched_yesterday: "Hier",
+                    sched_noScheduleDay: "Aucun planning trouvé pour ce jour",
+                    sched_noScheduleSub: "Les données de planning WFM ne sont peut-être pas disponibles ou le planning n'a pas encore été publié.",
+                    ty_shift: "Service", ty_break: "Pause", ty_lunch: "Déjeuner", ty_training: "Formation", ty_meeting: "Réunion",
+                    ty_timeoff: "Congé", ty_other: "Autre", v_unknown: "Inconnu", sched_scheduled: "Planifié", sched_appointment: "Rendez-vous",
+                    more: "+{n} de plus", showLess: "Afficher moins", err_mustRunInD365: "Cette page doit être exécutée dans Dynamics 365"
+                },
+                de: {
+                    greeting_morning: "Guten Morgen", greeting_afternoon: "Guten Tag", greeting_evening: "Guten Abend",
+                    m_activeCases: "Meine aktiven Fälle", b_liveQueue: "Live-Warteschlange", t_fromYesterday: "seit gestern",
+                    m_resolvedToday: "Heute gelöst", b_today: "Heute", t_completionRate: " % Lösungsquote",
+                    m_pendingTasks: "Offene Aufgaben", b_backlog: "Rückstand", t_overdue: "überfällig", t_dueToday: "heute fällig",
+                    m_satisfaction: "Zufriedenheitswert", b_cx: "CX", t_thisWeek: " % diese Woche",
+                    i_avgResponse: "Ø Reaktion", i_avgResolution: "Ø Lösung", i_oldestCase: "Ältester Fall",
+                    i_callsToday: "Anrufe heute", i_emailsToday: "E-Mails heute", i_firstResponse: "Erstreaktion",
+                    s_myQueues: "Meine Warteschlangen", ld_queue: "Warteschlangen werden geladen...", s_mySchedule: "Mein Zeitplan",
+                    sched_today: "Heute", title_prevDay: "Vorheriger Tag", title_nextDay: "Nächster Tag", ld_schedule: "Zeitplan wird geladen...",
+                    c_myTasks: "Meine Aufgaben", viewAll: "Alle anzeigen", ld_tasks: "Aufgaben werden geladen...",
+                    c_recentCases: "Letzte Fälle", ld_cases: "Fälle werden geladen...", c_quickActions: "Schnellaktionen",
+                    a_newCase: "Neuer Fall", a_newTask: "Neue Aufgabe", a_knowledgeBase: "Wissensdatenbank", a_viewQueue: "Warteschlange anzeigen",
+                    c_teamAgents: "Team-Agenten", ph_searchAgents: "Agenten suchen...", opt_allQueues: "Alle Warteschlangen",
+                    tab_active: "Aktiv", tab_offline: "Offline", ld_agents: "Agenten werden geladen...",
+                    appt_noQueues: "Keine Warteschlangen", appt_unavailable: "Nicht verfügbar", appt_noUpcoming: "Keine anstehenden Termine",
+                    csat_casesThisMonth: "Fälle diesen Monat", b_mtd: "Monat", csat_noData: "Keine Daten",
+                    v_na: "n. v.", v_none: "Keine", task_noDueDate: "Kein Fälligkeitsdatum",
+                    prio_high: "HOCH", prio_medium: "MITTEL", prio_low: "NIEDRIG", task_untitled: "Unbenannte Aufgabe", lbl_due: "Fällig:",
+                    e_noPendingTasks: "Keine offenen Aufgaben", e_unableTasks: "Aufgaben können nicht geladen werden",
+                    st_inProgress: "In Bearbeitung", st_onHold: "Wartend", st_waitingDetails: "Warten auf Details",
+                    st_researching: "Recherche läuft", st_problemSolved: "Problem gelöst", st_infoProvided: "Informationen bereitgestellt",
+                    st_merged: "Zusammengeführt", st_active: "Aktiv", cust_unknown: "Unbekannter Kunde", case_untitled: "Unbenannter Fall",
+                    e_noActiveCases: "Keine aktiven Fälle", e_unableCases: "Fälle können nicht geladen werden",
+                    e_noOtherAgents: "Keine weiteren Agenten gefunden", e_unableAgents: "Agenten können nicht geladen werden",
+                    e_noAgents: "Keine Agenten gefunden", e_noActiveAgents: "Keine aktiven Agenten", e_noOfflineAgents: "Keine Offline-Agenten",
+                    p_available: "Verfügbar", p_busy: "Beschäftigt", p_away: "Abwesend", p_dnd: "Nicht stören", p_offline: "Offline", p_break: "Pause",
+                    q_notMember: "Sie sind Mitglied keiner Warteschlange", q_noActive: "Keine aktiven Warteschlangen gefunden",
+                    col_queue: "Warteschlange", col_waiting: "Wartend", col_avgWait: "Ø Wartezeit", q_unableLoad: "Warteschlangendaten können nicht geladen werden",
+                    q_countOne: "{n} Warteschlange", q_countMany: "{n} Warteschlangen",
+                    qm_queueItems: "Warteschlangenelemente", qm_loading: "Wird geladen...", qm_loadingItems: "Elemente werden geladen...",
+                    qm_noItemsWaiting: "Keine wartenden Elemente", qm_oneItemWaiting: "1 wartendes Element", qm_itemsWaiting: "{n} wartende Elemente",
+                    qm_noItemsInQueue: "Derzeit warten keine Elemente in dieser Warteschlange.", qm_unableItems: "Warteschlangenelemente können nicht geladen werden.",
+                    qm_untitled: "Unbenannt", qm_entered: "Eingegangen:", qm_assigned: "Zugewiesen", qm_waiting: "Wartend",
+                    title_openRecord: "Datensatz öffnen", title_openNewWindow: "In neuem Fenster öffnen", title_close: "Schließen",
+                    sched_tomorrow: "Morgen", sched_yesterday: "Gestern",
+                    sched_noScheduleDay: "Kein Zeitplan für diesen Tag gefunden",
+                    sched_noScheduleSub: "WFM-Zeitplandaten sind möglicherweise nicht verfügbar oder der Zeitplan wurde noch nicht veröffentlicht.",
+                    ty_shift: "Schicht", ty_break: "Pause", ty_lunch: "Mittag", ty_training: "Schulung", ty_meeting: "Besprechung",
+                    ty_timeoff: "Freizeit", ty_other: "Sonstiges", v_unknown: "Unbekannt", sched_scheduled: "Geplant", sched_appointment: "Termin",
+                    more: "+{n} weitere", showLess: "Weniger anzeigen", err_mustRunInD365: "Diese Seite muss in Dynamics 365 ausgeführt werden"
+                },
+                es: {
+                    greeting_morning: "Buenos días", greeting_afternoon: "Buenas tardes", greeting_evening: "Buenas noches",
+                    m_activeCases: "Mis casos activos", b_liveQueue: "Cola en vivo", t_fromYesterday: "desde ayer",
+                    m_resolvedToday: "Resueltos hoy", b_today: "Hoy", t_completionRate: " % de resolución",
+                    m_pendingTasks: "Tareas pendientes", b_backlog: "Backlog", t_overdue: "vencidas", t_dueToday: "vencen hoy",
+                    m_satisfaction: "Índice de satisfacción", b_cx: "CX", t_thisWeek: " % esta semana",
+                    i_avgResponse: "Respuesta media", i_avgResolution: "Resolución media", i_oldestCase: "Caso más antiguo",
+                    i_callsToday: "Llamadas hoy", i_emailsToday: "Correos hoy", i_firstResponse: "1ª respuesta",
+                    s_myQueues: "Mis colas", ld_queue: "Cargando colas...", s_mySchedule: "Mi horario",
+                    sched_today: "Hoy", title_prevDay: "Día anterior", title_nextDay: "Día siguiente", ld_schedule: "Cargando horario...",
+                    c_myTasks: "Mis tareas", viewAll: "Ver todo", ld_tasks: "Cargando tareas...",
+                    c_recentCases: "Casos recientes", ld_cases: "Cargando casos...", c_quickActions: "Acciones rápidas",
+                    a_newCase: "Nuevo caso", a_newTask: "Nueva tarea", a_knowledgeBase: "Base de conocimientos", a_viewQueue: "Ver cola",
+                    c_teamAgents: "Agentes del equipo", ph_searchAgents: "Buscar agentes...", opt_allQueues: "Todas las colas",
+                    tab_active: "Activo", tab_offline: "Sin conexión", ld_agents: "Cargando agentes...",
+                    appt_noQueues: "Sin colas", appt_unavailable: "No disponible", appt_noUpcoming: "Sin próximas citas",
+                    csat_casesThisMonth: "Casos este mes", b_mtd: "Mes", csat_noData: "Sin datos",
+                    v_na: "N/D", v_none: "Ninguno", task_noDueDate: "Sin fecha de vencimiento",
+                    prio_high: "ALTA", prio_medium: "MEDIA", prio_low: "BAJA", task_untitled: "Tarea sin título", lbl_due: "Vence:",
+                    e_noPendingTasks: "Sin tareas pendientes", e_unableTasks: "No se pudieron cargar las tareas",
+                    st_inProgress: "En curso", st_onHold: "En espera", st_waitingDetails: "Esperando detalles",
+                    st_researching: "Investigando", st_problemSolved: "Problema resuelto", st_infoProvided: "Información proporcionada",
+                    st_merged: "Combinado", st_active: "Activo", cust_unknown: "Cliente desconocido", case_untitled: "Caso sin título",
+                    e_noActiveCases: "Sin casos activos", e_unableCases: "No se pudieron cargar los casos",
+                    e_noOtherAgents: "No se encontraron otros agentes", e_unableAgents: "No se pudieron cargar los agentes",
+                    e_noAgents: "No se encontraron agentes", e_noActiveAgents: "Sin agentes activos", e_noOfflineAgents: "Sin agentes desconectados",
+                    p_available: "Disponible", p_busy: "Ocupado", p_away: "Ausente", p_dnd: "No molestar", p_offline: "Sin conexión", p_break: "Descanso",
+                    q_notMember: "No eres miembro de ninguna cola", q_noActive: "No se encontraron colas activas",
+                    col_queue: "Cola", col_waiting: "En espera", col_avgWait: "Espera media", q_unableLoad: "No se pudieron cargar las colas",
+                    q_countOne: "{n} cola", q_countMany: "{n} colas",
+                    qm_queueItems: "Elementos de la cola", qm_loading: "Cargando...", qm_loadingItems: "Cargando elementos...",
+                    qm_noItemsWaiting: "Sin elementos en espera", qm_oneItemWaiting: "1 elemento en espera", qm_itemsWaiting: "{n} elementos en espera",
+                    qm_noItemsInQueue: "Actualmente no hay elementos en espera en esta cola.", qm_unableItems: "No se pudieron cargar los elementos de la cola.",
+                    qm_untitled: "Sin título", qm_entered: "Entró:", qm_assigned: "Asignado", qm_waiting: "En espera",
+                    title_openRecord: "Abrir registro", title_openNewWindow: "Abrir en una nueva ventana", title_close: "Cerrar",
+                    sched_tomorrow: "Mañana", sched_yesterday: "Ayer",
+                    sched_noScheduleDay: "No se encontró horario para este día",
+                    sched_noScheduleSub: "Es posible que los datos de horario de WFM no estén disponibles o que el horario aún no se haya publicado.",
+                    ty_shift: "Turno", ty_break: "Descanso", ty_lunch: "Almuerzo", ty_training: "Capacitación", ty_meeting: "Reunión",
+                    ty_timeoff: "Ausencia", ty_other: "Otro", v_unknown: "Desconocido", sched_scheduled: "Programado", sched_appointment: "Cita",
+                    more: "+{n} más", showLess: "Mostrar menos", err_mustRunInD365: "Esta página debe ejecutarse dentro de Dynamics 365"
+                },
+                pt: {
+                    greeting_morning: "Bom dia", greeting_afternoon: "Boa tarde", greeting_evening: "Boa noite",
+                    m_activeCases: "Meus casos ativos", b_liveQueue: "Fila ao vivo", t_fromYesterday: "desde ontem",
+                    m_resolvedToday: "Resolvidos hoje", b_today: "Hoje", t_completionRate: "% de resolução",
+                    m_pendingTasks: "Tarefas pendentes", b_backlog: "Backlog", t_overdue: "atrasadas", t_dueToday: "vencem hoje",
+                    m_satisfaction: "Índice de satisfação", b_cx: "CX", t_thisWeek: "% esta semana",
+                    i_avgResponse: "Resposta média", i_avgResolution: "Resolução média", i_oldestCase: "Caso mais antigo",
+                    i_callsToday: "Chamadas hoje", i_emailsToday: "E-mails hoje", i_firstResponse: "1ª resposta",
+                    s_myQueues: "Minhas filas", ld_queue: "Carregando filas...", s_mySchedule: "Minha agenda",
+                    sched_today: "Hoje", title_prevDay: "Dia anterior", title_nextDay: "Próximo dia", ld_schedule: "Carregando agenda...",
+                    c_myTasks: "Minhas tarefas", viewAll: "Ver tudo", ld_tasks: "Carregando tarefas...",
+                    c_recentCases: "Casos recentes", ld_cases: "Carregando casos...", c_quickActions: "Ações rápidas",
+                    a_newCase: "Novo caso", a_newTask: "Nova tarefa", a_knowledgeBase: "Base de conhecimento", a_viewQueue: "Ver fila",
+                    c_teamAgents: "Agentes da equipe", ph_searchAgents: "Pesquisar agentes...", opt_allQueues: "Todas as filas",
+                    tab_active: "Ativo", tab_offline: "Offline", ld_agents: "Carregando agentes...",
+                    appt_noQueues: "Sem filas", appt_unavailable: "Indisponível", appt_noUpcoming: "Nenhum compromisso futuro",
+                    csat_casesThisMonth: "Casos este mês", b_mtd: "Mês", csat_noData: "Sem dados",
+                    v_na: "N/D", v_none: "Nenhum", task_noDueDate: "Sem data de vencimento",
+                    prio_high: "ALTA", prio_medium: "MÉDIA", prio_low: "BAIXA", task_untitled: "Tarefa sem título", lbl_due: "Vencimento:",
+                    e_noPendingTasks: "Sem tarefas pendentes", e_unableTasks: "Não foi possível carregar as tarefas",
+                    st_inProgress: "Em andamento", st_onHold: "Em espera", st_waitingDetails: "Aguardando detalhes",
+                    st_researching: "Pesquisando", st_problemSolved: "Problema resolvido", st_infoProvided: "Informações fornecidas",
+                    st_merged: "Mesclado", st_active: "Ativo", cust_unknown: "Cliente desconhecido", case_untitled: "Caso sem título",
+                    e_noActiveCases: "Sem casos ativos", e_unableCases: "Não foi possível carregar os casos",
+                    e_noOtherAgents: "Nenhum outro agente encontrado", e_unableAgents: "Não foi possível carregar os agentes",
+                    e_noAgents: "Nenhum agente encontrado", e_noActiveAgents: "Sem agentes ativos", e_noOfflineAgents: "Sem agentes offline",
+                    p_available: "Disponível", p_busy: "Ocupado", p_away: "Ausente", p_dnd: "Não perturbe", p_offline: "Offline", p_break: "Pausa",
+                    q_notMember: "Você não é membro de nenhuma fila", q_noActive: "Nenhuma fila ativa encontrada",
+                    col_queue: "Fila", col_waiting: "Em espera", col_avgWait: "Espera média", q_unableLoad: "Não foi possível carregar as filas",
+                    q_countOne: "{n} fila", q_countMany: "{n} filas",
+                    qm_queueItems: "Itens da fila", qm_loading: "Carregando...", qm_loadingItems: "Carregando itens...",
+                    qm_noItemsWaiting: "Nenhum item em espera", qm_oneItemWaiting: "1 item em espera", qm_itemsWaiting: "{n} itens em espera",
+                    qm_noItemsInQueue: "Nenhum item está aguardando nesta fila no momento.", qm_unableItems: "Não foi possível carregar os itens da fila.",
+                    qm_untitled: "Sem título", qm_entered: "Entrou:", qm_assigned: "Atribuído", qm_waiting: "Em espera",
+                    title_openRecord: "Abrir registro", title_openNewWindow: "Abrir em nova janela", title_close: "Fechar",
+                    sched_tomorrow: "Amanhã", sched_yesterday: "Ontem",
+                    sched_noScheduleDay: "Nenhuma agenda encontrada para este dia",
+                    sched_noScheduleSub: "Os dados de agenda do WFM podem não estar disponíveis ou a agenda ainda não foi publicada.",
+                    ty_shift: "Turno", ty_break: "Pausa", ty_lunch: "Almoço", ty_training: "Treinamento", ty_meeting: "Reunião",
+                    ty_timeoff: "Folga", ty_other: "Outro", v_unknown: "Desconhecido", sched_scheduled: "Agendado", sched_appointment: "Compromisso",
+                    more: "+{n} mais", showLess: "Mostrar menos", err_mustRunInD365: "Esta página deve ser executada dentro do Dynamics 365"
+                },
+                it: {
+                    greeting_morning: "Buongiorno", greeting_afternoon: "Buon pomeriggio", greeting_evening: "Buonasera",
+                    m_activeCases: "I miei casi attivi", b_liveQueue: "Coda in tempo reale", t_fromYesterday: "da ieri",
+                    m_resolvedToday: "Risolti oggi", b_today: "Oggi", t_completionRate: "% di risoluzione",
+                    m_pendingTasks: "Attività in sospeso", b_backlog: "Backlog", t_overdue: "in ritardo", t_dueToday: "in scadenza oggi",
+                    m_satisfaction: "Indice di soddisfazione", b_cx: "CX", t_thisWeek: "% questa settimana",
+                    i_avgResponse: "Risposta media", i_avgResolution: "Risoluzione media", i_oldestCase: "Caso più vecchio",
+                    i_callsToday: "Chiamate oggi", i_emailsToday: "Email oggi", i_firstResponse: "1ª risposta",
+                    s_myQueues: "Le mie code", ld_queue: "Caricamento code...", s_mySchedule: "La mia pianificazione",
+                    sched_today: "Oggi", title_prevDay: "Giorno precedente", title_nextDay: "Giorno successivo", ld_schedule: "Caricamento pianificazione...",
+                    c_myTasks: "Le mie attività", viewAll: "Visualizza tutto", ld_tasks: "Caricamento attività...",
+                    c_recentCases: "Casi recenti", ld_cases: "Caricamento casi...", c_quickActions: "Azioni rapide",
+                    a_newCase: "Nuovo caso", a_newTask: "Nuova attività", a_knowledgeBase: "Knowledge base", a_viewQueue: "Visualizza coda",
+                    c_teamAgents: "Agenti del team", ph_searchAgents: "Cerca agenti...", opt_allQueues: "Tutte le code",
+                    tab_active: "Attivo", tab_offline: "Offline", ld_agents: "Caricamento agenti...",
+                    appt_noQueues: "Nessuna coda", appt_unavailable: "Non disponibile", appt_noUpcoming: "Nessun appuntamento in arrivo",
+                    csat_casesThisMonth: "Casi questo mese", b_mtd: "Mese", csat_noData: "Nessun dato",
+                    v_na: "N/D", v_none: "Nessuno", task_noDueDate: "Nessuna scadenza",
+                    prio_high: "ALTA", prio_medium: "MEDIA", prio_low: "BASSA", task_untitled: "Attività senza titolo", lbl_due: "Scadenza:",
+                    e_noPendingTasks: "Nessuna attività in sospeso", e_unableTasks: "Impossibile caricare le attività",
+                    st_inProgress: "In corso", st_onHold: "In attesa", st_waitingDetails: "In attesa di dettagli",
+                    st_researching: "Ricerca in corso", st_problemSolved: "Problema risolto", st_infoProvided: "Informazioni fornite",
+                    st_merged: "Unito", st_active: "Attivo", cust_unknown: "Cliente sconosciuto", case_untitled: "Caso senza titolo",
+                    e_noActiveCases: "Nessun caso attivo", e_unableCases: "Impossibile caricare i casi",
+                    e_noOtherAgents: "Nessun altro agente trovato", e_unableAgents: "Impossibile caricare gli agenti",
+                    e_noAgents: "Nessun agente trovato", e_noActiveAgents: "Nessun agente attivo", e_noOfflineAgents: "Nessun agente offline",
+                    p_available: "Disponibile", p_busy: "Occupato", p_away: "Assente", p_dnd: "Non disturbare", p_offline: "Offline", p_break: "Pausa",
+                    q_notMember: "Non sei membro di alcuna coda", q_noActive: "Nessuna coda attiva trovata",
+                    col_queue: "Coda", col_waiting: "In attesa", col_avgWait: "Attesa media", q_unableLoad: "Impossibile caricare le code",
+                    q_countOne: "{n} coda", q_countMany: "{n} code",
+                    qm_queueItems: "Elementi della coda", qm_loading: "Caricamento...", qm_loadingItems: "Caricamento elementi...",
+                    qm_noItemsWaiting: "Nessun elemento in attesa", qm_oneItemWaiting: "1 elemento in attesa", qm_itemsWaiting: "{n} elementi in attesa",
+                    qm_noItemsInQueue: "Al momento non ci sono elementi in attesa in questa coda.", qm_unableItems: "Impossibile caricare gli elementi della coda.",
+                    qm_untitled: "Senza titolo", qm_entered: "Inserito:", qm_assigned: "Assegnato", qm_waiting: "In attesa",
+                    title_openRecord: "Apri record", title_openNewWindow: "Apri in una nuova finestra", title_close: "Chiudi",
+                    sched_tomorrow: "Domani", sched_yesterday: "Ieri",
+                    sched_noScheduleDay: "Nessuna pianificazione trovata per questo giorno",
+                    sched_noScheduleSub: "I dati di pianificazione WFM potrebbero non essere disponibili o la pianificazione non è ancora stata pubblicata.",
+                    ty_shift: "Turno", ty_break: "Pausa", ty_lunch: "Pranzo", ty_training: "Formazione", ty_meeting: "Riunione",
+                    ty_timeoff: "Permesso", ty_other: "Altro", v_unknown: "Sconosciuto", sched_scheduled: "Pianificato", sched_appointment: "Appuntamento",
+                    more: "+{n} altri", showLess: "Mostra meno", err_mustRunInD365: "Questa pagina deve essere eseguita in Dynamics 365"
+                },
+                nl: {
+                    greeting_morning: "Goedemorgen", greeting_afternoon: "Goedemiddag", greeting_evening: "Goedenavond",
+                    m_activeCases: "Mijn actieve aanvragen", b_liveQueue: "Live-wachtrij", t_fromYesterday: "sinds gisteren",
+                    m_resolvedToday: "Vandaag opgelost", b_today: "Vandaag", t_completionRate: "% oplossingspercentage",
+                    m_pendingTasks: "Openstaande taken", b_backlog: "Achterstand", t_overdue: "te laat", t_dueToday: "vandaag verlopen",
+                    m_satisfaction: "Tevredenheidsscore", b_cx: "CX", t_thisWeek: "% deze week",
+                    i_avgResponse: "Gem. reactie", i_avgResolution: "Gem. oplossing", i_oldestCase: "Oudste aanvraag",
+                    i_callsToday: "Oproepen vandaag", i_emailsToday: "E-mails vandaag", i_firstResponse: "1e reactie",
+                    s_myQueues: "Mijn wachtrijen", ld_queue: "Wachtrijen laden...", s_mySchedule: "Mijn planning",
+                    sched_today: "Vandaag", title_prevDay: "Vorige dag", title_nextDay: "Volgende dag", ld_schedule: "Planning laden...",
+                    c_myTasks: "Mijn taken", viewAll: "Alles weergeven", ld_tasks: "Taken laden...",
+                    c_recentCases: "Recente aanvragen", ld_cases: "Aanvragen laden...", c_quickActions: "Snelle acties",
+                    a_newCase: "Nieuwe aanvraag", a_newTask: "Nieuwe taak", a_knowledgeBase: "Kennisbank", a_viewQueue: "Wachtrij weergeven",
+                    c_teamAgents: "Teamagenten", ph_searchAgents: "Agenten zoeken...", opt_allQueues: "Alle wachtrijen",
+                    tab_active: "Actief", tab_offline: "Offline", ld_agents: "Agenten laden...",
+                    appt_noQueues: "Geen wachtrijen", appt_unavailable: "Niet beschikbaar", appt_noUpcoming: "Geen aankomende afspraken",
+                    csat_casesThisMonth: "Aanvragen deze maand", b_mtd: "Maand", csat_noData: "Geen gegevens",
+                    v_na: "N.v.t.", v_none: "Geen", task_noDueDate: "Geen einddatum",
+                    prio_high: "HOOG", prio_medium: "GEMIDDELD", prio_low: "LAAG", task_untitled: "Naamloze taak", lbl_due: "Verloopt:",
+                    e_noPendingTasks: "Geen openstaande taken", e_unableTasks: "Kan taken niet laden",
+                    st_inProgress: "In behandeling", st_onHold: "In de wacht", st_waitingDetails: "Wacht op details",
+                    st_researching: "Onderzoeken", st_problemSolved: "Probleem opgelost", st_infoProvided: "Informatie verstrekt",
+                    st_merged: "Samengevoegd", st_active: "Actief", cust_unknown: "Onbekende klant", case_untitled: "Naamloze aanvraag",
+                    e_noActiveCases: "Geen actieve aanvragen", e_unableCases: "Kan aanvragen niet laden",
+                    e_noOtherAgents: "Geen andere agenten gevonden", e_unableAgents: "Kan agenten niet laden",
+                    e_noAgents: "Geen agenten gevonden", e_noActiveAgents: "Geen actieve agenten", e_noOfflineAgents: "Geen offline agenten",
+                    p_available: "Beschikbaar", p_busy: "Bezet", p_away: "Afwezig", p_dnd: "Niet storen", p_offline: "Offline", p_break: "Pauze",
+                    q_notMember: "U bent lid van geen enkele wachtrij", q_noActive: "Geen actieve wachtrijen gevonden",
+                    col_queue: "Wachtrij", col_waiting: "Wachtend", col_avgWait: "Gem. wachttijd", q_unableLoad: "Kan wachtrijgegevens niet laden",
+                    q_countOne: "{n} wachtrij", q_countMany: "{n} wachtrijen",
+                    qm_queueItems: "Wachtrij-items", qm_loading: "Laden...", qm_loadingItems: "Items laden...",
+                    qm_noItemsWaiting: "Geen wachtende items", qm_oneItemWaiting: "1 wachtend item", qm_itemsWaiting: "{n} wachtende items",
+                    qm_noItemsInQueue: "Er wachten momenteel geen items in deze wachtrij.", qm_unableItems: "Kan wachtrij-items niet laden.",
+                    qm_untitled: "Naamloos", qm_entered: "Binnengekomen:", qm_assigned: "Toegewezen", qm_waiting: "Wachtend",
+                    title_openRecord: "Record openen", title_openNewWindow: "In nieuw venster openen", title_close: "Sluiten",
+                    sched_tomorrow: "Morgen", sched_yesterday: "Gisteren",
+                    sched_noScheduleDay: "Geen planning gevonden voor deze dag",
+                    sched_noScheduleSub: "WFM-planningsgegevens zijn mogelijk niet beschikbaar of de planning is nog niet gepubliceerd.",
+                    ty_shift: "Dienst", ty_break: "Pauze", ty_lunch: "Lunch", ty_training: "Training", ty_meeting: "Vergadering",
+                    ty_timeoff: "Verlof", ty_other: "Overig", v_unknown: "Onbekend", sched_scheduled: "Gepland", sched_appointment: "Afspraak",
+                    more: "+{n} meer", showLess: "Minder weergeven", err_mustRunInD365: "Deze pagina moet binnen Dynamics 365 worden uitgevoerd"
+                },
+                ja: {
+                    greeting_morning: "おはようございます", greeting_afternoon: "こんにちは", greeting_evening: "こんばんは",
+                    m_activeCases: "対応中のケース", b_liveQueue: "ライブキュー", t_fromYesterday: "前日比",
+                    m_resolvedToday: "本日の解決件数", b_today: "今日", t_completionRate: "% 完了率",
+                    m_pendingTasks: "保留中のタスク", b_backlog: "バックログ", t_overdue: "期限超過", t_dueToday: "本日期限",
+                    m_satisfaction: "満足度スコア", b_cx: "CX", t_thisWeek: "% 今週",
+                    i_avgResponse: "平均応答", i_avgResolution: "平均解決", i_oldestCase: "最も古いケース",
+                    i_callsToday: "本日の通話", i_emailsToday: "本日のメール", i_firstResponse: "初回応答",
+                    s_myQueues: "マイキュー", ld_queue: "キューを読み込み中...", s_mySchedule: "マイスケジュール",
+                    sched_today: "今日", title_prevDay: "前日", title_nextDay: "翌日", ld_schedule: "スケジュールを読み込み中...",
+                    c_myTasks: "マイタスク", viewAll: "すべて表示", ld_tasks: "タスクを読み込み中...",
+                    c_recentCases: "最近のケース", ld_cases: "ケースを読み込み中...", c_quickActions: "クイック操作",
+                    a_newCase: "新規ケース", a_newTask: "新規タスク", a_knowledgeBase: "ナレッジベース", a_viewQueue: "キューを表示",
+                    c_teamAgents: "チームエージェント", ph_searchAgents: "エージェントを検索...", opt_allQueues: "すべてのキュー",
+                    tab_active: "アクティブ", tab_offline: "オフライン", ld_agents: "エージェントを読み込み中...",
+                    appt_noQueues: "キューなし", appt_unavailable: "利用不可", appt_noUpcoming: "予定された予約はありません",
+                    csat_casesThisMonth: "今月のケース", b_mtd: "今月", csat_noData: "データなし",
+                    v_na: "該当なし", v_none: "なし", task_noDueDate: "期限なし",
+                    prio_high: "高", prio_medium: "中", prio_low: "低", task_untitled: "無題のタスク", lbl_due: "期限:",
+                    e_noPendingTasks: "保留中のタスクはありません", e_unableTasks: "タスクを読み込めません",
+                    st_inProgress: "進行中", st_onHold: "保留中", st_waitingDetails: "詳細待ち",
+                    st_researching: "調査中", st_problemSolved: "問題解決済み", st_infoProvided: "情報提供済み",
+                    st_merged: "マージ済み", st_active: "アクティブ", cust_unknown: "不明な顧客", case_untitled: "無題のケース",
+                    e_noActiveCases: "対応中のケースはありません", e_unableCases: "ケースを読み込めません",
+                    e_noOtherAgents: "他のエージェントが見つかりません", e_unableAgents: "エージェントを読み込めません",
+                    e_noAgents: "エージェントが見つかりません", e_noActiveAgents: "アクティブなエージェントはいません", e_noOfflineAgents: "オフラインのエージェントはいません",
+                    p_available: "対応可能", p_busy: "取り込み中", p_away: "離席中", p_dnd: "応答不可", p_offline: "オフライン", p_break: "休憩",
+                    q_notMember: "どのキューにも所属していません", q_noActive: "アクティブなキューが見つかりません",
+                    col_queue: "キュー", col_waiting: "待機中", col_avgWait: "平均待ち時間", q_unableLoad: "キューデータを読み込めません",
+                    q_countOne: "{n} 件のキュー", q_countMany: "{n} 件のキュー",
+                    qm_queueItems: "キュー項目", qm_loading: "読み込み中...", qm_loadingItems: "項目を読み込み中...",
+                    qm_noItemsWaiting: "待機中の項目はありません", qm_oneItemWaiting: "待機中の項目 1 件", qm_itemsWaiting: "待機中の項目 {n} 件",
+                    qm_noItemsInQueue: "現在、このキューに待機中の項目はありません。", qm_unableItems: "キュー項目を読み込めません。",
+                    qm_untitled: "無題", qm_entered: "登録日時:", qm_assigned: "割り当て済み", qm_waiting: "待機中",
+                    title_openRecord: "レコードを開く", title_openNewWindow: "新しいウィンドウで開く", title_close: "閉じる",
+                    sched_tomorrow: "明日", sched_yesterday: "昨日",
+                    sched_noScheduleDay: "この日のスケジュールが見つかりません",
+                    sched_noScheduleSub: "WFM スケジュールデータが利用できないか、スケジュールがまだ公開されていない可能性があります。",
+                    ty_shift: "シフト", ty_break: "休憩", ty_lunch: "昼食", ty_training: "トレーニング", ty_meeting: "会議",
+                    ty_timeoff: "休暇", ty_other: "その他", v_unknown: "不明", sched_scheduled: "予定", sched_appointment: "予約",
+                    more: "他 {n} 件", showLess: "折りたたむ", err_mustRunInD365: "このページは Dynamics 365 内で実行する必要があります"
+                },
+                zh: {
+                    greeting_morning: "早上好", greeting_afternoon: "下午好", greeting_evening: "晚上好",
+                    m_activeCases: "我的活动案例", b_liveQueue: "实时队列", t_fromYesterday: "较昨日",
+                    m_resolvedToday: "今日已解决", b_today: "今天", t_completionRate: "% 完成率",
+                    m_pendingTasks: "待办任务", b_backlog: "积压", t_overdue: "已逾期", t_dueToday: "今日到期",
+                    m_satisfaction: "满意度评分", b_cx: "CX", t_thisWeek: "% 本周",
+                    i_avgResponse: "平均响应", i_avgResolution: "平均解决", i_oldestCase: "最早案例",
+                    i_callsToday: "今日通话", i_emailsToday: "今日邮件", i_firstResponse: "首次响应",
+                    s_myQueues: "我的队列", ld_queue: "正在加载队列...", s_mySchedule: "我的日程",
+                    sched_today: "今天", title_prevDay: "前一天", title_nextDay: "后一天", ld_schedule: "正在加载日程...",
+                    c_myTasks: "我的任务", viewAll: "查看全部", ld_tasks: "正在加载任务...",
+                    c_recentCases: "最近案例", ld_cases: "正在加载案例...", c_quickActions: "快捷操作",
+                    a_newCase: "新建案例", a_newTask: "新建任务", a_knowledgeBase: "知识库", a_viewQueue: "查看队列",
+                    c_teamAgents: "团队座席", ph_searchAgents: "搜索座席...", opt_allQueues: "所有队列",
+                    tab_active: "活动", tab_offline: "离线", ld_agents: "正在加载座席...",
+                    appt_noQueues: "无队列", appt_unavailable: "不可用", appt_noUpcoming: "没有即将到来的约会",
+                    csat_casesThisMonth: "本月案例", b_mtd: "本月", csat_noData: "无数据",
+                    v_na: "不适用", v_none: "无", task_noDueDate: "无截止日期",
+                    prio_high: "高", prio_medium: "中", prio_low: "低", task_untitled: "未命名任务", lbl_due: "截止：",
+                    e_noPendingTasks: "没有待办任务", e_unableTasks: "无法加载任务",
+                    st_inProgress: "进行中", st_onHold: "搁置", st_waitingDetails: "等待详情",
+                    st_researching: "调查中", st_problemSolved: "问题已解决", st_infoProvided: "已提供信息",
+                    st_merged: "已合并", st_active: "活动", cust_unknown: "未知客户", case_untitled: "未命名案例",
+                    e_noActiveCases: "没有活动案例", e_unableCases: "无法加载案例",
+                    e_noOtherAgents: "未找到其他座席", e_unableAgents: "无法加载座席",
+                    e_noAgents: "未找到座席", e_noActiveAgents: "没有活动座席", e_noOfflineAgents: "没有离线座席",
+                    p_available: "空闲", p_busy: "忙碌", p_away: "离开", p_dnd: "请勿打扰", p_offline: "离线", p_break: "休息",
+                    q_notMember: "您不是任何队列的成员", q_noActive: "未找到活动队列",
+                    col_queue: "队列", col_waiting: "等待中", col_avgWait: "平均等待", q_unableLoad: "无法加载队列数据",
+                    q_countOne: "{n} 个队列", q_countMany: "{n} 个队列",
+                    qm_queueItems: "队列项", qm_loading: "正在加载...", qm_loadingItems: "正在加载项...",
+                    qm_noItemsWaiting: "没有等待的项", qm_oneItemWaiting: "1 个等待项", qm_itemsWaiting: "{n} 个等待项",
+                    qm_noItemsInQueue: "此队列中当前没有等待的项。", qm_unableItems: "无法加载队列项。",
+                    qm_untitled: "未命名", qm_entered: "进入时间：", qm_assigned: "已分配", qm_waiting: "等待中",
+                    title_openRecord: "打开记录", title_openNewWindow: "在新窗口中打开", title_close: "关闭",
+                    sched_tomorrow: "明天", sched_yesterday: "昨天",
+                    sched_noScheduleDay: "未找到这一天的日程",
+                    sched_noScheduleSub: "WFM 日程数据可能不可用，或者日程尚未发布。",
+                    ty_shift: "班次", ty_break: "休息", ty_lunch: "午餐", ty_training: "培训", ty_meeting: "会议",
+                    ty_timeoff: "休假", ty_other: "其他", v_unknown: "未知", sched_scheduled: "已计划", sched_appointment: "约会",
+                    more: "另外 {n} 个", showLess: "收起", err_mustRunInD365: "此页面必须在 Dynamics 365 中运行"
+                },
+                ko: {
+                    greeting_morning: "좋은 아침입니다", greeting_afternoon: "좋은 오후입니다", greeting_evening: "좋은 저녁입니다",
+                    m_activeCases: "내 활성 사례", b_liveQueue: "실시간 대기열", t_fromYesterday: "어제 대비",
+                    m_resolvedToday: "오늘 해결됨", b_today: "오늘", t_completionRate: "% 완료율",
+                    m_pendingTasks: "대기 중인 작업", b_backlog: "백로그", t_overdue: "기한 초과", t_dueToday: "오늘 마감",
+                    m_satisfaction: "만족도 점수", b_cx: "CX", t_thisWeek: "% 이번 주",
+                    i_avgResponse: "평균 응답", i_avgResolution: "평균 해결", i_oldestCase: "가장 오래된 사례",
+                    i_callsToday: "오늘 통화", i_emailsToday: "오늘 이메일", i_firstResponse: "첫 응답",
+                    s_myQueues: "내 대기열", ld_queue: "대기열 로드 중...", s_mySchedule: "내 일정",
+                    sched_today: "오늘", title_prevDay: "이전 날", title_nextDay: "다음 날", ld_schedule: "일정 로드 중...",
+                    c_myTasks: "내 작업", viewAll: "모두 보기", ld_tasks: "작업 로드 중...",
+                    c_recentCases: "최근 사례", ld_cases: "사례 로드 중...", c_quickActions: "빠른 작업",
+                    a_newCase: "새 사례", a_newTask: "새 작업", a_knowledgeBase: "기술 자료", a_viewQueue: "대기열 보기",
+                    c_teamAgents: "팀 상담원", ph_searchAgents: "상담원 검색...", opt_allQueues: "모든 대기열",
+                    tab_active: "활성", tab_offline: "오프라인", ld_agents: "상담원 로드 중...",
+                    appt_noQueues: "대기열 없음", appt_unavailable: "사용할 수 없음", appt_noUpcoming: "예정된 약속 없음",
+                    csat_casesThisMonth: "이번 달 사례", b_mtd: "당월", csat_noData: "데이터 없음",
+                    v_na: "해당 없음", v_none: "없음", task_noDueDate: "기한 없음",
+                    prio_high: "높음", prio_medium: "보통", prio_low: "낮음", task_untitled: "제목 없는 작업", lbl_due: "기한:",
+                    e_noPendingTasks: "대기 중인 작업이 없습니다", e_unableTasks: "작업을 로드할 수 없습니다",
+                    st_inProgress: "진행 중", st_onHold: "보류 중", st_waitingDetails: "세부 정보 대기 중",
+                    st_researching: "조사 중", st_problemSolved: "문제 해결됨", st_infoProvided: "정보 제공됨",
+                    st_merged: "병합됨", st_active: "활성", cust_unknown: "알 수 없는 고객", case_untitled: "제목 없는 사례",
+                    e_noActiveCases: "활성 사례가 없습니다", e_unableCases: "사례를 로드할 수 없습니다",
+                    e_noOtherAgents: "다른 상담원을 찾을 수 없습니다", e_unableAgents: "상담원을 로드할 수 없습니다",
+                    e_noAgents: "상담원을 찾을 수 없습니다", e_noActiveAgents: "활성 상담원이 없습니다", e_noOfflineAgents: "오프라인 상담원이 없습니다",
+                    p_available: "대화 가능", p_busy: "다른 용무 중", p_away: "자리 비움", p_dnd: "방해 금지", p_offline: "오프라인", p_break: "휴식",
+                    q_notMember: "어떤 대기열에도 속해 있지 않습니다", q_noActive: "활성 대기열을 찾을 수 없습니다",
+                    col_queue: "대기열", col_waiting: "대기 중", col_avgWait: "평균 대기", q_unableLoad: "대기열 데이터를 로드할 수 없습니다",
+                    q_countOne: "대기열 {n}개", q_countMany: "대기열 {n}개",
+                    qm_queueItems: "대기열 항목", qm_loading: "로드 중...", qm_loadingItems: "항목 로드 중...",
+                    qm_noItemsWaiting: "대기 중인 항목 없음", qm_oneItemWaiting: "대기 중인 항목 1개", qm_itemsWaiting: "대기 중인 항목 {n}개",
+                    qm_noItemsInQueue: "현재 이 대기열에 대기 중인 항목이 없습니다.", qm_unableItems: "대기열 항목을 로드할 수 없습니다.",
+                    qm_untitled: "제목 없음", qm_entered: "등록:", qm_assigned: "할당됨", qm_waiting: "대기 중",
+                    title_openRecord: "레코드 열기", title_openNewWindow: "새 창에서 열기", title_close: "닫기",
+                    sched_tomorrow: "내일", sched_yesterday: "어제",
+                    sched_noScheduleDay: "이 날짜의 일정을 찾을 수 없습니다",
+                    sched_noScheduleSub: "WFM 일정 데이터를 사용할 수 없거나 일정이 아직 게시되지 않았을 수 있습니다.",
+                    ty_shift: "근무", ty_break: "휴식", ty_lunch: "점심", ty_training: "교육", ty_meeting: "회의",
+                    ty_timeoff: "휴가", ty_other: "기타", v_unknown: "알 수 없음", sched_scheduled: "예정됨", sched_appointment: "약속",
+                    more: "{n}개 더 보기", showLess: "간략히 보기", err_mustRunInD365: "이 페이지는 Dynamics 365 내에서 실행해야 합니다"
+                },
+                ru: {
+                    greeting_morning: "Доброе утро", greeting_afternoon: "Добрый день", greeting_evening: "Добрый вечер",
+                    m_activeCases: "Мои активные обращения", b_liveQueue: "Очередь в реальном времени", t_fromYesterday: "по сравнению со вчера",
+                    m_resolvedToday: "Решено сегодня", b_today: "Сегодня", t_completionRate: "% решено",
+                    m_pendingTasks: "Незавершённые задачи", b_backlog: "Бэклог", t_overdue: "просрочено", t_dueToday: "срок сегодня",
+                    m_satisfaction: "Оценка удовлетворённости", b_cx: "CX", t_thisWeek: "% за неделю",
+                    i_avgResponse: "Ср. ответ", i_avgResolution: "Ср. решение", i_oldestCase: "Старейшее обращение",
+                    i_callsToday: "Звонки сегодня", i_emailsToday: "Письма сегодня", i_firstResponse: "1-й ответ",
+                    s_myQueues: "Мои очереди", ld_queue: "Загрузка очередей...", s_mySchedule: "Моё расписание",
+                    sched_today: "Сегодня", title_prevDay: "Предыдущий день", title_nextDay: "Следующий день", ld_schedule: "Загрузка расписания...",
+                    c_myTasks: "Мои задачи", viewAll: "Показать все", ld_tasks: "Загрузка задач...",
+                    c_recentCases: "Недавние обращения", ld_cases: "Загрузка обращений...", c_quickActions: "Быстрые действия",
+                    a_newCase: "Новое обращение", a_newTask: "Новая задача", a_knowledgeBase: "База знаний", a_viewQueue: "Открыть очередь",
+                    c_teamAgents: "Агенты команды", ph_searchAgents: "Поиск агентов...", opt_allQueues: "Все очереди",
+                    tab_active: "Активные", tab_offline: "Не в сети", ld_agents: "Загрузка агентов...",
+                    appt_noQueues: "Нет очередей", appt_unavailable: "Недоступно", appt_noUpcoming: "Нет предстоящих встреч",
+                    csat_casesThisMonth: "Обращения за месяц", b_mtd: "Месяц", csat_noData: "Нет данных",
+                    v_na: "Н/Д", v_none: "Нет", task_noDueDate: "Без срока",
+                    prio_high: "ВЫСОКИЙ", prio_medium: "СРЕДНИЙ", prio_low: "НИЗКИЙ", task_untitled: "Задача без названия", lbl_due: "Срок:",
+                    e_noPendingTasks: "Нет незавершённых задач", e_unableTasks: "Не удалось загрузить задачи",
+                    st_inProgress: "В работе", st_onHold: "Отложено", st_waitingDetails: "Ожидание сведений",
+                    st_researching: "Изучение", st_problemSolved: "Проблема решена", st_infoProvided: "Информация предоставлена",
+                    st_merged: "Объединено", st_active: "Активно", cust_unknown: "Неизвестный клиент", case_untitled: "Обращение без названия",
+                    e_noActiveCases: "Нет активных обращений", e_unableCases: "Не удалось загрузить обращения",
+                    e_noOtherAgents: "Другие агенты не найдены", e_unableAgents: "Не удалось загрузить агентов",
+                    e_noAgents: "Агенты не найдены", e_noActiveAgents: "Нет активных агентов", e_noOfflineAgents: "Нет агентов не в сети",
+                    p_available: "Доступен", p_busy: "Занят", p_away: "Отошёл", p_dnd: "Не беспокоить", p_offline: "Не в сети", p_break: "Перерыв",
+                    q_notMember: "Вы не состоите ни в одной очереди", q_noActive: "Активные очереди не найдены",
+                    col_queue: "Очередь", col_waiting: "Ожидание", col_avgWait: "Ср. ожидание", q_unableLoad: "Не удалось загрузить данные очередей",
+                    q_countOne: "{n} очередь", q_countMany: "{n} очередей",
+                    qm_queueItems: "Элементы очереди", qm_loading: "Загрузка...", qm_loadingItems: "Загрузка элементов...",
+                    qm_noItemsWaiting: "Нет ожидающих элементов", qm_oneItemWaiting: "1 ожидающий элемент", qm_itemsWaiting: "{n} ожидающих элементов",
+                    qm_noItemsInQueue: "В этой очереди сейчас нет ожидающих элементов.", qm_unableItems: "Не удалось загрузить элементы очереди.",
+                    qm_untitled: "Без названия", qm_entered: "Поступило:", qm_assigned: "Назначено", qm_waiting: "Ожидание",
+                    title_openRecord: "Открыть запись", title_openNewWindow: "Открыть в новом окне", title_close: "Закрыть",
+                    sched_tomorrow: "Завтра", sched_yesterday: "Вчера",
+                    sched_noScheduleDay: "Расписание на этот день не найдено",
+                    sched_noScheduleSub: "Данные расписания WFM могут быть недоступны или расписание ещё не опубликовано.",
+                    ty_shift: "Смена", ty_break: "Перерыв", ty_lunch: "Обед", ty_training: "Обучение", ty_meeting: "Встреча",
+                    ty_timeoff: "Отгул", ty_other: "Другое", v_unknown: "Неизвестно", sched_scheduled: "Запланировано", sched_appointment: "Встреча",
+                    more: "+{n} ещё", showLess: "Свернуть", err_mustRunInD365: "Эта страница должна выполняться внутри Dynamics 365"
+                }
+            },
+
+            // Resolve the active language from a D365 LCID, then browser, then English.
+            detect: function (lcid) {
+                let lang = null;
+                if (lcid && this.LCID_TO_LANG[lcid]) {
+                    lang = this.LCID_TO_LANG[lcid];
+                }
+                if (!lang && typeof navigator !== 'undefined' && navigator.language) {
+                    const base = navigator.language.toLowerCase().split('-')[0];
+                    const navMap = { en:'en', fr:'fr', de:'de', es:'es', pt:'pt', it:'it', nl:'nl', ja:'ja', zh:'zh', ko:'ko', ru:'ru' };
+                    if (navMap[base]) lang = navMap[base];
+                }
+                if (!lang || !this.STRINGS[lang]) lang = 'en';
+                this.lang = lang;
+                this.locale = this.LANG_LOCALE[lang] || 'en-US';
+                return lang;
+            }
+        };
+
+        // Translate a key, with optional {placeholder} interpolation.
+        // Falls back to English, then to the raw key, so the UI never breaks.
+        function t(key, vars) {
+            const table = I18N.STRINGS[I18N.lang] || I18N.STRINGS.en;
+            let str = (table && table[key] != null) ? table[key]
+                    : (I18N.STRINGS.en[key] != null ? I18N.STRINGS.en[key] : key);
+            if (vars) {
+                Object.keys(vars).forEach(function (k) {
+                    str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+                });
+            }
+            return str;
+        }
+
+        // Map an internal English presence status to its localized label.
+        // Unknown/data-driven statuses are returned unchanged.
+        function presenceLabel(status) {
+            const map = {
+                'Available': 'p_available', 'Busy': 'p_busy', 'Away': 'p_away',
+                'Do Not Disturb': 'p_dnd', 'Offline': 'p_offline', 'Break': 'p_break'
+            };
+            return map[status] ? t(map[status]) : status;
+        }
+
+        // Apply translations to all static markup carrying data-i18n attributes.
+        function applyStaticTranslations() {
+            document.documentElement.lang = I18N.lang;
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                el.textContent = t(el.getAttribute('data-i18n'));
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+                el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+            });
+            document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+                el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+            });
+        }
+
+
         'use strict';
         // Global variables
         let xrmContext = null;
@@ -1903,7 +2454,11 @@ body::after { content: none; }
                     xrmGlobal = xrm; // Store globally
                     xrmContext = xrm.Utility.getGlobalContext();
                     currentUser = xrmContext.userSettings;
-                    
+
+                    // Detect the user's D365 language and translate the UI up-front
+                    try { I18N.detect(currentUser.languageId); } catch (e) { I18N.detect(null); }
+                    applyStaticTranslations();
+
                     // Update agent name
                     document.getElementById('agentName').textContent = currentUser.userName;
                     
@@ -1952,9 +2507,9 @@ body::after { content: none; }
             
             // Time-of-day greeting
             const hour = now.getHours();
-            let greeting = 'Good evening';
-            if (hour < 12) greeting = 'Good morning';
-            else if (hour < 17) greeting = 'Good afternoon';
+            let greeting = t('greeting_evening');
+            if (hour < 12) greeting = t('greeting_morning');
+            else if (hour < 17) greeting = t('greeting_afternoon');
             const greetEl = document.getElementById('greetingTime');
             if (greetEl) greetEl.textContent = greeting;
 
@@ -1963,13 +2518,13 @@ body::after { content: none; }
             if (dayEl) dayEl.textContent = now.getDate();
 
             const weekdayEl = document.getElementById('headerWeekday');
-            if (weekdayEl) weekdayEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+            if (weekdayEl) weekdayEl.textContent = now.toLocaleDateString(I18N.locale, { weekday: 'long' });
 
             const monthEl = document.getElementById('headerMonth');
-            if (monthEl) monthEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            if (monthEl) monthEl.textContent = now.toLocaleDateString(I18N.locale, { month: 'long', year: 'numeric' });
 
             const timeEl = document.getElementById('headerTime');
-            if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            if (timeEl) timeEl.textContent = now.toLocaleTimeString(I18N.locale, { hour: '2-digit', minute: '2-digit' });
         }
 
         // Load queues the current user belongs to
@@ -1983,7 +2538,7 @@ body::after { content: none; }
             hidden.style.flexWrap = 'wrap';
             hidden.style.gap = '4px';
             const totalHidden = hidden.querySelectorAll('.queue-pill').length;
-            el.textContent = isShowing ? '+' + totalHidden + ' more' : 'Show less';
+            el.textContent = isShowing ? t('more', { n: totalHidden }) : t('showLess');
         }
 
         async function loadUserQueues(xrm, userId) {
@@ -2029,7 +2584,7 @@ body::after { content: none; }
                 if (!el) return;
 
                 if (queues.length === 0) {
-                    el.innerHTML = '<span class="appt-none">No queues</span>';
+                    el.innerHTML = '<span class="appt-none">' + t('appt_noQueues') + '</span>';
                 } else {
                     const maxShow = 3;
                     const visibleHtml = queues.slice(0, maxShow).map(q => `<span class="queue-pill">${q}</span>`).join('');
@@ -2044,7 +2599,7 @@ body::after { content: none; }
             } catch (err) {
 
                 const el = document.getElementById('userQueues');
-                if (el) el.innerHTML = '<span class="appt-none">Unavailable</span>';
+                if (el) el.innerHTML = '<span class="appt-none">' + t('appt_unavailable') + '</span>';
             }
         }
 
@@ -2063,7 +2618,7 @@ body::after { content: none; }
                 if (!el) return;
 
                 if (!resp.entities || resp.entities.length === 0) {
-                    el.innerHTML = '<span class="appt-none">No upcoming appointments</span>';
+                    el.innerHTML = '<span class="appt-none">' + t('appt_noUpcoming') + '</span>';
                 } else {
                     const appt = resp.entities[0];
                     const start = new Date(appt.scheduledstart);
@@ -2071,12 +2626,12 @@ body::after { content: none; }
                     const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
                     const isTomorrow = start.toDateString() === tomorrow.toDateString();
 
-                    const timeStr = start.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    let dayPrefix = start.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                    if (isToday) dayPrefix = 'Today';
-                    else if (isTomorrow) dayPrefix = 'Tomorrow';
+                    const timeStr = start.toLocaleTimeString(I18N.locale, { hour: '2-digit', minute: '2-digit' });
+                    let dayPrefix = start.toLocaleDateString(I18N.locale, { weekday: 'short', month: 'short', day: 'numeric' });
+                    if (isToday) dayPrefix = t('sched_today');
+                    else if (isTomorrow) dayPrefix = t('sched_tomorrow');
 
-                    const subject = appt.subject || 'Untitled';
+                    const subject = appt.subject || t('qm_untitled');
                     const truncSubject = subject.length > 30 ? subject.substring(0, 30) + '...' : subject;
 
                     const apptTextSpan = document.createElement('span');
@@ -2093,7 +2648,7 @@ body::after { content: none; }
             } catch (err) {
 
                 const el = document.getElementById('nextAppointment');
-                if (el) el.innerHTML = '<span class="appt-none">Unavailable</span>';
+                if (el) el.innerHTML = '<span class="appt-none">' + t('appt_unavailable') + '</span>';
             }
         }
 
@@ -2183,8 +2738,8 @@ body::after { content: none; }
 
                 
                 // Update card appearance
-                document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
-                document.getElementById('csatMetricBadge').textContent = 'MTD';
+                document.getElementById('csatMetricLabel').textContent = t('csat_casesThisMonth');
+                document.getElementById('csatMetricBadge').textContent = t('b_mtd');
                 document.getElementById('satisfactionScore').textContent = casesThisMonth;
 
                 
@@ -2222,10 +2777,10 @@ body::after { content: none; }
                 
             } catch (error) {
 
-                document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
-                document.getElementById('csatMetricBadge').textContent = 'MTD';
+                document.getElementById('csatMetricLabel').textContent = t('csat_casesThisMonth');
+                document.getElementById('csatMetricBadge').textContent = t('b_mtd');
                 document.getElementById('satisfactionScore').textContent = '0';
-                document.getElementById('csatTrendText').textContent = 'No data';
+                document.getElementById('csatTrendText').textContent = t('csat_noData');
             }
         }
 
@@ -2485,11 +3040,11 @@ body::after { content: none; }
                                 ? Math.round(avgHours) + 'h'
                                 : Math.round(avgHours / 24) + 'd';
                     } else {
-                        document.getElementById('avgResolutionTime').textContent = 'N/A';
+                        document.getElementById('avgResolutionTime').textContent = t('v_na');
                     }
                 } catch (resolutionError) {
 
-                    document.getElementById('avgResolutionTime').textContent = 'N/A';
+                    document.getElementById('avgResolutionTime').textContent = t('v_na');
                 }
 
                 // Trends (simplified)
@@ -2518,7 +3073,7 @@ body::after { content: none; }
                         oldestEl.style.cursor = 'pointer';
                         oldestEl.onclick = function() { try { xrm.Navigation.openUrl(caseUrl); } catch(e) { window.location.href = caseUrl; } };
                     } else if (oldestEl) {
-                        oldestEl.textContent = 'None';
+                        oldestEl.textContent = t('v_none');
                     }
                 } catch (e) {  }
                 // 2. Phone Calls Today
@@ -2553,7 +3108,7 @@ body::after { content: none; }
                     frResp.entities.forEach(function(c) { if (c.firstresponsesent) frSent++; });
                     const infoFREl = document.getElementById('infoFirstResponsePct');
                     if (infoFREl) {
-                        infoFREl.textContent = frTotal > 0 ? Math.round((frSent / frTotal) * 100) + '%' : 'N/A';
+                        infoFREl.textContent = frTotal > 0 ? Math.round((frSent / frTotal) * 100) + '%' : t('v_na');
                     }
                 } catch (e) {  }
 
@@ -2574,27 +3129,27 @@ body::after { content: none; }
                 if (tasksResponse.entities && tasksResponse.entities.length > 0) {
                     taskListEl.innerHTML = tasksResponse.entities.map(task => {
                         const priority = task.prioritycode === 2 ? 'high' : task.prioritycode === 1 ? 'medium' : 'low';
-                        const priorityLabel = priority.toUpperCase();
-                        const dueDate = task.scheduledend ? new Date(task.scheduledend).toLocaleDateString() : 'No due date';
+                        const priorityLabel = t('prio_' + priority);
+                        const dueDate = task.scheduledend ? new Date(task.scheduledend).toLocaleDateString(I18N.locale) : t('task_noDueDate');
                         
                         return `
                             <div class="task-item priority-${priority}" onclick="openTask('${task.activityid}')">
                                 <div class="task-header">
-                                    <div class="task-title">${task.subject || 'Untitled Task'}</div>
+                                    <div class="task-title">${task.subject || t('task_untitled')}</div>
                                     <span class="task-priority priority-${priority}">${priorityLabel}</span>
                                 </div>
                                 <div class="task-meta">
-                                    <span style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5a.5.5 0 0 0-1 0v1h-2A2.5 2.5 0 0 0 5 8.5v16A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 24.5 6h-2V5a.5.5 0 0 0-1 0v1h-11V5ZM6 11.5V8.5A1.5 1.5 0 0 1 7.5 7h17A1.5 1.5 0 0 1 26 8.5v3H6Zm0 1h20v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 6 24.5v-12Z"/></svg>Due: ${dueDate}</span>
+                                    <span style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5a.5.5 0 0 0-1 0v1h-2A2.5 2.5 0 0 0 5 8.5v16A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 24.5 6h-2V5a.5.5 0 0 0-1 0v1h-11V5ZM6 11.5V8.5A1.5 1.5 0 0 1 7.5 7h17A1.5 1.5 0 0 1 26 8.5v3H6Zm0 1h20v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 6 24.5v-12Z"/></svg>${t('lbl_due')} ${dueDate}</span>
                                 </div>
                             </div>
                         `;
                     }).join('');
                 } else {
-                    taskListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SPARKLE + '</div><p>No pending tasks</p></div>';
+                    taskListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SPARKLE + '</div><p>' + t('e_noPendingTasks') + '</p></div>';
                 }
             } catch (error) {
 
-                document.getElementById('taskList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>Unable to load tasks</p></div>';
+                document.getElementById('taskList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>' + t('e_unableTasks') + '</p></div>';
             }
         }
 
@@ -2609,22 +3164,22 @@ body::after { content: none; }
                     casesListEl.innerHTML = casesResponse.entities.map(caseItem => {
                         // Status reason mapping - common Dynamics 365 case status reasons
                         const statusReasonMap = {
-                            1: { label: 'In Progress', class: 'active' },
-                            2: { label: 'On Hold', class: 'pending' },
-                            3: { label: 'Waiting for Details', class: 'pending' },
-                            4: { label: 'Researching', class: 'active' },
-                            5: { label: 'Problem Solved', class: 'resolved' },
-                            1000: { label: 'Information Provided', class: 'active' },
-                            2000: { label: 'Merged', class: 'resolved' }
+                            1: { label: t('st_inProgress'), class: 'active' },
+                            2: { label: t('st_onHold'), class: 'pending' },
+                            3: { label: t('st_waitingDetails'), class: 'pending' },
+                            4: { label: t('st_researching'), class: 'active' },
+                            5: { label: t('st_problemSolved'), class: 'resolved' },
+                            1000: { label: t('st_infoProvided'), class: 'active' },
+                            2000: { label: t('st_merged'), class: 'resolved' }
                         };
                         
                         // Get status reason label from mapping or use a default
-                        const statusInfo = statusReasonMap[caseItem.statuscode] || { label: 'Active', class: 'active' };
+                        const statusInfo = statusReasonMap[caseItem.statuscode] || { label: t('st_active'), class: 'active' };
                         const statusLabel = statusInfo.label;
                         const statusClass = statusInfo.class;
                         
                         // Get customer name - check both expanded properties and the actual data structure
-                        let customerName = 'Unknown Customer';
+                        let customerName = t('cust_unknown');
                         if (caseItem.customerid_contact && caseItem.customerid_contact.fullname) {
                             customerName = caseItem.customerid_contact.fullname;
                         } else if (caseItem.customerid_account && caseItem.customerid_account.name) {
@@ -2636,21 +3191,21 @@ body::after { content: none; }
                         }
                         
                         // Format created date
-                        const createdDate = caseItem.createdon ? new Date(caseItem.createdon).toLocaleDateString('en-US', { 
+                        const createdDate = caseItem.createdon ? new Date(caseItem.createdon).toLocaleDateString(I18N.locale, { 
                             month: 'short', 
                             day: 'numeric', 
                             year: 'numeric',
                             hour: '2-digit',
                             minute: '2-digit'
-                        }) : 'N/A';
+                        }) : t('v_na');
                         
                         return `
                             <div class="case-item" onclick="openCase('${caseItem.incidentid}')">
                                 <div class="case-header">
-                                    <span class="case-number">${caseItem.ticketnumber || 'N/A'}</span>
+                                    <span class="case-number">${caseItem.ticketnumber || t('v_na')}</span>
                                     <span class="case-status status-${statusClass}">${statusLabel}</span>
                                 </div>
-                                <div class="case-title">${caseItem.title || 'Untitled Case'}</div>
+                                <div class="case-title">${caseItem.title || t('case_untitled')}</div>
                                 <div class="case-footer">
                                     <div class="case-customer" style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 2a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm0 1a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm-9.5 18a4.5 4.5 0 0 0-4.495 4.288L2 25.5v2a.5.5 0 0 0 .992.09L3 27.5v-2a3.5 3.5 0 0 1 3.308-3.495L6.5 22h19a3.5 3.5 0 0 1 3.495 3.308L29 25.5v2a.5.5 0 0 0 .992.09L30 27.5v-2a4.5 4.5 0 0 0-4.288-4.495L25.5 21h-19Z"/></svg>${customerName}</div>
                                     <div class="case-meta" style="display: inline-flex; align-items: center;"><svg style="width: 14px; height: 14px; margin-right: 4px;" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5a.5.5 0 0 0-1 0v1h-2A2.5 2.5 0 0 0 5 8.5v16A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5v-16A2.5 2.5 0 0 0 24.5 6h-2V5a.5.5 0 0 0-1 0v1h-11V5ZM6 11.5V8.5A1.5 1.5 0 0 1 7.5 7h17A1.5 1.5 0 0 1 26 8.5v3H6Zm0 1h20v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 6 24.5v-12Z"/></svg>${createdDate}</div>
@@ -2659,11 +3214,11 @@ body::after { content: none; }
                         `;
                     }).join('');
                 } else {
-                    casesListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_CLIPBOARD + '</div><p>No active cases</p></div>';
+                    casesListEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_CLIPBOARD + '</div><p>' + t('e_noActiveCases') + '</p></div>';
                 }
             } catch (error) {
 
-                document.getElementById('casesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>Unable to load cases</p></div>';
+                document.getElementById('casesList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>' + t('e_unableCases') + '</p></div>';
             }
         }
 
@@ -2684,7 +3239,7 @@ body::after { content: none; }
                 // Populate the dropdown
                 const dropdown = document.getElementById('queueFilterDropdown');
                 if (dropdown) {
-                    dropdown.innerHTML = '<option value="">All Queues</option>';
+                    dropdown.innerHTML = '<option value="">' + t('opt_allQueues') + '</option>';
                     availableQueues.forEach(queue => {
                         const option = document.createElement('option');
                         option.value = queue.queueid;
@@ -2719,8 +3274,8 @@ body::after { content: none; }
                 );
 
                 if (!usersResponse.entities || usersResponse.entities.length === 0) {
-                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
-                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
+                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noOtherAgents') + '</p></div>';
+                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noOtherAgents') + '</p></div>';
                     return;
                 }
 
@@ -2731,8 +3286,8 @@ body::after { content: none; }
                 });
 
                 if (realUsers.length === 0) {
-                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
-                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No other agents found</p></div>';
+                    document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noOtherAgents') + '</p></div>';
+                    document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noOtherAgents') + '</p></div>';
                     return;
                 }
 
@@ -2873,16 +3428,16 @@ body::after { content: none; }
 
             } catch (error) {
 
-                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>Unable to load agents</p></div>';
-                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>Unable to load agents</p></div>';
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>' + t('e_unableAgents') + '</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>' + t('e_unableAgents') + '</p></div>';
             }
         }
 
         // Render agents (called initially and when filtering)
         function renderAgents(searchTerm = '') {
             if (allAgents.length === 0) {
-                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No agents found</p></div>';
-                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No agents found</p></div>';
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noAgents') + '</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noAgents') + '</p></div>';
                 document.getElementById('onlineCount').textContent = '0';
                 document.getElementById('offlineCount').textContent = '0';
                 return;
@@ -2923,8 +3478,8 @@ body::after { content: none; }
             }
 
             if (filteredAgents.length === 0) {
-                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SEARCH + '</div><p>No agents found</p></div>';
-                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SEARCH + '</div><p>No agents found</p></div>';
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SEARCH + '</div><p>' + t('e_noAgents') + '</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SEARCH + '</div><p>' + t('e_noAgents') + '</p></div>';
                 document.getElementById('onlineCount').textContent = '0';
                 document.getElementById('offlineCount').textContent = '0';
                 return;
@@ -2942,14 +3497,14 @@ body::after { content: none; }
             if (activeAgents.length > 0) {
                 document.getElementById('onlineAgentsTab').innerHTML = renderAgentsGroupedByStatus(activeAgents);
             } else {
-                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No active agents</p></div>';
+                document.getElementById('onlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noActiveAgents') + '</p></div>';
             }
 
             // Render offline agents
             if (offlineAgents.length > 0) {
                 document.getElementById('offlineAgentsTab').innerHTML = offlineAgents.map(agent => renderAgentItem(agent)).join('');
             } else {
-                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>No offline agents</p></div>';
+                document.getElementById('offlineAgentsTab').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_PEOPLE_TEAM + '</div><p>' + t('e_noOfflineAgents') + '</p></div>';
             }
         }
 
@@ -2957,10 +3512,10 @@ body::after { content: none; }
         function renderAgentsGroupedByStatus(agents) {
             // Group agents by status
             const statusGroups = {
-                'available': { label: 'Available', icon: '🟢', agents: [] },
-                'busy': { label: 'Busy', icon: '🔴', agents: [] },
-                'away': { label: 'Away', icon: '🟡', agents: [] },
-                'dnd': { label: 'Do Not Disturb', icon: '⛔', agents: [] }
+                'available': { label: t('p_available'), icon: '🟢', agents: [] },
+                'busy': { label: t('p_busy'), icon: '🔴', agents: [] },
+                'away': { label: t('p_away'), icon: '🟡', agents: [] },
+                'dnd': { label: t('p_dnd'), icon: '⛔', agents: [] }
             };
 
             agents.forEach(agent => {
@@ -3017,7 +3572,7 @@ body::after { content: none; }
                     </div>
                     <div class="agent-info">
                         <div class="agent-name">${agent.name}</div>
-                        <div class="agent-status-text">${agent.status}</div>
+                        <div class="agent-status-text">${presenceLabel(agent.status)}</div>
                     </div>
                 </div>
             `;
@@ -3332,8 +3887,8 @@ body::after { content: none; }
             const statusBadge = document.getElementById('statusBadge');
             const statusIndicator = document.querySelector('.status-indicator');
             
-            // Update status text
-            statusText.textContent = status;
+            // Update status text (localized)
+            statusText.textContent = presenceLabel(status);
             
             // Update colors and indicator based on status
             const statusColors = {
@@ -3462,8 +4017,8 @@ body::after { content: none; }
                     }
                 }
                 if (queueIds.length === 0) {
-                    gridEl.innerHTML = '<div class="queues-empty"><p>You are not a member of any queues</p></div>';
-                    countEl.textContent = '0 queues';
+                    gridEl.innerHTML = '<div class="queues-empty"><p>' + t('q_notMember') + '</p></div>';
+                    countEl.textContent = t('q_countMany', { n: 0 });
                     return;
                 }
 
@@ -3477,12 +4032,12 @@ body::after { content: none; }
                 );
 
                 if (queues.length === 0) {
-                    gridEl.innerHTML = '<div class="queues-empty"><p>No active queues found</p></div>';
-                    countEl.textContent = '0 queues';
+                    gridEl.innerHTML = '<div class="queues-empty"><p>' + t('q_noActive') + '</p></div>';
+                    countEl.textContent = t('q_countMany', { n: 0 });
                     return;
                 }
 
-                countEl.textContent = queues.length + (queues.length === 1 ? ' queue' : ' queues');
+                countEl.textContent = t(queues.length === 1 ? 'q_countOne' : 'q_countMany', { n: queues.length });
 
                 // Step 3: For each queue, get waiting items count and avg wait time
                 const queueCards = await Promise.all(queues.map(async (queue, index) => {
@@ -3567,15 +4122,15 @@ body::after { content: none; }
 
                 gridEl.innerHTML =
                     `<div class="queues-grid-header">
-                        <div class="queues-grid-header-cell">Queue</div>
-                        <div class="queues-grid-header-cell">Waiting</div>
-                        <div class="queues-grid-header-cell">Avg Wait</div>
+                        <div class="queues-grid-header-cell">${t('col_queue')}</div>
+                        <div class="queues-grid-header-cell">${t('col_waiting')}</div>
+                        <div class="queues-grid-header-cell">${t('col_avgWait')}</div>
                         <div class="queues-grid-header-cell"></div>
                     </div>` +
                     queueCards.join('');
             } catch (error) {
 
-                document.getElementById('queuesGrid').innerHTML = '<div class="queues-empty"><p>Unable to load queue data</p></div>';
+                document.getElementById('queuesGrid').innerHTML = '<div class="queues-empty"><p>' + t('q_unableLoad') + '</p></div>';
             }
         }
 
@@ -3584,9 +4139,9 @@ body::after { content: none; }
             if (!xrm) return;
 
             // Show modal immediately with loading state
-            document.getElementById('qmTitle').textContent = queueName || 'Queue Items';
-            document.getElementById('qmSubtitle').textContent = 'Loading...';
-            document.getElementById('qmBody').innerHTML = '<div class="qm-loading"><div class="spinner"></div><p>Loading items...</p></div>';
+            document.getElementById('qmTitle').textContent = queueName || t('qm_queueItems');
+            document.getElementById('qmSubtitle').textContent = t('qm_loading');
+            document.getElementById('qmBody').innerHTML = '<div class="qm-loading"><div class="spinner"></div><p>' + t('qm_loadingItems') + '</p></div>';
             document.getElementById('qmBackdrop').classList.add('open');
 
             (async () => {
@@ -3601,13 +4156,13 @@ body::after { content: none; }
                     const now = new Date();
 
                     document.getElementById('qmSubtitle').textContent =
-                        items.length === 0 ? 'No items waiting' :
-                        items.length === 1 ? '1 item waiting' :
-                        `${items.length} items waiting`;
+                        items.length === 0 ? t('qm_noItemsWaiting') :
+                        items.length === 1 ? t('qm_oneItemWaiting') :
+                        t('qm_itemsWaiting', { n: items.length });
 
                     if (items.length === 0) {
                         document.getElementById('qmBody').innerHTML =
-                            '<div class="qm-empty">No items are currently waiting in this queue.</div>';
+                            '<div class="qm-empty">' + t('qm_noItemsInQueue') + '</div>';
                         return;
                     }
 
@@ -3625,22 +4180,22 @@ body::after { content: none; }
                             waitClass = 'danger';
                         }
 
-                        const title = item.title || 'Untitled';
+                        const title = item.title || t('qm_untitled');
                         const enteredStr = item.enteredon
-                            ? new Date(item.enteredon).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+                            ? new Date(item.enteredon).toLocaleString(I18N.locale, {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
                             : '';
-                        const assigned = item._workerid_value ? 'Assigned' : 'Waiting';
+                        const assigned = item._workerid_value ? t('qm_assigned') : t('qm_waiting');
                         const objId = item._objectid_value;
                         // Use the OData lookup annotation to get the actual logical entity name
                         const objType = item['_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] || 'incident';
 
-                        return `<div class="qm-item" onclick="openQueueItemRecord('${objId}','${objType}')" title="Open record">
+                        return `<div class="qm-item" onclick="openQueueItemRecord('${objId}','${objType}')" title="${t('title_openRecord')}">
                             <div>
                                 <div class="qm-item-title">${title}</div>
-                                <div class="qm-item-sub">${enteredStr ? 'Entered: ' + enteredStr + ' &nbsp;·&nbsp; ' : ''}${assigned}</div>
+                                <div class="qm-item-sub">${enteredStr ? t('qm_entered') + ' ' + enteredStr + ' &nbsp;·&nbsp; ' : ''}${assigned}</div>
                             </div>
                             <span class="qm-wait-badge ${waitClass}">${waitLabel}</span>
-                            <button class="qm-open-btn" onclick="event.stopPropagation();openQueueItemRecord('${objId}','${objType}')" title="Open in new window">
+                            <button class="qm-open-btn" onclick="event.stopPropagation();openQueueItemRecord('${objId}','${objType}')" title="${t('title_openNewWindow')}">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                             </button>
                         </div>`;
@@ -3650,7 +4205,7 @@ body::after { content: none; }
                 } catch (err) {
 
                     document.getElementById('qmBody').innerHTML =
-                        '<div class="qm-empty">Unable to load queue items.</div>';
+                        '<div class="qm-empty">' + t('qm_unableItems') + '</div>';
                 }
             })();
         }
@@ -3702,13 +4257,13 @@ body::after { content: none; }
             const isYesterday = scheduleCurrentDate.toDateString() === yesterday.toDateString();
 
             if (isToday) {
-                label.textContent = 'Today — ' + scheduleCurrentDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                label.textContent = t('sched_today') + ' — ' + scheduleCurrentDate.toLocaleDateString(I18N.locale, { weekday: 'short', month: 'short', day: 'numeric' });
             } else if (isTomorrow) {
-                label.textContent = 'Tomorrow — ' + scheduleCurrentDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                label.textContent = t('sched_tomorrow') + ' — ' + scheduleCurrentDate.toLocaleDateString(I18N.locale, { weekday: 'short', month: 'short', day: 'numeric' });
             } else if (isYesterday) {
-                label.textContent = 'Yesterday — ' + scheduleCurrentDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                label.textContent = t('sched_yesterday') + ' — ' + scheduleCurrentDate.toLocaleDateString(I18N.locale, { weekday: 'short', month: 'short', day: 'numeric' });
             } else {
-                label.textContent = scheduleCurrentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+                label.textContent = scheduleCurrentDate.toLocaleDateString(I18N.locale, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
             }
 
             // Show/hide Today button
@@ -3734,12 +4289,12 @@ body::after { content: none; }
         ];
 
         const KNOWN_TYPE_MAP = {
-            'type-shift':    { color: '#818cf8', label: 'Shift' },
-            'type-break':    { color: '#fbbf24', label: 'Break' },
-            'type-lunch':    { color: '#34d399', label: 'Lunch' },
-            'type-training': { color: '#a78bfa', label: 'Training' },
-            'type-meeting':  { color: '#38bdf8', label: 'Meeting' },
-            'type-timeoff':  { color: '#fb7185', label: 'Time Off' },
+            'type-shift':    { color: '#818cf8', label: t('ty_shift') },
+            'type-break':    { color: '#fbbf24', label: t('ty_break') },
+            'type-lunch':    { color: '#34d399', label: t('ty_lunch') },
+            'type-training': { color: '#a78bfa', label: t('ty_training') },
+            'type-meeting':  { color: '#38bdf8', label: t('ty_meeting') },
+            'type-timeoff':  { color: '#fb7185', label: t('ty_timeoff') },
         };
 
         function _typeStringHash(str) {
@@ -3761,7 +4316,7 @@ body::after { content: none; }
             if (t.includes('off') || t.includes('pto') || t.includes('vacation') || t.includes('holiday')) return { cls: 'type-timeoff', ...KNOWN_TYPE_MAP['type-timeoff'], isCustom: false };
             if (t.includes('shift') || t.includes('work') || t.includes('productive'))         return { cls: 'type-shift',    ...KNOWN_TYPE_MAP['type-shift'],    isCustom: false };
             // Custom/unknown type — assign a unique color deterministically from the palette
-            const rawLabel = (rawType && rawType.trim()) ? rawType.trim() : 'Other';
+            const rawLabel = (rawType && rawType.trim()) ? rawType.trim() : t('ty_other');
             const color = CUSTOM_TYPE_PALETTE[_typeStringHash(t) % CUSTOM_TYPE_PALETTE.length];
             const safeCls = 'type-custom-' + t.replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
             return { cls: safeCls, color, label: rawLabel, isCustom: true };
@@ -3781,8 +4336,8 @@ body::after { content: none; }
                 contentEl.innerHTML = `
                     <div class="schedule-empty">
                         <div class="schedule-empty-icon">' + ICON_CALENDAR + '</div>
-                        <p>No schedule found for this day</p>
-                        <p class="schedule-empty-sub">WFM schedule data may not be available or the schedule has not been published yet.</p>
+                        <p>${t('sched_noScheduleDay')}</p>
+                        <p class="schedule-empty-sub">${t('sched_noScheduleSub')}</p>
                     </div>
                 `;
                 return;
@@ -3845,12 +4400,12 @@ body::after { content: none; }
 
             // Legend — always show all 6 standard types, then append any custom types seen today
             const standardLegendTypes = [
-                { color: '#818cf8', label: 'Shift' },
-                { color: '#fbbf24', label: 'Break' },
-                { color: '#34d399', label: 'Lunch' },
-                { color: '#a78bfa', label: 'Training' },
-                { color: '#38bdf8', label: 'Meeting' },
-                { color: '#fb7185', label: 'Time Off' },
+                { color: '#818cf8', label: t('ty_shift') },
+                { color: '#fbbf24', label: t('ty_break') },
+                { color: '#34d399', label: t('ty_lunch') },
+                { color: '#a78bfa', label: t('ty_training') },
+                { color: '#38bdf8', label: t('ty_meeting') },
+                { color: '#fb7185', label: t('ty_timeoff') },
             ];
             let legendHtml = '';
             standardLegendTypes.forEach(({ color, label: lbl }) => {
@@ -3895,7 +4450,7 @@ body::after { content: none; }
         }
 
         function formatTimeShort(date) {
-            return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            return date.toLocaleTimeString(I18N.locale, { hour: 'numeric', minute: '2-digit', hour12: true });
         }
 
         async function loadWFMSchedule(xrm, userId, targetDate) {
@@ -3935,7 +4490,7 @@ body::after { content: none; }
                     if (bookingsResp.entities && bookingsResp.entities.length > 0) {
 
                         for (const booking of bookingsResp.entities) {
-                            const label = booking.name || (booking.BookingStatus ? booking.BookingStatus.name : 'Scheduled');
+                            const label = booking.name || (booking.BookingStatus ? booking.BookingStatus.name : t('sched_scheduled'));
                             activities.push({
                                 start: new Date(booking.starttime),
                                 end: new Date(booking.endtime),
@@ -3964,7 +4519,7 @@ body::after { content: none; }
                             activities.push({
                                 start: new Date(entry.msdyn_startdatetime),
                                 end: new Date(entry.msdyn_enddatetime),
-                                label: entry.msdyn_name || 'Scheduled',
+                                label: entry.msdyn_name || t('sched_scheduled'),
                                 type: entry.msdyn_name || entry.msdyn_activitytype || 'shift'
                             });
                         }
@@ -3989,7 +4544,7 @@ body::after { content: none; }
                             activities.push({
                                 start: new Date(entry.msdyn_starttime),
                                 end: new Date(entry.msdyn_endtime),
-                                label: entry.msdyn_name || 'Scheduled',
+                                label: entry.msdyn_name || t('sched_scheduled'),
                                 type: entry.msdyn_name || entry.msdyn_activitytype || 'shift'
                             });
                         }
@@ -4014,7 +4569,7 @@ body::after { content: none; }
                             activities.push({
                                 start: new Date(appt.scheduledstart),
                                 end: new Date(appt.scheduledend),
-                                label: appt.subject || 'Appointment',
+                                label: appt.subject || t('sched_appointment'),
                                 type: 'meeting'
                             });
                         }
@@ -4190,16 +4745,16 @@ body::after { content: none; }
 
         // Show error when Xrm not available
         function showError() {
-            document.getElementById('agentName').textContent = 'Unknown';
+            document.getElementById('agentName').textContent = t('v_unknown');
             document.getElementById('activeCases').textContent = '0';
             document.getElementById('resolvedToday').textContent = '0';
             document.getElementById('pendingTasks').textContent = '0';
             // Show 0 instead of N/A
             document.getElementById('satisfactionScore').textContent = '0';
-            document.getElementById('csatMetricLabel').textContent = 'Cases This Month';
-            document.getElementById('csatMetricBadge').textContent = 'MTD';
+            document.getElementById('csatMetricLabel').textContent = t('csat_casesThisMonth');
+            document.getElementById('csatMetricBadge').textContent = t('b_mtd');
             
-            var _msg = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>This page must be run within Dynamics 365</p></div>';
+            var _msg = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING + '</div><p>' + t('err_mustRunInD365') + '</p></div>';
             ['taskList','casesList','activityFeed'].forEach(function(id){ var el = document.getElementById(id); if (el) el.innerHTML = _msg; });
         }
 
@@ -4212,11 +4767,17 @@ body::after { content: none; }
             if (durationUpdateInterval) clearInterval(durationUpdateInterval);
         });
     
-        // Kick off clock immediately so header time is correct even before Xrm init completes
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", function(){ try { updateDateTime(); setInterval(updateDateTime, 30000); } catch(e){} });
-        } else {
+        // Kick off clock immediately so header time is correct even before Xrm init completes.
+        // Also apply an early language guess (browser locale) so the first paint is localized;
+        // initialize() re-detects from the D365 user LCID once Xrm is ready.
+        function earlyBootstrap() {
+            try { I18N.detect(null); applyStaticTranslations(); } catch (e) {}
             try { updateDateTime(); setInterval(updateDateTime, 30000); } catch(e){}
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", earlyBootstrap);
+        } else {
+            earlyBootstrap();
         }
 </script>
 
@@ -4225,15 +4786,15 @@ body::after { content: none; }
         <div class="qm-dialog" role="dialog" aria-modal="true">
             <div class="qm-header">
                 <div>
-                    <div class="qm-title" id="qmTitle">Queue Items</div>
+                    <div class="qm-title" id="qmTitle" data-i18n="qm_queueItems">Queue Items</div>
                     <div class="qm-subtitle" id="qmSubtitle"></div>
                 </div>
-                <button class="qm-close" onclick="closeQueueModal()" title="Close">
+                <button class="qm-close" onclick="closeQueueModal()" data-i18n-title="title_close" title="Close">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="qm-body" id="qmBody">
-                <div class="qm-loading"><div class="spinner"></div><p>Loading items...</p></div>
+                <div class="qm-loading"><div class="spinner"></div><p data-i18n="qm_loadingItems">Loading items...</p></div>
             </div>
         </div>
     </div>
