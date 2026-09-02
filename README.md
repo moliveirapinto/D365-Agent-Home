@@ -10,7 +10,15 @@ A unified agent dashboard for Dynamics 365 Customer Service, providing real-time
 
 ### My Presence
 - Set and display your current presence status (Available, Busy, Do Not Disturb, Away, Offline)
+- Presence is resolved from the org's own `msdyn_presence` records, so **custom presences** (for example "Busy - After Conversation Work") show their real name and correct colour
 - Polling interval: 10 seconds (throttle-safe)
+
+### Recent Conversations
+- Shows the Omnichannel conversations the signed-in agent actually handled
+- Filter bubbles for the last **24h, 12h, 6h, 1h, 30m and 15m**
+- Each row shows the channel (voice, chat, email, SMS, social), workstream, customer, handle time, sentiment and live/wrap-up/closed status
+- Click a row to open the conversation record
+- Channel icons are resolved from the org's own workstream channel option set, so custom channels are supported
 
 ### My Queues
 - View all queues you are assigned to
@@ -72,7 +80,7 @@ Custom type palette (12 colors, cycled by hash): pink, orange, sky-blue, indigo,
 
 ## Deployment
 
-Import the prebuilt **`solution.zip`** (unmanaged, version 2.8.0.0) included in this repository:
+Import the prebuilt **`solution.zip`** (unmanaged, version 2.9.0.0) included in this repository:
 
 1. In D365 go to **Settings → Solutions → Import** (or **make.powerapps.com → Solutions → Import solution**)
 2. Select `solution.zip` and complete the import

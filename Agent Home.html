@@ -43,7 +43,7 @@
             --surface-3:  var(--cloud);
 
             /* Typography */
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --font: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
             /* Shadows — layered for realism */
             --sh-1: 0 1px 2px rgba(12,14,22,0.04);
@@ -2473,11 +2473,7 @@
                     document.getElementById('agentName').textContent = currentUser.userName;
                     
                     // Update avatar: try profile photo, fall back to initials
-                    const nameParts = currentUser.userName.split(' ');
-                    const initials = nameParts.length >= 2 
-                        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
-                        : currentUser.userName.substring(0, 2).toUpperCase();
-                    document.getElementById('agentAvatar').textContent = initials;
+                    document.getElementById('agentAvatar').textContent = computeInitials(currentUser.userName);
                     loadUserProfilePhoto(xrm, currentUser.userId);
                     
                     // Load all data
@@ -2662,70 +2658,214 @@
             }
         }
 
-        // Load user profile photo  tries multiple methods for cross-environment reliability
+        // Initials from a display name, ignoring parenthetical suffixes like "(MO)"
+        function computeInitials(name) {
+            const parts = String(name || '')
+                .replace(/\([^)]*\)/g, ' ')
+                .replace(/[^A-Za-z\u00C0-\u024F\u0400-\u04FF0-9\s'-]/g, ' ')
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+            if (!parts.length) return 'U';
+            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        // Rendered-image avatar used when no photo exists in any source
+        function initialsAvatarDataUri(initials) {
+            const text = (initials || 'U').substring(0, 2);
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">'
+                + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+                + '<stop offset="0%" stop-color="#3b4270"/><stop offset="100%" stop-color="#161a2d"/>'
+                + '</linearGradient></defs>'
+                + '<circle cx="48" cy="48" r="48" fill="url(#g)"/>'
+                + '<text x="50%" y="50%" dy=".35em" text-anchor="middle" fill="#ffffff" '
+                + 'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="38" font-weight="700">'
+                + text + '</text></svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        // Load user profile photo  tries every available source so a picture always renders
         async function loadUserProfilePhoto(xrm, userId) {
-            const cleanId = userId.replace(/[{}]/g, '');
+            const cleanId = String(userId || '').replace(/[{}]/g, '');
             const avatarEl = document.getElementById('agentAvatar');
             if (!avatarEl) return;
 
-            function setPhoto(src) {
+            const fallbackInitials = (avatarEl.textContent || '').trim();
+
+            function applyPhoto(src) {
                 const img = document.createElement('img');
-                img.src = src;
                 img.alt = 'Profile';
+                img.referrerPolicy = 'no-referrer';
+                img.src = src;
                 avatarEl.textContent = '';
                 avatarEl.appendChild(img);
             }
 
-            // Method 1: entityimage via WebApi (works when photo is synced to Dataverse)
+            // Only commit a source that actually decodes into a real image
+            function probe(src) {
+                return new Promise(resolve => {
+                    if (!src) return resolve(false);
+                    const test = new Image();
+                    test.referrerPolicy = 'no-referrer';
+                    test.onload = () => resolve(test.naturalWidth > 1 && test.naturalHeight > 1);
+                    test.onerror = () => resolve(false);
+                    test.src = src;
+                });
+            }
+
+            async function commit(src) {
+                if (await probe(src)) { applyPhoto(src); return true; }
+                return false;
+            }
+
+            let clientUrl = '';
+            try { clientUrl = xrm.Utility.getGlobalContext().getClientUrl(); } catch (e) { clientUrl = ''; }
+
+            async function toBlobUrl(url) {
+                try {
+                    const resp = await fetch(url, { credentials: 'include' });
+                    if (!resp.ok) return null;
+                    const blob = await resp.blob();
+                    if (blob.size < 100) return null;
+                    if (blob.type && blob.type.indexOf('image/') !== 0) return null;
+                    return URL.createObjectURL(blob);
+                } catch (e) { return null; }
+            }
+
+            // Copy borrowed blob: URLs into a data URL so they survive the owner revoking them
+            async function toDataUrl(url) {
+                try {
+                    const resp = await fetch(url);
+                    if (!resp.ok) return null;
+                    const blob = await resp.blob();
+                    if (blob.size < 100) return null;
+                    return await new Promise(resolve => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => resolve(null);
+                        reader.readAsDataURL(blob);
+                    });
+                } catch (e) { return null; }
+            }
+
+            // The shell renders its header photo as a CSS background on a div, not an <img>
+            function photoSrcFromElement(el, doc) {
+                if (!el) return '';
+                if (el.tagName === 'IMG') {
+                    const direct = el.currentSrc || el.src || '';
+                    return direct.indexOf('data:image/gif') === 0 ? '' : direct;
+                }
+                let bg = '';
+                try {
+                    const view = (doc && doc.defaultView) || window;
+                    bg = view.getComputedStyle(el).backgroundImage || '';
+                } catch (e) { bg = (el.style && el.style.backgroundImage) || ''; }
+                const match = /url\((['"]?)(.*?)\1\)/.exec(bg);
+                if (match && match[2]) return match[2];
+                const inner = el.querySelector && el.querySelector('img');
+                return inner ? (inner.currentSrc || inner.src || '') : '';
+            }
+
+            // Method 1: reuse the photo the D365 shell already renders in its own header
+            try {
+                const selectors = [
+                    '#mectrl_headerPicture',
+                    '[id*="headerPicture"]',
+                    '[class*="profilepic" i]',
+                    'img[src*="GetPersonaPhoto"]',
+                    'img[src*="entityimage"]',
+                    'img[src*="userphoto" i]',
+                    '[class*="persona" i] img'
+                ];
+                const collectDocs = () => {
+                    const docs = [];
+                    let win = window;
+                    for (let i = 0; i < 5 && win; i++) {
+                        try { if (win.document) docs.push(win.document); } catch (e) { /* cross-origin frame */ }
+                        if (win === win.parent) break;
+                        win = win.parent;
+                    }
+                    return docs;
+                };
+                // The shell paints its photo asynchronously, so poll briefly before giving up
+                for (let attempt = 0; attempt < 8; attempt++) {
+                    let sawCandidate = false;
+                    for (const doc of collectDocs()) {
+                        for (const sel of selectors) {
+                            let els = [];
+                            try { els = Array.prototype.slice.call(doc.querySelectorAll(sel)); } catch (e) { els = []; }
+                            if (els.length) sawCandidate = true;
+                            for (const el of els) {
+                                const src = photoSrcFromElement(el, doc);
+                                if (!src) continue;
+                                if (src.indexOf('blob:') === 0) {
+                                    const dataUrl = await toDataUrl(src);
+                                    if (dataUrl && await commit(dataUrl)) return;
+                                } else if (await commit(src)) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    if (!sawCandidate) break;
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+            } catch (e) {
+
+            }
+
+            // Method 2: entityimage via WebApi (works when photo is synced to Dataverse)
+            let userEmail = '';
             try {
                 const result = await xrm.WebApi.retrieveRecord(
-                    'systemuser', cleanId, '?$select=entityimage,entityimage_url'
+                    'systemuser', cleanId, '?$select=entityimage,entityimage_url,internalemailaddress,domainname'
                 );
-                if (result.entityimage) {
-                    setPhoto('data:image/jpeg;base64,' + result.entityimage);
-                    return;
-                }
+                userEmail = result.internalemailaddress || result.domainname || '';
+                if (result.entityimage && await commit('data:image/jpeg;base64,' + result.entityimage)) return;
                 if (result.entityimage_url) {
-                    setPhoto(result.entityimage_url);
-                    return;
+                    const url = /^https?:/i.test(result.entityimage_url)
+                        ? result.entityimage_url
+                        : clientUrl + result.entityimage_url;
+                    if (await commit(url)) return;
                 }
             } catch (e) {
 
             }
 
-            // Method 2: Direct REST endpoint for raw image bytes
-            try {
-                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
-                const imgUrl = clientUrl + '/api/data/v9.2/systemusers(' + cleanId + ')/entityimage/$value';
-                const resp = await fetch(imgUrl, { credentials: 'include' });
-                if (resp.ok) {
-                    const blob = await resp.blob();
-                    if (blob.size > 100) {
-                        setPhoto(URL.createObjectURL(blob));
-                        return;
-                    }
-                }
-            } catch (e) {
-
+            // Method 3: Direct REST endpoint for raw image bytes
+            if (clientUrl) {
+                const url = await toBlobUrl(clientUrl + '/api/data/v9.2/systemusers(' + cleanId + ')/entityimage/$value');
+                if (url && await commit(url)) return;
             }
 
-            // Method 3: Legacy image download endpoint
-            try {
-                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
-                const imgUrl = clientUrl + '/Image/download.aspx?Entity=systemuser&Attribute=entityimage&Id=' + cleanId;
-                const resp = await fetch(imgUrl, { credentials: 'include' });
-                if (resp.ok) {
-                    const blob = await resp.blob();
-                    if (blob.size > 100) {
-                        setPhoto(URL.createObjectURL(blob));
-                        return;
-                    }
-                }
-            } catch (e) {
-
+            // Method 4: Legacy image download endpoint
+            if (clientUrl) {
+                const url = await toBlobUrl(clientUrl + '/Image/download.aspx?Entity=systemuser&Attribute=entityimage&Id=' + cleanId);
+                if (url && await commit(url)) return;
             }
 
+            // Method 5: Microsoft 365 profile photo  the source the shell header itself uses.
+            // The Outlook host is derived from the org's own cloud so this works outside the commercial cloud too.
+            if (userEmail) {
+                let orgHost = '';
+                try { orgHost = new URL(clientUrl || window.location.href).hostname.toLowerCase(); } catch (e) { orgHost = ''; }
+                let outlookHosts;
+                if (orgHost.indexOf('.dynamics.cn') !== -1) {
+                    outlookHosts = ['partner.outlook.cn'];
+                } else if (orgHost.indexOf('.us') === orgHost.length - 3) {
+                    outlookHosts = ['outlook.office365.us'];
+                } else {
+                    outlookHosts = ['outlook.office.com', 'outlook.office365.com'];
+                }
+                for (const host of outlookHosts) {
+                    const src = 'https://' + host + '/owa/service.svc/s/GetPersonaPhoto?email='
+                        + encodeURIComponent(userEmail) + '&UA=0&size=HR96x96';
+                    if (await commit(src)) return;
+                }
+            }
 
+            applyPhoto(initialsAvatarDataUri(fallbackInitials));
         }
 
         const isoDaysAgo = (days) => {
@@ -3358,7 +3498,7 @@
                             // Query msdyn_agentstatus entity - the correct entity for agent presence
                             const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
                                 "msdyn_agentstatus",
-                                `?$filter=_msdyn_agentid_value eq ${user.systemuserid}&$select=msdyn_isagentloggedin,msdyn_availableunitscapacity&$expand=msdyn_currentpresenceid($select=msdyn_name,msdyn_basepresencestatus)&$top=1`
+                                `?$filter=_msdyn_agentid_value eq ${user.systemuserid}&$select=msdyn_isagentloggedin,msdyn_availableunitscapacity&$expand=msdyn_currentpresenceid($select=msdyn_presencestatustext,msdyn_name,msdyn_basepresencestatus)&$top=1`
                             );
                             
                             if (agentStatusResponse.entities && agentStatusResponse.entities.length > 0) {
@@ -3368,24 +3508,17 @@
                                 if (agentStatus.msdyn_isagentloggedin === true) {
                                     // Check presence status
                                     if (agentStatus.msdyn_currentpresenceid) {
-                                        const presenceName = agentStatus.msdyn_currentpresenceid.msdyn_name || 'Unknown';
-                                        const basePresence = agentStatus.msdyn_currentpresenceid.msdyn_basepresencestatus;
-                                        
-                                        // Map base presence status values
-                                        // 192360000 = Available, 192360001 = Busy, 192360002 = Busy DND, 192360003 = Away, 192360004 = Offline
-                                        if (basePresence === 192360000) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'available';
-                                        } else if (basePresence === 192360001 || basePresence === 192360002) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'busy';
-                                        } else if (basePresence === 192360003) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'away';
-                                        } else {
-                                            presenceStatus = 'Offline';
-                                            presenceClass = 'offline';
-                                        }
+                                        const described = describePresence(agentStatus.msdyn_currentpresenceid);
+                                        const bucketClass = {
+                                            'Available': 'available',
+                                            'Busy': 'busy',
+                                            'Do Not Disturb': 'busy',
+                                            'Away': 'away',
+                                            'Offline': 'offline'
+                                        };
+
+                                        presenceClass = bucketClass[described.bucket] || 'offline';
+                                        presenceStatus = presenceClass === 'offline' ? 'Offline' : described.status;
                                         
 
                                     } else {
@@ -3734,7 +3867,7 @@
                 const presence = await getCurrentPresenceStatus(xrm);
                 if (presence) {
 
-                    updatePresenceDisplay(presence.status, presence.statusStartTime);
+                    updatePresenceDisplay(presence.status, presence.statusStartTime, presence.bucket);
                 } else {
 
                     presenceStatusStart = new Date();
@@ -3772,11 +3905,51 @@
             return { status, startTime };
         }
 
-        async function getCurrentPresenceStatus(xrm) {
-            try {
+        // msdyn_presence.msdyn_basepresencestatus option values (platform-defined, org-independent).
+        // Every presence record in an org — including custom ones — rolls up to one of these buckets.
+        const BASE_PRESENCE_BUCKET = {
+            192360000: 'Available',
+            192360001: 'Busy',
+            192360002: 'Do Not Disturb',
+            192360003: 'Away',
+            192360004: 'Offline'
+        };
 
-                
-                // Call the custom API CCaaS_GetPresence with ApiVersion parameter
+        // Resolve a presence record to the org's own display text plus a bucket used for colouring
+        function describePresence(presence) {
+            if (!presence) return null;
+            const bucket = BASE_PRESENCE_BUCKET[presence.msdyn_basepresencestatus] || 'Available';
+            const label = presence.msdyn_presencestatustext || presence.msdyn_name || bucket;
+            return { status: label, bucket: bucket };
+        }
+
+        async function getCurrentPresenceStatus(xrm) {
+            const presenceSelect = 'msdyn_presencestatustext,msdyn_basepresencestatus';
+
+            // Primary source: the agent's own status record, which carries both the presence and when it changed
+            try {
+                const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
+                    'msdyn_agentstatus',
+                    `?$select=msdyn_presencemodifiedon&$expand=msdyn_currentpresenceid($select=${presenceSelect})` +
+                    `&$filter=_msdyn_agentid_value eq ${currentUser.userId}&$top=1`
+                );
+                const agentStatus = agentStatusResponse.entities && agentStatusResponse.entities[0];
+                const described = agentStatus && describePresence(agentStatus.msdyn_currentpresenceid);
+                if (described) {
+                    return {
+                        status: described.status,
+                        bucket: described.bucket,
+                        statusStartTime: agentStatus.msdyn_presencemodifiedon
+                            ? new Date(agentStatus.msdyn_presencemodifiedon)
+                            : new Date()
+                    };
+                }
+            } catch (error) {
+
+            }
+
+            // Fallback: ask the platform for the presence id, then read that record
+            try {
                 const request = {
                     ApiVersion: "1.0",
                     getMetadata: function () {
@@ -3799,19 +3972,10 @@
                 if (result.ok) {
                     const responseJson = await result.json();
 
-                    
-                    // Parse the response
                     if (responseJson.PresenceId) {
-                        // Map presence IDs to status names
-                        const presenceMap = {
-                            'f523f628-c07a-e811-8162-000d3aa11f50': 'Available',
-                            'efdeb843-c07a-e811-8162-000d3aa11f50': 'Busy',
-                            '08971864-c07a-e811-8162-000d3aa11f50': 'Do Not Disturb',
-                            '70139190-c07a-e811-8162-000d3aa11f50': 'Offline',
-                            '3dacae76-c07a-e811-8162-000d3aa11f50': 'Away'
-                        };
-                        
-                        const status = presenceMap[responseJson.PresenceId.toLowerCase()] || 'Available';
+                        const presenceId = String(responseJson.PresenceId).replace(/[{}]/g, '');
+                        const presence = await xrm.WebApi.retrieveRecord('msdyn_presence', presenceId, '?$select=' + presenceSelect);
+                        const described = describePresence(presence);
                         
                         // Get the actual presence modified time from msdyn_agentstatus entity
                         let statusStartTime = new Date();
@@ -3832,10 +3996,13 @@
 
                         }
                         
-                        return {
-                            status: status,
-                            statusStartTime: statusStartTime
-                        };
+                        if (described) {
+                            return {
+                                status: described.status,
+                                bucket: described.bucket,
+                                statusStartTime: statusStartTime
+                            };
+                        }
                     }
                 }
             } catch (error) {
@@ -3846,6 +4013,7 @@
 
             return {
                 status: 'Available',
+                bucket: 'Available',
                 statusStartTime: new Date()
             };
         }
@@ -3862,11 +4030,11 @@
                     // Detect status change
                     if (lastPresenceStatus && lastPresenceStatus !== currentPresence.status) {
 
-                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime, currentPresence.bucket);
                     } else if (!lastPresenceStatus) {
                         // Initial status
 
-                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime, currentPresence.bucket);
                     }
                     
                     lastPresenceStatus = currentPresence.status;
@@ -3889,7 +4057,7 @@
 
         }
 
-        function updatePresenceDisplay(status, startTime) {
+        function updatePresenceDisplay(status, startTime, bucket) {
             currentPresenceStatus = status;
             presenceStatusStart = new Date(startTime);
             
@@ -3940,7 +4108,7 @@
                 }
             };
             
-            const colors = statusColors[status] || statusColors['Available'];
+            const colors = statusColors[status] || statusColors[bucket] || statusColors['Available'];
             statusBadge.style.setProperty('--status-bg', colors.bg);
             statusBadge.style.setProperty('--status-shadow', colors.shadow);
             
@@ -4615,7 +4783,7 @@
                     viewType: "savedquery"
                 }).catch(function(error) {
                     // Fallback: open task grid URL
-                    window.location.href = '/main.aspx?etn=task&pagetype=entitylist&viewid=00000000-0000-0000-00aa-000010001004&viewType=1039';
+                    window.location.href = '/main.aspx?etn=task&pagetype=entitylist';
                 });
             }
         }

@@ -56,8 +56,8 @@
     --surface-3:  var(--snow);
 
     /* Typography */
-    --font:         'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    --font:         'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, sans-serif;
 
     /* Shadows — soft, layered, warm */
     --sh-1: 0 1px 2px rgba(17,20,28,0.04);
@@ -410,12 +410,13 @@ body::after { content: none; }
     -webkit-mask-size: contain; mask-size: contain;
     display: inline-block;
 }
-.info-strip-icon.i-clock     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/clock_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/clock_24_regular.svg'); }
-.info-strip-icon.i-check     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/checkmark_circle_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/checkmark_circle_24_regular.svg'); }
-.info-strip-icon.i-briefcase { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/briefcase_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/briefcase_24_regular.svg'); }
-.info-strip-icon.i-call      { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/call_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/call_24_regular.svg'); }
-.info-strip-icon.i-mail      { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/mail_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/mail_24_regular.svg'); }
-.info-strip-icon.i-flash     { -webkit-mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/flash_24_regular.svg'); mask-image: url('https://cdn.jsdelivr.net/npm/@fluentui/svg-icons/icons/flash_24_regular.svg'); }
+/* Icons are inlined so the dashboard renders identically in tenants that block external CDNs */
+.info-strip-icon.i-clock     { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v5.2l3.2 2'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
+.info-strip-icon.i-check     { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='m8 12.4 2.6 2.6L16 9.6'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
+.info-strip-icon.i-briefcase { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='7.5' width='18' height='12' rx='2.5'/><path d='M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3 12.5h18'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
+.info-strip-icon.i-call      { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6.2 3.7 8 3.2a1.5 1.5 0 0 1 1.7.9l1 2.4a1.5 1.5 0 0 1-.4 1.7L8.9 9.4a11 11 0 0 0 5.3 5.3l1.2-1.4a1.5 1.5 0 0 1 1.7-.4l2.4 1a1.5 1.5 0 0 1 .9 1.7l-.5 1.8a2 2 0 0 1-2.2 1.5C11.6 19.6 4.4 12.4 3.5 5.9a2 2 0 0 1 1.5-2.2Z'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
+.info-strip-icon.i-mail      { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='5.5' width='18' height='13' rx='2.5'/><path d='m3.8 7.6 7.1 5.2a2 2 0 0 0 2.2 0l7.1-5.2'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
+.info-strip-icon.i-flash     { --icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M13.5 3 6 13.2h5l-.5 7.8L18 10.8h-5l.5-7.8Z'/></svg>"); -webkit-mask-image: var(--icon); mask-image: var(--icon); }
 
 .info-strip-clickable[data-case-url] {
     cursor: pointer;
@@ -750,6 +751,121 @@ body::after { content: none; }
     align-items: center; gap: 12px;
 }
 .case-meta { font-size: 11px; color: var(--ghost); font-weight: 500; white-space: nowrap; }
+
+/* ─────────────────────────────────────
+   RECENT CONVERSATIONS
+   ───────────────────────────────────── */
+.conv-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+.conv-filters {
+    display: inline-flex; gap: 2px;
+    padding: 3px;
+    background: var(--snow);
+    border: 1px solid var(--cloud);
+    border-radius: var(--r-full);
+}
+.conv-chip {
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: 0.2px;
+    color: var(--slate-2);
+    background: transparent;
+    border: none;
+    border-radius: var(--r-full);
+    padding: 6px 13px;
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+.conv-chip:hover { color: var(--indigo); background: var(--white); }
+.conv-chip:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+.conv-chip.active {
+    color: var(--white);
+    background: linear-gradient(135deg, var(--indigo-2) 0%, var(--indigo) 100%);
+    box-shadow: var(--sh-violet);
+}
+.conv-chip.active:hover { color: var(--white); }
+
+.conv-count {
+    font-size: 11px; font-weight: 700;
+    color: var(--slate-2);
+    background: var(--snow);
+    border: 1px solid var(--cloud);
+    border-radius: var(--r-full);
+    padding: 4px 11px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.conv-list { display: flex; flex-direction: column; }
+.conv-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+}
+.conv-item + .conv-item { border-top: 1px solid var(--cloud); }
+.conv-item:hover + .conv-item,
+.conv-item + .conv-item:hover { border-top-color: transparent; }
+.conv-item:hover { background: var(--snow); }
+.conv-item:focus-visible { outline: 2px solid var(--indigo); outline-offset: -2px; }
+
+.conv-icon {
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: var(--r-full);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--indigo-dim); color: var(--indigo);
+}
+.conv-icon svg { width: 17px; height: 17px; }
+.conv-icon.ch-voice  { background: rgba(16,185,129,0.10); color: #047857; }
+.conv-icon.ch-chat   { background: rgba(59,130,246,0.10); color: #2563eb; }
+.conv-icon.ch-email  { background: rgba(245,158,11,0.10); color: #b45309; }
+.conv-icon.ch-sms    { background: rgba(20,184,166,0.10); color: #0f766e; }
+.conv-icon.ch-social { background: rgba(244,63,94,0.10);  color: #be123c; }
+
+.conv-main { flex: 1; min-width: 0; }
+.conv-title {
+    font-size: 13.5px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.1px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.conv-meta {
+    display: flex; align-items: center; gap: 7px;
+    margin-top: 3px;
+    font-size: 11.5px; color: var(--ghost); font-weight: 500;
+    white-space: nowrap; overflow: hidden;
+}
+.conv-meta span { overflow: hidden; text-overflow: ellipsis; }
+.conv-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--mist); flex-shrink: 0; }
+.conv-sentiment { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.conv-sentiment.pos { background: var(--green); }
+.conv-sentiment.neu { background: var(--mist); }
+.conv-sentiment.neg { background: var(--rose); }
+
+.conv-side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.conv-time {
+    font-size: 11.5px; font-weight: 600; color: var(--slate-2);
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.conv-status {
+    font-size: 9.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 3px 9px; border-radius: var(--r-full); white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+}
+.conv-status.is-open   { background: rgba(59,130,246,0.10); color: #2563eb; }
+.conv-status.is-closed { background: rgba(16,185,129,0.10); color: #047857; }
+.conv-status.is-wrap   { background: rgba(245,158,11,0.10); color: #b45309; }
+.conv-status.is-open::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor; animation: conv-pulse 1.8s var(--ease) infinite;
+}
+@keyframes conv-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
 /* ─────────────────────────────────────
    ACTIVITY
@@ -1754,6 +1870,35 @@ body::after { content: none; }
         <div class="content-grid">
             <!-- Left Column -->
             <div>
+                <!-- Recent Conversations -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.75a9.25 9.25 0 0 1 8.014 13.868l.933 3.267a.75.75 0 0 1-.927.927l-3.267-.933A9.25 9.25 0 1 1 12 2.75Zm0 1.5a7.75 7.75 0 1 0 3.945 14.42.75.75 0 0 1 .588-.077l2.204.63-.63-2.205a.75.75 0 0 1 .077-.588A7.75 7.75 0 0 0 12 4.25ZM9 13.5h4.5a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1 0-1.5Zm0-4h6a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1 0-1.5Z"/></svg>
+                            <span data-i18n="c_recentConvs">Recent Conversations</span>
+                        </div>
+                        <span class="conv-count" id="convCount">—</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="conv-toolbar">
+                            <div class="conv-filters" id="convFilters" role="group" data-i18n-aria-label="conv_range" aria-label="Time range">
+                                <button type="button" class="conv-chip active" data-window="1440" onclick="setConversationWindow(1440, this)">24h</button>
+                                <button type="button" class="conv-chip" data-window="720" onclick="setConversationWindow(720, this)">12h</button>
+                                <button type="button" class="conv-chip" data-window="360" onclick="setConversationWindow(360, this)">6h</button>
+                                <button type="button" class="conv-chip" data-window="60" onclick="setConversationWindow(60, this)">1h</button>
+                                <button type="button" class="conv-chip" data-window="30" onclick="setConversationWindow(30, this)">30m</button>
+                                <button type="button" class="conv-chip" data-window="15" onclick="setConversationWindow(15, this)">15m</button>
+                            </div>
+                        </div>
+                        <div id="convList">
+                            <div class="loading">
+                                <div class="spinner"></div>
+                                <p data-i18n="ld_convs">Loading conversations...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- My Tasks -->
                 <div class="card">
                     <div class="card-header">
@@ -1907,6 +2052,10 @@ body::after { content: none; }
                     sched_today: "Today", title_prevDay: "Previous day", title_nextDay: "Next day", ld_schedule: "Loading schedule...",
                     c_myTasks: "My Tasks", viewAll: "View All", ld_tasks: "Loading tasks...",
                     c_recentCases: "Recent Cases", ld_cases: "Loading cases...", c_quickActions: "Quick Actions",
+                    c_recentConvs: "Recent Conversations", ld_convs: "Loading conversations...",
+                    e_noConvs: "No conversations in this window", e_unableConvs: "Unable to load conversations",
+                    conv_untitled: "Untitled conversation", conv_range: "Time range",
+                    conv_live: "Live", conv_closed: "Closed", conv_wrapup: "Wrap-up",
                     a_newCase: "New Case", a_newTask: "New Task", a_knowledgeBase: "Knowledge Base", a_viewQueue: "View Queue",
                     c_teamAgents: "Team Agents", ph_searchAgents: "Search agents...", opt_allQueues: "All Queues",
                     tab_active: "Active", tab_offline: "Offline", ld_agents: "Loading agents...",
@@ -1949,6 +2098,10 @@ body::after { content: none; }
                     sched_today: "Aujourd'hui", title_prevDay: "Jour précédent", title_nextDay: "Jour suivant", ld_schedule: "Chargement du planning...",
                     c_myTasks: "Mes tâches", viewAll: "Tout afficher", ld_tasks: "Chargement des tâches...",
                     c_recentCases: "Incidents récents", ld_cases: "Chargement des incidents...", c_quickActions: "Actions rapides",
+                    c_recentConvs: "Conversations récentes", ld_convs: "Chargement des conversations...",
+                    e_noConvs: "Aucune conversation sur cette période", e_unableConvs: "Impossible de charger les conversations",
+                    conv_untitled: "Conversation sans titre", conv_range: "Plage horaire",
+                    conv_live: "En direct", conv_closed: "Fermée", conv_wrapup: "Post-appel",
                     a_newCase: "Nouvel incident", a_newTask: "Nouvelle tâche", a_knowledgeBase: "Base de connaissances", a_viewQueue: "Voir la file",
                     c_teamAgents: "Agents de l'équipe", ph_searchAgents: "Rechercher des agents...", opt_allQueues: "Toutes les files",
                     tab_active: "Actif", tab_offline: "Hors ligne", ld_agents: "Chargement des agents...",
@@ -1991,6 +2144,10 @@ body::after { content: none; }
                     sched_today: "Heute", title_prevDay: "Vorheriger Tag", title_nextDay: "Nächster Tag", ld_schedule: "Zeitplan wird geladen...",
                     c_myTasks: "Meine Aufgaben", viewAll: "Alle anzeigen", ld_tasks: "Aufgaben werden geladen...",
                     c_recentCases: "Letzte Fälle", ld_cases: "Fälle werden geladen...", c_quickActions: "Schnellaktionen",
+                    c_recentConvs: "Letzte Konversationen", ld_convs: "Konversationen werden geladen...",
+                    e_noConvs: "Keine Konversationen in diesem Zeitraum", e_unableConvs: "Konversationen können nicht geladen werden",
+                    conv_untitled: "Konversation ohne Titel", conv_range: "Zeitraum",
+                    conv_live: "Live", conv_closed: "Geschlossen", conv_wrapup: "Nachbearbeitung",
                     a_newCase: "Neuer Fall", a_newTask: "Neue Aufgabe", a_knowledgeBase: "Wissensdatenbank", a_viewQueue: "Warteschlange anzeigen",
                     c_teamAgents: "Team-Agenten", ph_searchAgents: "Agenten suchen...", opt_allQueues: "Alle Warteschlangen",
                     tab_active: "Aktiv", tab_offline: "Offline", ld_agents: "Agenten werden geladen...",
@@ -2033,6 +2190,10 @@ body::after { content: none; }
                     sched_today: "Hoy", title_prevDay: "Día anterior", title_nextDay: "Día siguiente", ld_schedule: "Cargando horario...",
                     c_myTasks: "Mis tareas", viewAll: "Ver todo", ld_tasks: "Cargando tareas...",
                     c_recentCases: "Casos recientes", ld_cases: "Cargando casos...", c_quickActions: "Acciones rápidas",
+                    c_recentConvs: "Conversaciones recientes", ld_convs: "Cargando conversaciones...",
+                    e_noConvs: "No hay conversaciones en este intervalo", e_unableConvs: "No se pueden cargar las conversaciones",
+                    conv_untitled: "Conversación sin título", conv_range: "Intervalo de tiempo",
+                    conv_live: "En vivo", conv_closed: "Cerrada", conv_wrapup: "Cierre",
                     a_newCase: "Nuevo caso", a_newTask: "Nueva tarea", a_knowledgeBase: "Base de conocimientos", a_viewQueue: "Ver cola",
                     c_teamAgents: "Agentes del equipo", ph_searchAgents: "Buscar agentes...", opt_allQueues: "Todas las colas",
                     tab_active: "Activo", tab_offline: "Sin conexión", ld_agents: "Cargando agentes...",
@@ -2075,6 +2236,10 @@ body::after { content: none; }
                     sched_today: "Hoje", title_prevDay: "Dia anterior", title_nextDay: "Próximo dia", ld_schedule: "Carregando agenda...",
                     c_myTasks: "Minhas tarefas", viewAll: "Ver tudo", ld_tasks: "Carregando tarefas...",
                     c_recentCases: "Casos recentes", ld_cases: "Carregando casos...", c_quickActions: "Ações rápidas",
+                    c_recentConvs: "Conversas recentes", ld_convs: "Carregando conversas...",
+                    e_noConvs: "Nenhuma conversa neste período", e_unableConvs: "Não foi possível carregar as conversas",
+                    conv_untitled: "Conversa sem título", conv_range: "Período",
+                    conv_live: "Ao vivo", conv_closed: "Fechada", conv_wrapup: "Encerramento",
                     a_newCase: "Novo caso", a_newTask: "Nova tarefa", a_knowledgeBase: "Base de conhecimento", a_viewQueue: "Ver fila",
                     c_teamAgents: "Agentes da equipe", ph_searchAgents: "Pesquisar agentes...", opt_allQueues: "Todas as filas",
                     tab_active: "Ativo", tab_offline: "Offline", ld_agents: "Carregando agentes...",
@@ -2117,6 +2282,10 @@ body::after { content: none; }
                     sched_today: "Oggi", title_prevDay: "Giorno precedente", title_nextDay: "Giorno successivo", ld_schedule: "Caricamento pianificazione...",
                     c_myTasks: "Le mie attività", viewAll: "Visualizza tutto", ld_tasks: "Caricamento attività...",
                     c_recentCases: "Casi recenti", ld_cases: "Caricamento casi...", c_quickActions: "Azioni rapide",
+                    c_recentConvs: "Conversazioni recenti", ld_convs: "Caricamento conversazioni...",
+                    e_noConvs: "Nessuna conversazione in questo intervallo", e_unableConvs: "Impossibile caricare le conversazioni",
+                    conv_untitled: "Conversazione senza titolo", conv_range: "Intervallo di tempo",
+                    conv_live: "In diretta", conv_closed: "Chiusa", conv_wrapup: "Chiusura",
                     a_newCase: "Nuovo caso", a_newTask: "Nuova attività", a_knowledgeBase: "Knowledge base", a_viewQueue: "Visualizza coda",
                     c_teamAgents: "Agenti del team", ph_searchAgents: "Cerca agenti...", opt_allQueues: "Tutte le code",
                     tab_active: "Attivo", tab_offline: "Offline", ld_agents: "Caricamento agenti...",
@@ -2159,6 +2328,10 @@ body::after { content: none; }
                     sched_today: "Vandaag", title_prevDay: "Vorige dag", title_nextDay: "Volgende dag", ld_schedule: "Planning laden...",
                     c_myTasks: "Mijn taken", viewAll: "Alles weergeven", ld_tasks: "Taken laden...",
                     c_recentCases: "Recente aanvragen", ld_cases: "Aanvragen laden...", c_quickActions: "Snelle acties",
+                    c_recentConvs: "Recente gesprekken", ld_convs: "Gesprekken laden...",
+                    e_noConvs: "Geen gesprekken in deze periode", e_unableConvs: "Kan gesprekken niet laden",
+                    conv_untitled: "Gesprek zonder titel", conv_range: "Tijdsbereik",
+                    conv_live: "Live", conv_closed: "Gesloten", conv_wrapup: "Afronding",
                     a_newCase: "Nieuwe aanvraag", a_newTask: "Nieuwe taak", a_knowledgeBase: "Kennisbank", a_viewQueue: "Wachtrij weergeven",
                     c_teamAgents: "Teamagenten", ph_searchAgents: "Agenten zoeken...", opt_allQueues: "Alle wachtrijen",
                     tab_active: "Actief", tab_offline: "Offline", ld_agents: "Agenten laden...",
@@ -2201,6 +2374,10 @@ body::after { content: none; }
                     sched_today: "今日", title_prevDay: "前日", title_nextDay: "翌日", ld_schedule: "スケジュールを読み込み中...",
                     c_myTasks: "マイタスク", viewAll: "すべて表示", ld_tasks: "タスクを読み込み中...",
                     c_recentCases: "最近のケース", ld_cases: "ケースを読み込み中...", c_quickActions: "クイック操作",
+                    c_recentConvs: "最近の会話", ld_convs: "会話を読み込み中...",
+                    e_noConvs: "この期間に会話はありません", e_unableConvs: "会話を読み込めません",
+                    conv_untitled: "無題の会話", conv_range: "期間",
+                    conv_live: "進行中", conv_closed: "終了", conv_wrapup: "後処理",
                     a_newCase: "新規ケース", a_newTask: "新規タスク", a_knowledgeBase: "ナレッジベース", a_viewQueue: "キューを表示",
                     c_teamAgents: "チームエージェント", ph_searchAgents: "エージェントを検索...", opt_allQueues: "すべてのキュー",
                     tab_active: "アクティブ", tab_offline: "オフライン", ld_agents: "エージェントを読み込み中...",
@@ -2243,6 +2420,10 @@ body::after { content: none; }
                     sched_today: "今天", title_prevDay: "前一天", title_nextDay: "后一天", ld_schedule: "正在加载日程...",
                     c_myTasks: "我的任务", viewAll: "查看全部", ld_tasks: "正在加载任务...",
                     c_recentCases: "最近案例", ld_cases: "正在加载案例...", c_quickActions: "快捷操作",
+                    c_recentConvs: "最近会话", ld_convs: "正在加载会话...",
+                    e_noConvs: "此时间段内没有会话", e_unableConvs: "无法加载会话",
+                    conv_untitled: "无标题会话", conv_range: "时间范围",
+                    conv_live: "进行中", conv_closed: "已关闭", conv_wrapup: "结束处理",
                     a_newCase: "新建案例", a_newTask: "新建任务", a_knowledgeBase: "知识库", a_viewQueue: "查看队列",
                     c_teamAgents: "团队座席", ph_searchAgents: "搜索座席...", opt_allQueues: "所有队列",
                     tab_active: "活动", tab_offline: "离线", ld_agents: "正在加载座席...",
@@ -2285,6 +2466,10 @@ body::after { content: none; }
                     sched_today: "오늘", title_prevDay: "이전 날", title_nextDay: "다음 날", ld_schedule: "일정 로드 중...",
                     c_myTasks: "내 작업", viewAll: "모두 보기", ld_tasks: "작업 로드 중...",
                     c_recentCases: "최근 사례", ld_cases: "사례 로드 중...", c_quickActions: "빠른 작업",
+                    c_recentConvs: "최근 대화", ld_convs: "대화 로드 중...",
+                    e_noConvs: "이 기간에 대화가 없습니다", e_unableConvs: "대화를 로드할 수 없습니다",
+                    conv_untitled: "제목 없는 대화", conv_range: "기간",
+                    conv_live: "진행 중", conv_closed: "종료됨", conv_wrapup: "마무리",
                     a_newCase: "새 사례", a_newTask: "새 작업", a_knowledgeBase: "기술 자료", a_viewQueue: "대기열 보기",
                     c_teamAgents: "팀 상담원", ph_searchAgents: "상담원 검색...", opt_allQueues: "모든 대기열",
                     tab_active: "활성", tab_offline: "오프라인", ld_agents: "상담원 로드 중...",
@@ -2327,6 +2512,10 @@ body::after { content: none; }
                     sched_today: "Сегодня", title_prevDay: "Предыдущий день", title_nextDay: "Следующий день", ld_schedule: "Загрузка расписания...",
                     c_myTasks: "Мои задачи", viewAll: "Показать все", ld_tasks: "Загрузка задач...",
                     c_recentCases: "Недавние обращения", ld_cases: "Загрузка обращений...", c_quickActions: "Быстрые действия",
+                    c_recentConvs: "Недавние беседы", ld_convs: "Загрузка бесед...",
+                    e_noConvs: "Нет бесед за этот период", e_unableConvs: "Не удалось загрузить беседы",
+                    conv_untitled: "Беседа без названия", conv_range: "Период времени",
+                    conv_live: "В эфире", conv_closed: "Закрыта", conv_wrapup: "Завершение",
                     a_newCase: "Новое обращение", a_newTask: "Новая задача", a_knowledgeBase: "База знаний", a_viewQueue: "Открыть очередь",
                     c_teamAgents: "Агенты команды", ph_searchAgents: "Поиск агентов...", opt_allQueues: "Все очереди",
                     tab_active: "Активные", tab_offline: "Не в сети", ld_agents: "Загрузка агентов...",
@@ -2413,6 +2602,9 @@ body::after { content: none; }
             document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
                 el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
             });
+            document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
+                el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria-label')));
+            });
         }
 
 
@@ -2463,11 +2655,7 @@ body::after { content: none; }
                     document.getElementById('agentName').textContent = currentUser.userName;
                     
                     // Update avatar: try profile photo, fall back to initials
-                    const nameParts = currentUser.userName.split(' ');
-                    const initials = nameParts.length >= 2 
-                        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
-                        : currentUser.userName.substring(0, 2).toUpperCase();
-                    document.getElementById('agentAvatar').textContent = initials;
+                    document.getElementById('agentAvatar').textContent = computeInitials(currentUser.userName);
                     loadUserProfilePhoto(xrm, currentUser.userId);
                     
                     // Load all data
@@ -2475,6 +2663,7 @@ body::after { content: none; }
                         loadMetrics(xrm),
                         loadTasks(xrm),
                         loadCases(xrm),
+                        loadRecentConversations(xrm, conversationWindowMinutes),
                         loadOnlineAgents(xrm),
                         loadUserQueues(xrm, currentUser.userId),
                         loadNextAppointment(xrm, currentUser.userId),
@@ -2652,70 +2841,214 @@ body::after { content: none; }
             }
         }
 
-        // Load user profile photo  tries multiple methods for cross-environment reliability
+        // Initials from a display name, ignoring parenthetical suffixes like "(MO)"
+        function computeInitials(name) {
+            const parts = String(name || '')
+                .replace(/\([^)]*\)/g, ' ')
+                .replace(/[^A-Za-z\u00C0-\u024F\u0400-\u04FF0-9\s'-]/g, ' ')
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+            if (!parts.length) return 'U';
+            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        // Rendered-image avatar used when no photo exists in any source
+        function initialsAvatarDataUri(initials) {
+            const text = (initials || 'U').substring(0, 2);
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">'
+                + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+                + '<stop offset="0%" stop-color="#3b4270"/><stop offset="100%" stop-color="#161a2d"/>'
+                + '</linearGradient></defs>'
+                + '<circle cx="48" cy="48" r="48" fill="url(#g)"/>'
+                + '<text x="50%" y="50%" dy=".35em" text-anchor="middle" fill="#ffffff" '
+                + 'font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="38" font-weight="700">'
+                + text + '</text></svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        // Load user profile photo  tries every available source so a picture always renders
         async function loadUserProfilePhoto(xrm, userId) {
-            const cleanId = userId.replace(/[{}]/g, '');
+            const cleanId = String(userId || '').replace(/[{}]/g, '');
             const avatarEl = document.getElementById('agentAvatar');
             if (!avatarEl) return;
 
-            function setPhoto(src) {
+            const fallbackInitials = (avatarEl.textContent || '').trim();
+
+            function applyPhoto(src) {
                 const img = document.createElement('img');
-                img.src = src;
                 img.alt = 'Profile';
+                img.referrerPolicy = 'no-referrer';
+                img.src = src;
                 avatarEl.textContent = '';
                 avatarEl.appendChild(img);
             }
 
-            // Method 1: entityimage via WebApi (works when photo is synced to Dataverse)
+            // Only commit a source that actually decodes into a real image
+            function probe(src) {
+                return new Promise(resolve => {
+                    if (!src) return resolve(false);
+                    const test = new Image();
+                    test.referrerPolicy = 'no-referrer';
+                    test.onload = () => resolve(test.naturalWidth > 1 && test.naturalHeight > 1);
+                    test.onerror = () => resolve(false);
+                    test.src = src;
+                });
+            }
+
+            async function commit(src) {
+                if (await probe(src)) { applyPhoto(src); return true; }
+                return false;
+            }
+
+            let clientUrl = '';
+            try { clientUrl = xrm.Utility.getGlobalContext().getClientUrl(); } catch (e) { clientUrl = ''; }
+
+            async function toBlobUrl(url) {
+                try {
+                    const resp = await fetch(url, { credentials: 'include' });
+                    if (!resp.ok) return null;
+                    const blob = await resp.blob();
+                    if (blob.size < 100) return null;
+                    if (blob.type && blob.type.indexOf('image/') !== 0) return null;
+                    return URL.createObjectURL(blob);
+                } catch (e) { return null; }
+            }
+
+            // Copy borrowed blob: URLs into a data URL so they survive the owner revoking them
+            async function toDataUrl(url) {
+                try {
+                    const resp = await fetch(url);
+                    if (!resp.ok) return null;
+                    const blob = await resp.blob();
+                    if (blob.size < 100) return null;
+                    return await new Promise(resolve => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => resolve(null);
+                        reader.readAsDataURL(blob);
+                    });
+                } catch (e) { return null; }
+            }
+
+            // The shell renders its header photo as a CSS background on a div, not an <img>
+            function photoSrcFromElement(el, doc) {
+                if (!el) return '';
+                if (el.tagName === 'IMG') {
+                    const direct = el.currentSrc || el.src || '';
+                    return direct.indexOf('data:image/gif') === 0 ? '' : direct;
+                }
+                let bg = '';
+                try {
+                    const view = (doc && doc.defaultView) || window;
+                    bg = view.getComputedStyle(el).backgroundImage || '';
+                } catch (e) { bg = (el.style && el.style.backgroundImage) || ''; }
+                const match = /url\((['"]?)(.*?)\1\)/.exec(bg);
+                if (match && match[2]) return match[2];
+                const inner = el.querySelector && el.querySelector('img');
+                return inner ? (inner.currentSrc || inner.src || '') : '';
+            }
+
+            // Method 1: reuse the photo the D365 shell already renders in its own header
+            try {
+                const selectors = [
+                    '#mectrl_headerPicture',
+                    '[id*="headerPicture"]',
+                    '[class*="profilepic" i]',
+                    'img[src*="GetPersonaPhoto"]',
+                    'img[src*="entityimage"]',
+                    'img[src*="userphoto" i]',
+                    '[class*="persona" i] img'
+                ];
+                const collectDocs = () => {
+                    const docs = [];
+                    let win = window;
+                    for (let i = 0; i < 5 && win; i++) {
+                        try { if (win.document) docs.push(win.document); } catch (e) { /* cross-origin frame */ }
+                        if (win === win.parent) break;
+                        win = win.parent;
+                    }
+                    return docs;
+                };
+                // The shell paints its photo asynchronously, so poll briefly before giving up
+                for (let attempt = 0; attempt < 8; attempt++) {
+                    let sawCandidate = false;
+                    for (const doc of collectDocs()) {
+                        for (const sel of selectors) {
+                            let els = [];
+                            try { els = Array.prototype.slice.call(doc.querySelectorAll(sel)); } catch (e) { els = []; }
+                            if (els.length) sawCandidate = true;
+                            for (const el of els) {
+                                const src = photoSrcFromElement(el, doc);
+                                if (!src) continue;
+                                if (src.indexOf('blob:') === 0) {
+                                    const dataUrl = await toDataUrl(src);
+                                    if (dataUrl && await commit(dataUrl)) return;
+                                } else if (await commit(src)) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    if (!sawCandidate) break;
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+            } catch (e) {
+
+            }
+
+            // Method 2: entityimage via WebApi (works when photo is synced to Dataverse)
+            let userEmail = '';
             try {
                 const result = await xrm.WebApi.retrieveRecord(
-                    'systemuser', cleanId, '?$select=entityimage,entityimage_url'
+                    'systemuser', cleanId, '?$select=entityimage,entityimage_url,internalemailaddress,domainname'
                 );
-                if (result.entityimage) {
-                    setPhoto('data:image/jpeg;base64,' + result.entityimage);
-                    return;
-                }
+                userEmail = result.internalemailaddress || result.domainname || '';
+                if (result.entityimage && await commit('data:image/jpeg;base64,' + result.entityimage)) return;
                 if (result.entityimage_url) {
-                    setPhoto(result.entityimage_url);
-                    return;
+                    const url = /^https?:/i.test(result.entityimage_url)
+                        ? result.entityimage_url
+                        : clientUrl + result.entityimage_url;
+                    if (await commit(url)) return;
                 }
             } catch (e) {
 
             }
 
-            // Method 2: Direct REST endpoint for raw image bytes
-            try {
-                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
-                const imgUrl = clientUrl + '/api/data/v9.2/systemusers(' + cleanId + ')/entityimage/$value';
-                const resp = await fetch(imgUrl, { credentials: 'include' });
-                if (resp.ok) {
-                    const blob = await resp.blob();
-                    if (blob.size > 100) {
-                        setPhoto(URL.createObjectURL(blob));
-                        return;
-                    }
-                }
-            } catch (e) {
-
+            // Method 3: Direct REST endpoint for raw image bytes
+            if (clientUrl) {
+                const url = await toBlobUrl(clientUrl + '/api/data/v9.2/systemusers(' + cleanId + ')/entityimage/$value');
+                if (url && await commit(url)) return;
             }
 
-            // Method 3: Legacy image download endpoint
-            try {
-                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
-                const imgUrl = clientUrl + '/Image/download.aspx?Entity=systemuser&Attribute=entityimage&Id=' + cleanId;
-                const resp = await fetch(imgUrl, { credentials: 'include' });
-                if (resp.ok) {
-                    const blob = await resp.blob();
-                    if (blob.size > 100) {
-                        setPhoto(URL.createObjectURL(blob));
-                        return;
-                    }
-                }
-            } catch (e) {
-
+            // Method 4: Legacy image download endpoint
+            if (clientUrl) {
+                const url = await toBlobUrl(clientUrl + '/Image/download.aspx?Entity=systemuser&Attribute=entityimage&Id=' + cleanId);
+                if (url && await commit(url)) return;
             }
 
+            // Method 5: Microsoft 365 profile photo  the source the shell header itself uses.
+            // The Outlook host is derived from the org's own cloud so this works outside the commercial cloud too.
+            if (userEmail) {
+                let orgHost = '';
+                try { orgHost = new URL(clientUrl || window.location.href).hostname.toLowerCase(); } catch (e) { orgHost = ''; }
+                let outlookHosts;
+                if (orgHost.indexOf('.dynamics.cn') !== -1) {
+                    outlookHosts = ['partner.outlook.cn'];
+                } else if (orgHost.indexOf('.us') === orgHost.length - 3) {
+                    outlookHosts = ['outlook.office365.us'];
+                } else {
+                    outlookHosts = ['outlook.office.com', 'outlook.office365.com'];
+                }
+                for (const host of outlookHosts) {
+                    const src = 'https://' + host + '/owa/service.svc/s/GetPersonaPhoto?email='
+                        + encodeURIComponent(userEmail) + '&UA=0&size=HR96x96';
+                    if (await commit(src)) return;
+                }
+            }
 
+            applyPhoto(initialsAvatarDataUri(fallbackInitials));
         }
 
         const isoDaysAgo = (days) => {
@@ -3348,7 +3681,7 @@ body::after { content: none; }
                             // Query msdyn_agentstatus entity - the correct entity for agent presence
                             const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
                                 "msdyn_agentstatus",
-                                `?$filter=_msdyn_agentid_value eq ${user.systemuserid}&$select=msdyn_isagentloggedin,msdyn_availableunitscapacity&$expand=msdyn_currentpresenceid($select=msdyn_name,msdyn_basepresencestatus)&$top=1`
+                                `?$filter=_msdyn_agentid_value eq ${user.systemuserid}&$select=msdyn_isagentloggedin,msdyn_availableunitscapacity&$expand=msdyn_currentpresenceid($select=msdyn_presencestatustext,msdyn_name,msdyn_basepresencestatus)&$top=1`
                             );
                             
                             if (agentStatusResponse.entities && agentStatusResponse.entities.length > 0) {
@@ -3358,24 +3691,17 @@ body::after { content: none; }
                                 if (agentStatus.msdyn_isagentloggedin === true) {
                                     // Check presence status
                                     if (agentStatus.msdyn_currentpresenceid) {
-                                        const presenceName = agentStatus.msdyn_currentpresenceid.msdyn_name || 'Unknown';
-                                        const basePresence = agentStatus.msdyn_currentpresenceid.msdyn_basepresencestatus;
-                                        
-                                        // Map base presence status values
-                                        // 192360000 = Available, 192360001 = Busy, 192360002 = Busy DND, 192360003 = Away, 192360004 = Offline
-                                        if (basePresence === 192360000) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'available';
-                                        } else if (basePresence === 192360001 || basePresence === 192360002) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'busy';
-                                        } else if (basePresence === 192360003) {
-                                            presenceStatus = presenceName;
-                                            presenceClass = 'away';
-                                        } else {
-                                            presenceStatus = 'Offline';
-                                            presenceClass = 'offline';
-                                        }
+                                        const described = describePresence(agentStatus.msdyn_currentpresenceid);
+                                        const bucketClass = {
+                                            'Available': 'available',
+                                            'Busy': 'busy',
+                                            'Do Not Disturb': 'busy',
+                                            'Away': 'away',
+                                            'Offline': 'offline'
+                                        };
+
+                                        presenceClass = bucketClass[described.bucket] || 'offline';
+                                        presenceStatus = presenceClass === 'offline' ? 'Offline' : described.status;
                                         
 
                                     } else {
@@ -3724,7 +4050,7 @@ body::after { content: none; }
                 const presence = await getCurrentPresenceStatus(xrm);
                 if (presence) {
 
-                    updatePresenceDisplay(presence.status, presence.statusStartTime);
+                    updatePresenceDisplay(presence.status, presence.statusStartTime, presence.bucket);
                 } else {
 
                     presenceStatusStart = new Date();
@@ -3762,11 +4088,51 @@ body::after { content: none; }
             return { status, startTime };
         }
 
-        async function getCurrentPresenceStatus(xrm) {
-            try {
+        // msdyn_presence.msdyn_basepresencestatus option values (platform-defined, org-independent).
+        // Every presence record in an org — including custom ones — rolls up to one of these buckets.
+        const BASE_PRESENCE_BUCKET = {
+            192360000: 'Available',
+            192360001: 'Busy',
+            192360002: 'Do Not Disturb',
+            192360003: 'Away',
+            192360004: 'Offline'
+        };
 
-                
-                // Call the custom API CCaaS_GetPresence with ApiVersion parameter
+        // Resolve a presence record to the org's own display text plus a bucket used for colouring
+        function describePresence(presence) {
+            if (!presence) return null;
+            const bucket = BASE_PRESENCE_BUCKET[presence.msdyn_basepresencestatus] || 'Available';
+            const label = presence.msdyn_presencestatustext || presence.msdyn_name || bucket;
+            return { status: label, bucket: bucket };
+        }
+
+        async function getCurrentPresenceStatus(xrm) {
+            const presenceSelect = 'msdyn_presencestatustext,msdyn_basepresencestatus';
+
+            // Primary source: the agent's own status record, which carries both the presence and when it changed
+            try {
+                const agentStatusResponse = await xrm.WebApi.retrieveMultipleRecords(
+                    'msdyn_agentstatus',
+                    `?$select=msdyn_presencemodifiedon&$expand=msdyn_currentpresenceid($select=${presenceSelect})` +
+                    `&$filter=_msdyn_agentid_value eq ${currentUser.userId}&$top=1`
+                );
+                const agentStatus = agentStatusResponse.entities && agentStatusResponse.entities[0];
+                const described = agentStatus && describePresence(agentStatus.msdyn_currentpresenceid);
+                if (described) {
+                    return {
+                        status: described.status,
+                        bucket: described.bucket,
+                        statusStartTime: agentStatus.msdyn_presencemodifiedon
+                            ? new Date(agentStatus.msdyn_presencemodifiedon)
+                            : new Date()
+                    };
+                }
+            } catch (error) {
+
+            }
+
+            // Fallback: ask the platform for the presence id, then read that record
+            try {
                 const request = {
                     ApiVersion: "1.0",
                     getMetadata: function () {
@@ -3789,19 +4155,10 @@ body::after { content: none; }
                 if (result.ok) {
                     const responseJson = await result.json();
 
-                    
-                    // Parse the response
                     if (responseJson.PresenceId) {
-                        // Map presence IDs to status names
-                        const presenceMap = {
-                            'f523f628-c07a-e811-8162-000d3aa11f50': 'Available',
-                            'efdeb843-c07a-e811-8162-000d3aa11f50': 'Busy',
-                            '08971864-c07a-e811-8162-000d3aa11f50': 'Do Not Disturb',
-                            '70139190-c07a-e811-8162-000d3aa11f50': 'Offline',
-                            '3dacae76-c07a-e811-8162-000d3aa11f50': 'Away'
-                        };
-                        
-                        const status = presenceMap[responseJson.PresenceId.toLowerCase()] || 'Available';
+                        const presenceId = String(responseJson.PresenceId).replace(/[{}]/g, '');
+                        const presence = await xrm.WebApi.retrieveRecord('msdyn_presence', presenceId, '?$select=' + presenceSelect);
+                        const described = describePresence(presence);
                         
                         // Get the actual presence modified time from msdyn_agentstatus entity
                         let statusStartTime = new Date();
@@ -3822,10 +4179,13 @@ body::after { content: none; }
 
                         }
                         
-                        return {
-                            status: status,
-                            statusStartTime: statusStartTime
-                        };
+                        if (described) {
+                            return {
+                                status: described.status,
+                                bucket: described.bucket,
+                                statusStartTime: statusStartTime
+                            };
+                        }
                     }
                 }
             } catch (error) {
@@ -3836,6 +4196,7 @@ body::after { content: none; }
 
             return {
                 status: 'Available',
+                bucket: 'Available',
                 statusStartTime: new Date()
             };
         }
@@ -3852,11 +4213,11 @@ body::after { content: none; }
                     // Detect status change
                     if (lastPresenceStatus && lastPresenceStatus !== currentPresence.status) {
 
-                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime, currentPresence.bucket);
                     } else if (!lastPresenceStatus) {
                         // Initial status
 
-                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime);
+                        updatePresenceDisplay(currentPresence.status, currentPresence.statusStartTime, currentPresence.bucket);
                     }
                     
                     lastPresenceStatus = currentPresence.status;
@@ -3879,7 +4240,7 @@ body::after { content: none; }
 
         }
 
-        function updatePresenceDisplay(status, startTime) {
+        function updatePresenceDisplay(status, startTime, bucket) {
             currentPresenceStatus = status;
             presenceStatusStart = new Date(startTime);
             
@@ -3930,7 +4291,7 @@ body::after { content: none; }
                 }
             };
             
-            const colors = statusColors[status] || statusColors['Available'];
+            const colors = statusColors[status] || statusColors[bucket] || statusColors['Available'];
             statusBadge.style.setProperty('--status-bg', colors.bg);
             statusBadge.style.setProperty('--status-shadow', colors.shadow);
             
@@ -4583,6 +4944,260 @@ body::after { content: none; }
             renderScheduleTimeline(activities, targetDate);
         }
 
+        // ===================================================================
+        // Recent Conversations
+        // ===================================================================
+        let conversationWindowMinutes = 1440;
+        let conversationRequestId = 0;
+        let conversationChannelIndex = null;
+
+        const CONV_CHANNEL_ICONS = {
+            voice:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.28 3.5a2.25 2.25 0 0 1 2.6 1.02l1.1 1.94a2.25 2.25 0 0 1-.35 2.68l-1.2 1.2a9.3 9.3 0 0 0 3.23 3.23l1.2-1.2a2.25 2.25 0 0 1 2.68-.35l1.94 1.1a2.25 2.25 0 0 1 1.02 2.6l-.5 1.75A3 3 0 0 1 16.7 20C9.7 19.3 4.7 14.3 4 7.3a3 3 0 0 1 2.53-3.3l1.75-.5Z"/></svg>',
+            chat:   '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 1 7.8 13.5l.94 3.3a.75.75 0 0 1-.93.93l-3.3-.94A9 9 0 1 1 12 3Zm-3 7.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5H9Zm0 3a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5H9Z"/></svg>',
+            email:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.25 4h13.5A3.25 3.25 0 0 1 22 7.25v9.5A3.25 3.25 0 0 1 18.75 20H5.25A3.25 3.25 0 0 1 2 16.75v-9.5A3.25 3.25 0 0 1 5.25 4Zm0 1.5c-.24 0-.47.05-.68.14l7.06 5.26c.22.16.52.16.74 0l7.06-5.26a1.74 1.74 0 0 0-.68-.14H5.25ZM3.5 7.4v9.35c0 .97.78 1.75 1.75 1.75h13.5c.97 0 1.75-.78 1.75-1.75V7.4l-6.83 5.09a2.13 2.13 0 0 1-2.54 0L3.5 7.4Z"/></svg>',
+            sms:    '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.25 2h9.5A2.25 2.25 0 0 1 19 4.25v15.5A2.25 2.25 0 0 1 16.75 22h-9.5A2.25 2.25 0 0 1 5 19.75V4.25A2.25 2.25 0 0 1 7.25 2Zm0 1.5a.75.75 0 0 0-.75.75v15.5c0 .41.34.75.75.75h9.5c.41 0 .75-.34.75-.75V4.25a.75.75 0 0 0-.75-.75h-9.5ZM12 17.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>',
+            social: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3a3.5 3.5 0 0 1 2.84 5.55l-.16.2-6.72 3.36a3.5 3.5 0 0 1 0 1.78l6.72 3.36A3.5 3.5 0 1 1 19 19.9l-.28-.2-6.6-3.3a3.5 3.5 0 1 1 0-8.8l6.6-3.3A3.5 3.5 0 0 1 17.5 3Z"/></svg>',
+            other:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17ZM12 15.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0-9a3 3 0 0 1 1.2 5.75c-.4.18-.45.28-.45.5v.5a.75.75 0 0 1-1.5 0v-.5c0-.94.5-1.5 1.34-1.87A1.5 1.5 0 1 0 10.5 9.5a.75.75 0 0 1-1.5 0 3 3 0 0 1 3-3Z"/></svg>'
+        };
+
+        function convEscape(value) {
+            const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+            return String(value == null ? '' : value).replace(/[&<>"']/g, ch => entities[ch]);
+        }
+
+        // Classify from the invariant (en-US) option label so custom channels still resolve
+        function convChannelKey(invariantLabel) {
+            const label = String(invariantLabel || '').toLowerCase();
+            if (/voice|call|phone|voicemail|video/.test(label)) return 'voice';
+            if (/mail/.test(label) && !/messag/.test(label)) return 'email';
+            if (/\bsms\b|text message/.test(label)) return 'sms';
+            if (/facebook|twitter|whatsapp|wechat|line|instagram|apple|google|social|teams/.test(label)) return 'social';
+            if (/chat|messag|copilot|conversation/.test(label)) return 'chat';
+            return 'other';
+        }
+
+        // Map each workstream to a channel once, straight from the org's own option set
+        async function ensureConversationChannelIndex(xrm) {
+            if (conversationChannelIndex) return conversationChannelIndex;
+            const index = new Map();
+            try {
+                const clientUrl = xrm.Utility.getGlobalContext().getClientUrl();
+                const metaUrl = clientUrl + "/api/data/v9.2/EntityDefinitions(LogicalName='msdyn_liveworkstream')"
+                    + "/Attributes(LogicalName='msdyn_streamsource')/Microsoft.Dynamics.CRM.PicklistAttributeMetadata"
+                    + "?$select=LogicalName&$expand=OptionSet($select=Options)";
+                const metaResp = await fetch(metaUrl, { headers: { Accept: 'application/json' }, credentials: 'include' });
+                const meta = await metaResp.json();
+
+                const keyBySource = new Map();
+                ((meta.OptionSet && meta.OptionSet.Options) || []).forEach(option => {
+                    const labels = (option.Label && option.Label.LocalizedLabels) || [];
+                    const invariant = labels.find(l => l.LanguageCode === 1033) || labels[0];
+                    keyBySource.set(option.Value, convChannelKey(invariant && invariant.Label));
+                });
+
+                const streams = await xrm.WebApi.retrieveMultipleRecords(
+                    'msdyn_liveworkstream', '?$select=msdyn_liveworkstreamid,msdyn_streamsource'
+                );
+                streams.entities.forEach(stream => {
+                    index.set(stream.msdyn_liveworkstreamid, keyBySource.get(stream.msdyn_streamsource) || 'other');
+                });
+            } catch (e) {
+
+            }
+            conversationChannelIndex = index;
+            return index;
+        }
+
+        async function fetchAgentConversations(xrm, sinceIso) {
+            const convSelect = 'activityid,msdyn_title,subject,createdon,statecode,msdyn_startedon,msdyn_closedon,'
+                + 'msdyn_wrapupinitiatedon,msdyn_conversationhandletimeinseconds,msdyn_customersentimentlabel,'
+                + '_msdyn_customer_value,_msdyn_liveworkstreamid_value';
+            const userId = String(currentUser.userId).replace(/[{}]/g, '');
+            const byConversation = new Map();
+
+            // Sessions the agent actually participated in — the accurate "conversations I handled"
+            try {
+                const sessions = await xrm.WebApi.retrieveMultipleRecords('msdyn_ocsession',
+                    '?$select=createdon,actualend,msdyn_agentacceptedon'
+                    + '&$expand=msdyn_liveworkitemid_msdyn_ocsession($select=' + convSelect + ')'
+                    + '&$filter=createdon ge ' + sinceIso
+                    + ' and msdyn_ocsession_sessionparticipant_nested/any(p:p/_msdyn_agentid_value eq ' + userId + ')'
+                    + '&$orderby=createdon desc&$top=100'
+                );
+                sessions.entities.forEach(session => {
+                    const conversation = session.msdyn_liveworkitemid_msdyn_ocsession;
+                    if (!conversation || !conversation.activityid) return;
+                    const touchedOn = session.msdyn_agentacceptedon || session.createdon;
+                    const existing = byConversation.get(conversation.activityid);
+                    if (!existing || new Date(touchedOn) > new Date(existing.touchedOn)) {
+                        byConversation.set(conversation.activityid, {
+                            conversation: conversation,
+                            touchedOn: touchedOn,
+                            endedOn: session.actualend
+                        });
+                    }
+                });
+            } catch (e) {
+
+            }
+
+            // Fallback for orgs where session participants are not readable
+            if (byConversation.size === 0) {
+                const ownerFilter = '(_ownerid_value eq ' + userId
+                    + ' or _msdyn_lastactiveownerid_value eq ' + userId
+                    + ' or _msdyn_activeagentid_value eq ' + userId + ')';
+                const conversations = await xrm.WebApi.retrieveMultipleRecords('msdyn_ocliveworkitem',
+                    '?$select=' + convSelect + '&$filter=createdon ge ' + sinceIso + ' and ' + ownerFilter
+                    + '&$orderby=createdon desc&$top=50'
+                );
+                conversations.entities.forEach(conversation => {
+                    byConversation.set(conversation.activityid, {
+                        conversation: conversation,
+                        touchedOn: conversation.msdyn_startedon || conversation.createdon,
+                        endedOn: conversation.msdyn_closedon
+                    });
+                });
+            }
+
+            return Array.from(byConversation.values())
+                .sort((a, b) => new Date(b.touchedOn) - new Date(a.touchedOn));
+        }
+
+        function conversationWindowLabel(minutes) {
+            return minutes >= 60 ? (minutes / 60) + 'h' : minutes + 'm';
+        }
+
+        function conversationRelativeTime(iso) {
+            const then = iso ? new Date(iso).getTime() : NaN;
+            if (isNaN(then)) return '';
+            const diffMinutes = Math.round((then - Date.now()) / 60000);
+            try {
+                const rtf = new Intl.RelativeTimeFormat(I18N.locale, { numeric: 'auto' });
+                return Math.abs(diffMinutes) < 60
+                    ? rtf.format(diffMinutes, 'minute')
+                    : rtf.format(Math.round(diffMinutes / 60), 'hour');
+            } catch (e) {
+                return new Date(then).toLocaleTimeString(I18N.locale, { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+
+        function conversationDuration(seconds) {
+            if (!seconds || seconds < 1) return '';
+            const minutes = Math.floor(seconds / 60);
+            const rest = Math.round(seconds % 60);
+            return minutes ? minutes + 'm ' + rest + 's' : rest + 's';
+        }
+
+        function conversationSentimentClass(label) {
+            const value = String(label || '').toLowerCase();
+            if (!value) return '';
+            if (value.indexOf('neg') !== -1) return 'neg';
+            if (value.indexOf('pos') !== -1) return 'pos';
+            return 'neu';
+        }
+
+        function renderConversations(items, channelIndex, windowMinutes) {
+            const container = document.getElementById('convList');
+            const countEl = document.getElementById('convCount');
+            if (!container) return;
+
+            if (countEl) countEl.textContent = items.length + ' · ' + conversationWindowLabel(windowMinutes);
+
+            if (!items.length) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_SPARKLE
+                    + '</div><p>' + convEscape(t('e_noConvs')) + '</p></div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="conv-list">' + items.map(item => {
+                const conversation = item.conversation;
+                const customer = conversation['_msdyn_customer_value@OData.Community.Display.V1.FormattedValue'];
+                const title = conversation.msdyn_title || conversation.subject || customer || t('conv_untitled');
+                const workstream = conversation['_msdyn_liveworkstreamid_value@OData.Community.Display.V1.FormattedValue'] || '';
+                const channel = channelIndex.get(conversation._msdyn_liveworkstreamid_value) || 'other';
+
+                const isClosed = conversation.statecode === 1;
+                const isWrapUp = !isClosed && !!conversation.msdyn_wrapupinitiatedon;
+                const statusClass = isClosed ? 'is-closed' : (isWrapUp ? 'is-wrap' : 'is-open');
+                const statusLabel = isClosed ? t('conv_closed') : (isWrapUp ? t('conv_wrapup') : t('conv_live'));
+
+                let seconds = conversation.msdyn_conversationhandletimeinseconds;
+                if (!seconds && item.endedOn && item.touchedOn) {
+                    seconds = Math.round((new Date(item.endedOn) - new Date(item.touchedOn)) / 1000);
+                }
+                const duration = conversationDuration(seconds);
+                const sentiment = conversationSentimentClass(
+                    conversation['msdyn_customersentimentlabel@OData.Community.Display.V1.FormattedValue']
+                );
+
+                const meta = [];
+                if (workstream) meta.push('<span>' + convEscape(workstream) + '</span>');
+                if (customer && customer !== title) meta.push('<span>' + convEscape(customer) + '</span>');
+                if (duration) meta.push('<span>' + convEscape(duration) + '</span>');
+                if (sentiment) meta.push('<i class="conv-sentiment ' + sentiment + '"></i>');
+
+                return '<div class="conv-item" role="button" tabindex="0"'
+                    + ' onclick="openConversation(\'' + convEscape(conversation.activityid) + '\')"'
+                    + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openConversation(\''
+                    + convEscape(conversation.activityid) + '\');}">'
+                    + '<div class="conv-icon ch-' + channel + '">' + CONV_CHANNEL_ICONS[channel] + '</div>'
+                    + '<div class="conv-main">'
+                    + '<div class="conv-title" title="' + convEscape(title) + '">' + convEscape(title) + '</div>'
+                    + '<div class="conv-meta">' + meta.join('<i class="conv-dot"></i>') + '</div>'
+                    + '</div>'
+                    + '<div class="conv-side">'
+                    + '<span class="conv-time">' + convEscape(conversationRelativeTime(item.touchedOn)) + '</span>'
+                    + '<span class="conv-status ' + statusClass + '">' + convEscape(statusLabel) + '</span>'
+                    + '</div>'
+                    + '</div>';
+            }).join('') + '</div>';
+        }
+
+        async function loadRecentConversations(xrm, minutes) {
+            const container = document.getElementById('convList');
+            const countEl = document.getElementById('convCount');
+            if (!container) return;
+
+            const windowMinutes = minutes || conversationWindowMinutes;
+            const requestId = ++conversationRequestId;
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>'
+                + convEscape(t('ld_convs')) + '</p></div>';
+
+            try {
+                const sinceIso = new Date(Date.now() - windowMinutes * 60000).toISOString();
+                const channelIndex = await ensureConversationChannelIndex(xrm);
+                const items = await fetchAgentConversations(xrm, sinceIso);
+                if (requestId !== conversationRequestId) return; // a newer filter click won
+                renderConversations(items, channelIndex, windowMinutes);
+            } catch (error) {
+                if (requestId !== conversationRequestId) return;
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ICON_WARNING
+                    + '</div><p>' + convEscape(t('e_unableConvs')) + '</p></div>';
+                if (countEl) countEl.textContent = '—';
+            }
+        }
+
+        function setConversationWindow(minutes, chip) {
+            conversationWindowMinutes = minutes;
+            document.querySelectorAll('#convFilters .conv-chip').forEach(el => {
+                const isActive = el === chip;
+                el.classList.toggle('active', isActive);
+                el.setAttribute('aria-pressed', String(isActive));
+            });
+            const xrm = getXrm();
+            if (xrm && currentUser) loadRecentConversations(xrm, minutes);
+        }
+
+        function openConversation(conversationId) {
+            const xrm = getXrm();
+            if (xrm) {
+                xrm.Navigation.openForm({
+                    entityName: 'msdyn_ocliveworkitem',
+                    entityId: conversationId
+                });
+            }
+        }
+
         // Navigation functions
         function openTask(taskId) {
             const xrm = getXrm();
@@ -4605,7 +5220,7 @@ body::after { content: none; }
                     viewType: "savedquery"
                 }).catch(function(error) {
                     // Fallback: open task grid URL
-                    window.location.href = '/main.aspx?etn=task&pagetype=entitylist&viewid=00000000-0000-0000-00aa-000010001004&viewType=1039';
+                    window.location.href = '/main.aspx?etn=task&pagetype=entitylist';
                 });
             }
         }
