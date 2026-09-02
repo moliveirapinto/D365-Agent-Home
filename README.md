@@ -80,7 +80,7 @@ Custom type palette (12 colors, cycled by hash): pink, orange, sky-blue, indigo,
 
 ## Deployment
 
-Import the prebuilt **`solution.zip`** (unmanaged, version 2.9.0.0) included in this repository:
+Import the prebuilt **`solution.zip`** (unmanaged, version 2.9.1.0) included in this repository:
 
 1. In D365 go to **Settings → Solutions → Import** (or **make.powerapps.com → Solutions → Import solution**)
 2. Select `solution.zip` and complete the import

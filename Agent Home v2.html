@@ -1667,7 +1667,9 @@ body::after { content: none; }
     font-size: 32px;
     margin-bottom: 8px;
     opacity: 0.4;
+    display: flex; justify-content: center; align-items: center;
 }
+.schedule-empty-icon svg { width: 36px; height: 36px; color: var(--ghost); }
 .schedule-empty p {
     font-size: 13px; font-weight: 600;
     color: var(--slate);
@@ -4696,7 +4698,7 @@ body::after { content: none; }
             if (!activities || activities.length === 0) {
                 contentEl.innerHTML = `
                     <div class="schedule-empty">
-                        <div class="schedule-empty-icon">' + ICON_CALENDAR + '</div>
+                        <div class="schedule-empty-icon">${ICON_CALENDAR}</div>
                         <p>${t('sched_noScheduleDay')}</p>
                         <p class="schedule-empty-sub">${t('sched_noScheduleSub')}</p>
                     </div>
