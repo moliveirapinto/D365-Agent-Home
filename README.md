@@ -80,7 +80,7 @@ Custom type palette (12 colors, cycled by hash): pink, orange, sky-blue, indigo,
 
 ## Deployment
 
-Import the prebuilt **`solution.zip`** (unmanaged, version 2.9.1.0) included in this repository:
+Import the prebuilt **`solution.zip`** (unmanaged, version 2.9.2.0) included in this repository:
 
 1. In D365 go to **Settings → Solutions → Import** (or **make.powerapps.com → Solutions → Import solution**)
 2. Select `solution.zip` and complete the import
@@ -92,7 +92,11 @@ Or use the Power Platform CLI:
 pac solution import --path solution.zip --publish-changes --force-overwrite
 ```
 
-> The solution imports as a new version (2.8.0.0), so importing over an existing Agent Home install upgrades it in place.
+> The solution imports as a new version (2.9.2.0), so importing over an existing Agent Home install upgrades it in place.
+
+> **Upgrading from 2.9.1.0 or earlier?** Versions up to 2.9.1.0 fail to import with
+> `WebResources import: FAILURE: WebResource name = maulabs_agent_home: Object reference not set to an instance of an object.`
+> Re-download `solution.zip` from this repository (2.9.2.0 or later) and import that instead.
 
 ---
 
@@ -107,6 +111,9 @@ pac solution import --path solution.zip --publish-changes --force-overwrite
 | v2.6.0.0 | 2025-05    | Dynamic color system: custom/unknown schedule types auto-assigned unique colors via deterministic hash; dynamic legend shows all types including custom; `type-default` gray fallback eliminated |
 | v2.7.0.0 | 2025-05    | UI: My Queues section gets white card background with border, shadow, and aligned padding |
 | v2.8.0.0 | 2026-06    | **Automatic language detection (i18n):** the dashboard detects the signed-in user's Dynamics 365 display language (LCID) and renders **all** UI text in that language with no prompt. Ships with 11 languages — English, French, German, Spanish, Brazilian Portuguese, Italian, Dutch, Japanese, Simplified Chinese, Korean, Russian — plus locale-aware date/number formatting. Unsupported languages fall back to English. |
+| v2.9.0.0 | 2026-09    | Always show the user profile photo, make the dashboard environment-agnostic, add Recent Conversations card |
+| v2.9.1.0 | 2026-09    | Fix calendar icon printing as literal text in the empty schedule state |
+| v2.9.2.0 | 2026-09    | **Solution import fix:** `customizations.xml` declared the web resource content path with a non-schema `<ContentFileName>` element instead of `<FileName>`, so the importer never resolved the file and threw `Object reference not set to an instance of an object`. |
 
 ---
 
